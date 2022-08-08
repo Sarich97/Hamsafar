@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "54607605373",
+    "project_id": "hamsafar-46484",
+    "storage_bucket": "hamsafar-46484.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54607605373:android:beef4f6b25586ad80b0b14",
+        "android_client_info": {
+          "package_name": "hamsafar.tj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54607605373-8ltgdea730hb5mfa3o4eek9rbbkbc0vh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5ylMvlceRUkJffszxC764fsYPvhwZseM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54607605373-8ltgdea730hb5mfa3o4eek9rbbkbc0vh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

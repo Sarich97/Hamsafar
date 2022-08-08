@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.LoginFragment">
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/authTextTitle"
+        android:text="Вход в аккаунт"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/authTextDiv"
+        android:text="Войдите в аккаунт чтобы воспользоваться всеми возможностями сервиса"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/userEmail"
+        style="@style/editText"
+        android:drawableLeft="@drawable/ic_baseline_alternate_email_24"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:ignore="MissingConstraints"/>
+
+    <EditText
+        android:id="@+id/userPass"
+        style="@style/editText"
+        android:drawableLeft="@drawable/ic_baseline_lock_open_24"
+        android:hint="@string/user_pass"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/userEmail"
+        tools:ignore="MissingConstraints"/>
+
+    <Button
+        android:id="@+id/loginBtn"
+        style="@style/authBtnStyle"
+        android:text="@string/login_btn_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userPass" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

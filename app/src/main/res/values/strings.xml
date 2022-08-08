@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Hamsafar</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="migrant_media_login_page">Войдите в аккаунт, чтобы максимально использовать возможности Migrant Media</string>
+    <string name="btn_login">Вход в аккаунт</string>
+    <string name="email">Ваш email</string>
+    <string name="password">Ваш пароль</string>
+    <string name="create_pass">Придумайте пароль</string>
+    <string name="user_name">Ваше имя</string>
+    <string name="creat_post">Новая запись</string>
+    <string name="add_post">Опубликовать</string>
+    <string name="text_post">Введите текст записи..</string>
+    <string name="registetr_btn_text">Продолжить</string>
+    <string name="login_btn_text">Вход в аккаунт</string>
+    <string name="user_pass">Ваш пароль</string>
+    <string name="political_auth">Нажимая <b>«Продолжить»,</b> вы принимаете <b>пользовательское соглашение</b> и <b>политику конфиденциальности.</b></string>
+
+</resources>
