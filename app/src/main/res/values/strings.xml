@@ -14,5 +14,7 @@
     <string name="login_btn_text">Вход в аккаунт</string>
     <string name="user_pass">Ваш пароль</string>
     <string name="political_auth">Нажимая <b>«Продолжить»,</b> вы принимаете <b>пользовательское соглашение</b> и <b>политику конфиденциальности.</b></string>
+    <string name="auth_salam">Ассалому Алейкум!</string>
+    <string name="auth_text_div">Если вы водитель, зарегистрируйтесь чтобы создавать поездки</string>
 
 </resources>
