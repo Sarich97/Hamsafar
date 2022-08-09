@@ -1,5 +1,6 @@
 package hamsafar.tj.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import hamsafar.tj.R;
+import hamsafar.tj.activity.RegisterActivity;
 
 public class RegisterFragment extends Fragment {
 
@@ -61,7 +63,11 @@ public class RegisterFragment extends Fragment {
                     userRegisterBtn.setVisibility(View.VISIBLE);
                 } else
                 {
-
+                    Intent registerIntent = new Intent(getContext(), RegisterActivity.class);
+                    registerIntent.putExtra("userEmal", email);
+                    registerIntent.putExtra("userName", name);
+                    registerIntent.putExtra("userPass", password);
+                    startActivity(registerIntent);
                 }
             }
         });
