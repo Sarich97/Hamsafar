@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Hamsafar</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="migrant_media_login_page">Войдите в аккаунт, чтобы максимально использовать возможности Migrant Media</string>
     <string name="btn_login">Вход в аккаунт</string>
     <string name="email">Ваш email</string>
@@ -13,10 +12,13 @@
     <string name="registetr_btn_text">Продолжить</string>
     <string name="login_btn_text">Вход в аккаунт</string>
     <string name="user_pass">Ваш пароль</string>
+    <string name="register_btn_text">Зарегистрироваться</string>
     <string name="political_auth">Нажимая <b>«Продолжить»,</b> вы принимаете <b>пользовательское соглашение</b> и <b>политику конфиденциальности.</b></string>
     <string name="auth_salam">Ассалому Алейкум!</string>
     <string name="auth_text_div">Если вы водитель, зарегистрируйтесь чтобы создавать поездки</string>
     <string name="auth_title">Вход в аккаунт</string>
     <string name="auth_login_div">Войдите в аккаунт чтобы воспользоваться всеми возможностями сервиса</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="button">Button</string>
 
 </resources>
