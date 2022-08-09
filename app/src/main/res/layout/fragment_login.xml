@@ -9,14 +9,14 @@
     <TextView
         android:id="@+id/textView"
         style="@style/authTextTitle"
-        android:text="Вход в аккаунт"
+        android:text="@string/auth_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         style="@style/authTextDiv"
-        android:text="Войдите в аккаунт чтобы воспользоваться всеми возможностями сервиса"
+        android:text="@string/auth_login_div"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -24,20 +24,23 @@
     <EditText
         android:id="@+id/userEmail"
         style="@style/editText"
-        android:drawableLeft="@drawable/ic_baseline_alternate_email_24"
+        android:drawableStart="@drawable/ic_baseline_alternate_email_24"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints"
+        android:autofillHints=""
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/userPass"
         style="@style/editText"
-        android:drawableLeft="@drawable/ic_baseline_lock_open_24"
+        android:drawableStart="@drawable/ic_baseline_lock_open_24"
         android:hint="@string/user_pass"
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@+id/userEmail"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/loginBtn"
@@ -45,6 +48,7 @@
         android:text="@string/login_btn_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPass" />
+        app:layout_constraintTop_toBottomOf="@+id/userPass"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

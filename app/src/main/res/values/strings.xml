@@ -16,5 +16,7 @@
     <string name="political_auth">Нажимая <b>«Продолжить»,</b> вы принимаете <b>пользовательское соглашение</b> и <b>политику конфиденциальности.</b></string>
     <string name="auth_salam">Ассалому Алейкум!</string>
     <string name="auth_text_div">Если вы водитель, зарегистрируйтесь чтобы создавать поездки</string>
+    <string name="auth_title">Вход в аккаунт</string>
+    <string name="auth_login_div">Войдите в аккаунт чтобы воспользоваться всеми возможностями сервиса</string>
 
 </resources>
