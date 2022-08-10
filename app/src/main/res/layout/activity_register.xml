@@ -19,6 +19,7 @@
     <TextView
         android:id="@+id/textView3"
         style="@style/authTextDiv"
+        android:layout_marginTop="48dp"
         android:text="По номеру телефона вы сможете связаться с попутчиками, а они - с вами."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

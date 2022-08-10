@@ -9,9 +9,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import hamsafar.tj.R;
 import hamsafar.tj.activity.RegisterActivity;
@@ -20,7 +24,8 @@ public class RegisterFragment extends Fragment {
 
     private EditText userEmail, userName, userPass; // Поля ввод юзера
     private Button userRegisterBtn; // Кнопка регистрации
-    private ProgressBar registerProgress; //
+    private ProgressBar registerProgress; // Прогрессбар страница(фрагмент) регистрации
+    private TextView termsOfUseSheet; // Пользовательское соглашение
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +38,18 @@ public class RegisterFragment extends Fragment {
         userPass = view.findViewById(R.id.user_Pass);
         userRegisterBtn = view.findViewById(R.id.registerNextBtn);
         registerProgress = view.findViewById(R.id.progressBarAuth);
+        termsOfUseSheet = view.findViewById(R.id.terms_of_use);
+
+        termsOfUseSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+                bottomSheetDialog.setContentView(R.layout.terms_of_use_sheet);
+                bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                bottomSheetDialog.show();
+            }
+        });
+
 
 
         userRegisterBtn.setOnClickListener(new View.OnClickListener() {  // Нажатие на кнопки регистрации
