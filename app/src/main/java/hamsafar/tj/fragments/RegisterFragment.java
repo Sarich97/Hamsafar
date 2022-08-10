@@ -61,27 +61,28 @@ public class RegisterFragment extends Fragment {
                 String name = userName.getText().toString();
                 String password = userPass.getText().toString();
 
-                if(TextUtils.isEmpty(email))
+                if(email.length() < 5)
                 {
-                    userEmail.setError("Обязательное поле");
+                    userEmail.setError("Обязательное поле и не менее 6 символов");
                     registerProgress.setVisibility(View.INVISIBLE);
                     userRegisterBtn.setVisibility(View.VISIBLE);
                 }
-                else if(TextUtils.isEmpty(name))
+                else if(name.length() < 3)
                 {
-                    userName.setError("Обязательное поле");
+                    userName.setError("Обязательное поле и не менее 3 символов");
                     registerProgress.setVisibility(View.INVISIBLE);
                     userRegisterBtn.setVisibility(View.VISIBLE);
 
-                } else if(TextUtils.isEmpty(password))
+                } else if(password.length() < 6)
                 {
-                    userPass.setError("Обязательное поле");
+                    userPass.setError("Обязательное поле и не менее 6 символов");
                     registerProgress.setVisibility(View.INVISIBLE);
                     userRegisterBtn.setVisibility(View.VISIBLE);
+
                 } else
                 {
                     Intent registerIntent = new Intent(getContext(), RegisterActivity.class);
-                    registerIntent.putExtra("userEmal", email);
+                    registerIntent.putExtra("userEmail", email);
                     registerIntent.putExtra("userName", name);
                     registerIntent.putExtra("userPass", password);
                     startActivity(registerIntent);

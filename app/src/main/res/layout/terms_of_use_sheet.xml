@@ -13,37 +13,11 @@
         android:fontFamily="@font/play_bold"
         android:paddingTop="24dp"
         android:textAlignment="center"
-        android:text="Пользовательское соглашение и политика конфиденциальности"       android:textColor="@color/colorPrimary"
+        android:text="Пользовательское соглашение и политика конфиденциальности"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <ScrollView
-        android:id="@+id/SCROLLER_ID"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-        <WebView
-            android:id="@+id/logOutBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            android:fontFamily="@font/play"
-            android:minHeight="48dp"
-            android:padding="12dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    </ScrollView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

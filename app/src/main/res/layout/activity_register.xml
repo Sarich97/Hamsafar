@@ -7,11 +7,12 @@
     tools:context=".activity.RegisterActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/registerBackBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
@@ -19,11 +20,11 @@
     <TextView
         android:id="@+id/textView3"
         style="@style/authTextDiv"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="28dp"
         android:text="По номеру телефона вы сможете связаться с попутчиками, а они - с вами."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/registerBackBtn" />
 
     <EditText
         android:id="@+id/user_Phone"
@@ -70,6 +71,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_CarModel"
         tools:ignore="DuplicateSpeakableTextCheck" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBarReg"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/creatAccauntBtn"
+        app:layout_constraintStart_toStartOf="@+id/creatAccauntBtn"
+        app:layout_constraintTop_toBottomOf="@+id/creatAccauntBtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
