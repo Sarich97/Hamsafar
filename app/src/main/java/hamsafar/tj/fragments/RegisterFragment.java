@@ -50,8 +50,6 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-
-
         userRegisterBtn.setOnClickListener(new View.OnClickListener() {  // Нажатие на кнопки регистрации
             @Override
             public void onClick(View view) {
@@ -89,7 +87,6 @@ public class RegisterFragment extends Fragment {
                 }
             }
         });
-
         return view;
     }
 }

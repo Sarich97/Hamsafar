@@ -98,8 +98,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
     private void creatNewUser(String userEmail, String userPass, String phone, String experience, String carModel) {
