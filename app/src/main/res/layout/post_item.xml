@@ -89,13 +89,6 @@
             app:layout_constraintTop_toBottomOf="@+id/prive_tv" />
 
 
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="3sp"
-            android:background="@color/colorBG"
-            tools:layout_editor_absoluteY="160dp" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

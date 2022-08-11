@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-        android:id="@+id/userEmail"
+        android:id="@+id/userEmailSingIn"
         style="@style/editText"
         android:drawableStart="@drawable/ic_baseline_alternate_email_24"
         android:hint="@string/email"
@@ -33,12 +33,12 @@
         android:importantForAutofill="no" />
 
     <EditText
-        android:id="@+id/userPass"
+        android:id="@+id/userPassSingIn"
         style="@style/editText"
         android:drawableStart="@drawable/ic_baseline_lock_open_24"
         android:hint="@string/user_pass"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/userEmail"
+        app:layout_constraintTop_toBottomOf="@+id/userEmailSingIn"
         tools:ignore="MissingConstraints"
         android:autofillHints="" />
 
@@ -48,7 +48,7 @@
         android:text="@string/login_btn_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPass"
+        app:layout_constraintTop_toBottomOf="@+id/userPassSingIn"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
 
