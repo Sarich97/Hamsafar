@@ -20,6 +20,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.AuthActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"

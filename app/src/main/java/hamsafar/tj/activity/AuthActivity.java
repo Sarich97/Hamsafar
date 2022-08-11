@@ -48,41 +48,42 @@ public class AuthActivity extends AppCompatActivity {
         userPass = findViewById(R.id.user_Pass);
         userRegisterBtn = findViewById(R.id.registerNextBtn);
         registerProgress = findViewById(R.id.progressBarAuth);
-        singInUser = findViewById(R.id.singIN);
+        singInUser = findViewById(R.id.singInText);
 
 
         singInUser.setOnClickListener(new View.OnClickListener() { // КНОПКА ПОКАЗ ОКОШКИ ВХОДА
             @Override
             public void onClick(View view) {
+
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(AuthActivity.this, R.style.BottomSheetDialogTheme);
                 bottomSheetDialog.setContentView(R.layout.sing_in_sheet);
-                bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                bottomSheetDialog.show();
+                bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
                 TextView userEmilSingIn = bottomSheetDialog.findViewById(R.id.userEmailSingIn);
                 TextView userPassSingIn = bottomSheetDialog.findViewById(R.id.userPassSingIn);
-                Button singInUser = bottomSheetDialog.findViewById(R.id.loginBtn);
+                Button singInBtnLogin = bottomSheetDialog.findViewById(R.id.singInButton);
                 ProgressBar singInProgressBar = bottomSheetDialog.findViewById(R.id.progressBarLogin);
+                bottomSheetDialog.show();
 
-                singInUser.setOnClickListener(new View.OnClickListener() {
+                singInBtnLogin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String email = userEmilSingIn.getText().toString();
                         String pass = userPassSingIn.getText().toString();
-                        singInUser.setVisibility(View.INVISIBLE);
+                        singInBtnLogin.findViewById(R.id.singInButton).setVisibility(View.INVISIBLE);
                         singInProgressBar.setVisibility(View.VISIBLE);
 
                         if(TextUtils.isEmpty(email)) {
-                            userEmail.setError("Обязательное поле");
-                            singInUser.setVisibility(View.VISIBLE);
+                            userEmilSingIn.setError("Обязательное поле");
+                            singInBtnLogin.setVisibility(View.VISIBLE);
                             singInProgressBar.setVisibility(View.INVISIBLE);
                         } else  if(TextUtils.isEmpty(pass)) {
-                            userPass.setError("Обязательное поле");
-                            singInUser.setVisibility(View.VISIBLE);
+                            userPassSingIn.setError("Обязательное поле");
+                            singInBtnLogin.setVisibility(View.VISIBLE);
                             singInProgressBar.setVisibility(View.INVISIBLE);
                         } else  {
-                            singInUser.setVisibility(View.VISIBLE);
+                            singInBtnLogin.setVisibility(View.VISIBLE);
                             singInProgressBar.setVisibility(View.INVISIBLE);
                             loginUser(email, pass);
                         }

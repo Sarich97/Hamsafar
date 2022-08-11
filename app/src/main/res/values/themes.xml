@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Hamsafar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Hamsafar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimary</item>
@@ -19,12 +19,15 @@
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
         <item name="android:windowIsFloating">false</item>
-        <item name="android:windowSoftInputMode">adjustPan</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+
 
     <style name="editText">
         <item name="android:layout_width">match_parent</item>
