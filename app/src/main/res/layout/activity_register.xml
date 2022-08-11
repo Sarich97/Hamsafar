@@ -57,7 +57,7 @@
         android:autofillHints=""
         android:drawableStart="@drawable/ic_baseline_directions_car_24"
         android:hint="Модель автомобиля"
-        android:inputType="number"
+        android:inputType="text"
         app:layout_constraintTop_toBottomOf="@+id/user_Experience"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="20dp" />
@@ -82,6 +82,23 @@
         app:layout_constraintEnd_toEndOf="@+id/creatAccauntBtn"
         app:layout_constraintStart_toStartOf="@+id/creatAccauntBtn"
         app:layout_constraintTop_toBottomOf="@+id/creatAccauntBtn" />
+
+    <TextView
+        android:id="@+id/terms_of_use"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/play"
+        android:textAlignment="center"
+        android:clickable="true"
+        android:textColor="@color/colorText"
+        android:textSize="16sp"
+        android:text="@string/political_auth"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
