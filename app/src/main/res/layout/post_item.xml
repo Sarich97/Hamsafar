@@ -17,7 +17,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="150dp"
             android:elevation="4dp">
 
 
@@ -74,7 +74,7 @@
             <View
                 android:id="@+id/view2"
                 android:layout_width="1dp"
-                android:layout_height="22dp"
+                android:layout_height="26dp"
                 android:background="@color/colorBlack"
                 app:layout_constraintEnd_toEndOf="@+id/imageView5"
                 app:layout_constraintStart_toStartOf="@+id/imageView5"

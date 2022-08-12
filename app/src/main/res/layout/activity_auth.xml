@@ -71,16 +71,8 @@
 
     <TextView
         android:id="@+id/singInText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:clickable="true"
-        android:fontFamily="@font/play"
-        android:minHeight="48dp"
+        style="@style/btnTextViewStyleOnAuthPages"
         android:text="@string/sing_in"
-        android:textAlignment="center"
         android:textColor="@color/colorText"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
