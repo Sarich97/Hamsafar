@@ -3,7 +3,10 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-
+        jcenter() // Warning: this repository is going to shut down soon
+        maven {
+            url 'https://jitpack.io'
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.1"
@@ -14,10 +17,12 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+
 plugins {
     id 'com.android.application' version '7.2.1' apply false
     id 'com.android.library' version '7.2.1' apply false
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
