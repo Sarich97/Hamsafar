@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="townList">
+        <item>Откуда</item>
+        <item>Душанбе</item>
+        <item>Худжанд</item>
+        <item>Бохтар</item>
+        <item>Бустон</item>
+        <item>Вахдат</item>
+        <item>Гиссар</item>
+        <item>Истаравшан</item>
+        <item>Истиклол</item>
+        <item>Исфара</item>
+        <item>Канибадам</item>
+        <item>Левакант</item>
+        <item>Нурек</item>
+        <item>Пенджикент</item>
+        <item>Рогун</item>
+        <item>Турсунзаде</item>
+        <item>Хорог</item>
+    </string-array>
+
+    <string-array name="townListEnd">
+        <item>Куда</item>
+        <item>Душанбе</item>
+        <item>Худжанд</item>
+        <item>Бохтар</item>
+        <item>Бустон</item>
+        <item>Вахдат</item>
+        <item>Гиссар</item>
+        <item>Истаравшан</item>
+        <item>Истиклол</item>
+        <item>Исфара</item>
+        <item>Канибадам</item>
+        <item>Левакант</item>
+        <item>Нурек</item>
+        <item>Пенджикент</item>
+        <item>Рогун</item>
+        <item>Турсунзаде</item>
+        <item>Хорог</item>
+    </string-array>
+</resources>

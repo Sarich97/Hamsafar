@@ -17,10 +17,7 @@
         android:theme="@style/Theme.Hamsafar"
         tools:targetApi="31">
         <activity
-            android:name=".UserActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CreatPostActivity"
+            android:name=".activity.CreatPostActivity"
             android:exported="false" />
         <activity
             android:name=".activity.RegisterActivity"

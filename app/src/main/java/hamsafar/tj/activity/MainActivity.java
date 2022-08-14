@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -36,10 +38,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
 
         button = findViewById(R.id.button);
         userProfileBtn = findViewById(R.id.user_ProgileBtn);
+
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+                Intent intent = new Intent(MainActivity.this, CreatPostActivity.class);
                 startActivity(intent);
             }
         });
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                     bottomSheetDialog.show();
 
+                    ImageView userImage = bottomSheetDialog.findViewById(R.id.user_Image);
                     TextView userName = bottomSheetDialog.findViewById(R.id.user_Name);
                     TextView carModel = bottomSheetDialog.findViewById(R.id.car_Model);
                     TextView userPhone = bottomSheetDialog.findViewById(R.id.user_Phone);
@@ -79,6 +83,15 @@ public class MainActivity extends AppCompatActivity {
                                     String car_model = task.getResult().getString("userCarModel");
 
                                     String firstName = user_name.substring(0, 1);
+
+                                    TextDrawable user_drawble = TextDrawable.builder()
+                                            .beginConfig()
+                                            .fontSize(26) /* size in px */
+                                            .bold()
+                                            .toUpperCase()
+                                            .endConfig()
+                                            .buildRound(firstName, colorGenerator.getRandomColor()); // radius in
+                                    userImage.setImageDrawable(user_drawble);
 
                                     userName.setText(user_name);
                                     userEmail.setText(user_email);

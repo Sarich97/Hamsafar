@@ -12,6 +12,26 @@
         style="@style/btnBackPageStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+        app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck"
+        android:contentDescription="TODO" />
+
+    <Spinner
+        android:id="@+id/spinnerStartTrip"
+        style="@style/SpinnerTheme"
+        android:layout_marginBottom="12dp"
+        android:entries="@array/townList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/creatPostBackBtn"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Spinner
+        android:id="@+id/spinnerEndTrip"
+        style="@style/SpinnerTheme"
+        android:layout_marginBottom="12dp"
+        android:entries="@array/townListEnd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerStartTrip"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
