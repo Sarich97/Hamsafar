@@ -2,8 +2,11 @@ package hamsafar.tj.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,7 +25,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 import hamsafar.tj.R;
+import hamsafar.tj.activity.adapters.CardViewAdapter;
+import hamsafar.tj.activity.models.CardViewModel;
 
 public class MainActivity extends AppCompatActivity {
     private  Button button;
@@ -31,8 +38,13 @@ public class MainActivity extends AppCompatActivity {
     private String userID;
 
 
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth; // FireBase
     private FirebaseFirestore firebaseFirestore;
+
+
+    ///   RecyclerView CARD VIEW ON MAIN PAGE
+    private RecyclerView recyclerViewCard;
+    private RecyclerView.Adapter cardViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +56,15 @@ public class MainActivity extends AppCompatActivity {
         userProfileBtn = findViewById(R.id.user_ProgileBtn);
 
 
+        recyclerViewCard = findViewById(R.id.recyclerViewCard); //CARDVIEW
+
+
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+
+        cardViewRecycler();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,5 +127,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void cardViewRecycler() {
+        GradientDrawable gradient2 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xFF105dd0, 0xFF105dd0});
+        GradientDrawable gradient1 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xff3783fb, 0xff3783fb});
+        GradientDrawable gradient3 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xfffb7e36, 0xFFfb7e36});
+        GradientDrawable gradient4 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xff0fd59e, 0xff0fd59e});
+
+        recyclerViewCard.setHasFixedSize(true);
+        recyclerViewCard.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        ArrayList<CardViewModel> cardViewModels = new ArrayList<>();
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_control_point_24, "Cоздать поездку", gradient3));
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_article_24, "Полезные статьи", gradient4));
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_moderator_24, "Безопасное вождение", gradient2));
+
+
+        cardViewAdapter = new CardViewAdapter(cardViewModels, this);
+        recyclerViewCard.setAdapter(cardViewAdapter);
     }
 }
