@@ -7,6 +7,9 @@
     tools:context=".activity.CreatPostActivity">
 
 
+
+
+
     <ImageView
         android:id="@+id/creatPostBackBtn"
         style="@style/btnBackPageStyle"
@@ -16,13 +19,20 @@
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck"
         android:contentDescription="TODO" />
 
+    <TextView
+        android:id="@+id/textView6"
+        style="@style/authTextDiv"
+        android:text="Укажите направление маршрута"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/creatPostBackBtn" />
+
     <Spinner
         android:id="@+id/spinnerStartTrip"
         style="@style/SpinnerTheme"
         android:layout_marginBottom="12dp"
         android:entries="@array/townList"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/creatPostBackBtn"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:layout_constraintVertical_bias="1.0" />
 
     <Spinner
@@ -37,10 +47,36 @@
     <TextView
         android:id="@+id/textView5"
         style="@style/authTextDiv"
-        android:text="Укажите дату и время"
+        android:text="Укажите дату и время маршрута"
         android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@+id/spinnerEndTrip" />
 
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView5"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+        <Button
+            android:id="@+id/allow"
+            style="@style/dataTimePicker"
+            android:layout_marginStart="20dp"
+            android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Укажите дату" />
+
+        <Button
+            android:id="@+id/deny"
+            style="@style/dataTimePicker"
+            android:layout_marginEnd="20dp"
+            android:drawableLeft="@drawable/ic_baseline_access_time_24"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Укажите время" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
