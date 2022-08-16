@@ -3,7 +3,10 @@ package hamsafar.tj.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,6 +45,10 @@ public class CreatPostActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseUser currentUser;
     private String userID;
+
+
+    // SETTINGS DATA AND TIME PICKERS
+    private TimePickerDialog timePickerDialog;
 
     @Override
     protected void onStart() {
@@ -74,6 +82,21 @@ public class CreatPostActivity extends AppCompatActivity {
         seatTrip = findViewById(R.id.editTextSeat);
         creatTripBtn = findViewById(R.id.creatTrip);
         progressBarCreatPost = findViewById(R.id.progressBarPost);
+
+
+        dateTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        timeTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog();
+            }
+        });
 
 
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +134,21 @@ public class CreatPostActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void showTimePickerDialog() {
+        int hourOfDay= 2;
+        int minute= 2;
+        boolean is24HourView= true;
+        timePickerDialog = new TimePickerDialog(CreatPostActivity.this, android.R.style.Theme_Holo_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                timeTrip.setText(i + ":" + i1);
+            }
+        },hourOfDay,minute,is24HourView);
+        timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        timePickerDialog.setTitle("Укажите время");
+        timePickerDialog.show();
     }
 
     private void creatPost(String start_trip, String end_trip, String data_trip, String time_trip, String price_trip, String seat_trip) {
