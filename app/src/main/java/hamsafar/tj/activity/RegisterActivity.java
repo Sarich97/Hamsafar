@@ -33,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ImageView regBackBtn;
     private String userName, userEmail, userPass;
-    private EditText userPhone, userExperience, userCarModel;
+    private EditText userPhone, userCarModel;
     private ProgressBar regProgressBar;
     private Button creatAccBtn;
     private String userID;
@@ -55,7 +55,6 @@ public class RegisterActivity extends AppCompatActivity {
         userPass = getIntent().getExtras().getString("userPass");
 
         userPhone = findViewById(R.id.user_Phone);
-        userExperience = findViewById(R.id.user_Experience);
         userCarModel = findViewById(R.id.user_CarModel);
         regProgressBar = findViewById(R.id.progressBarReg);
         creatAccBtn = findViewById(R.id.creatAccauntBtn);
@@ -67,15 +66,10 @@ public class RegisterActivity extends AppCompatActivity {
                 regProgressBar.setVisibility(View.VISIBLE);
 
                 String phone = userPhone.getText().toString();
-                String experience = userExperience.getText().toString();
                 String carModel = userCarModel.getText().toString();
 
                 if(TextUtils.isEmpty(phone)){
                     userPhone.setError("Обязательное поле");
-                    creatAccBtn.setVisibility(View.VISIBLE);
-                    regProgressBar.setVisibility(View.INVISIBLE);
-                } else if(TextUtils.isEmpty(experience)) {
-                    userExperience.setError("Обязательное поле");
                     creatAccBtn.setVisibility(View.VISIBLE);
                     regProgressBar.setVisibility(View.INVISIBLE);
                 } else if(TextUtils.isEmpty(carModel)) {
@@ -83,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
                     creatAccBtn.setVisibility(View.VISIBLE);
                     regProgressBar.setVisibility(View.INVISIBLE);
                 } else {
-                    creatNewUser(userEmail, userPass, phone, experience, carModel);
+                    creatNewUser(userEmail, userPass, phone, carModel);
                 }
             }
         });
@@ -100,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void creatNewUser(String userEmail, String userPass, String phone, String experience, String carModel) {
+    private void creatNewUser(String userEmail, String userPass, String phone, String carModel) {
         firebaseAuth.createUserWithEmailAndPassword(userEmail, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -115,7 +109,6 @@ public class RegisterActivity extends AppCompatActivity {
                     user.put("userEmail", userEmail);
                     user.put("userName", userName);
                     user.put("userPhone", phone);
-                    user.put("userExperience", experience);
                     user.put("userCarModel", carModel);
                     user.put("ipAdress", ipAddress);
                     user.put("regDate", FieldValue.serverTimestamp());

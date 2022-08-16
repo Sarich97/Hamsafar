@@ -13,12 +13,12 @@
     <string name="login_btn_text">Вход в аккаунт</string>
     <string name="user_pass">Ваш пароль</string>
     <string name="register_btn_text">Зарегистрироваться</string>
-    <string name="political_auth">Нажимая <b>«Зарегистрироваться»,</b> вы принимаете <b>пользовательское соглашение</b> и <b>политику конфиденциальности.</b></string>
+    <string name="political_auth">Нажимая <b>«Зарегистрироваться»,</b> Вы принимаете <b>настоящие условия</b> использования сервиса</string>
     <string name="auth_salam">Регистрация</string>
     <string name="auth_text_div">Если вы водитель, зарегистрируйтесь чтобы создавать поездки</string>
     <string name="auth_title">Вход в аккаунт</string>
     <string name="auth_login_div">Войдите в аккаунт чтобы воспользоваться всеми возможностями сервиса</string>
-    <string name="phone_number">Номер телефона</string>
+    <string name="phone_number">+992 | номер телефона</string>
     <string name="button">Button</string>
     <string name="sing_in">У вас есть аккаунт? <b>Вход</b></string>
 

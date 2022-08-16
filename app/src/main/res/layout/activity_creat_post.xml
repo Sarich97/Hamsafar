@@ -7,12 +7,10 @@
     tools:context=".activity.CreatPostActivity">
 
 
-
-
-
     <ImageView
         android:id="@+id/creatPostBackBtn"
         style="@style/btnBackPageStyle"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_arrow_back_24"
@@ -22,8 +20,10 @@
     <TextView
         android:id="@+id/textView6"
         style="@style/authTextDiv"
-        android:text="Укажите направление маршрута"
         android:layout_marginTop="12dp"
+        android:text="Укажите направление маршрута"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/creatPostBackBtn" />
 
     <Spinner
@@ -47,36 +47,87 @@
     <TextView
         android:id="@+id/textView5"
         style="@style/authTextDiv"
-        android:text="Укажите дату и время маршрута"
         android:layout_marginTop="12dp"
+        android:text="Укажите дату и время маршрута"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerEndTrip" />
 
+    <EditText
+        android:id="@+id/editTextDate"
+        style="@style/editText"
+        android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
+        android:ems="10"
+        android:hint="Дата"
+        android:inputType="date"
+        android:enabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView5"
+    <EditText
+        android:id="@+id/editTextTime"
+        style="@style/editText"
+        android:drawableLeft="@drawable/ic_baseline_access_time_24"
+        android:ems="10"
+        android:hint="Время"
+        android:enabled="false"
+        android:inputType="time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+
+
+    <TextView
+        android:id="@+id/textView10"
+        style="@style/authTextDiv"
         android:layout_marginTop="12dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/textView5">
+        android:text="Укажите цену и количество мест"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTime"/>
 
-        <Button
-            android:id="@+id/allow"
-            style="@style/dataTimePicker"
-            android:layout_marginStart="20dp"
-            android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="Укажите дату" />
+    <EditText
+        android:id="@+id/editTextPrice"
+        style="@style/editText"
+        android:drawableLeft="@drawable/ic_baseline_attach_money_24"
+        android:ems="10"
+        android:hint="Цена за пассажира"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-        <Button
-            android:id="@+id/deny"
-            style="@style/dataTimePicker"
-            android:layout_marginEnd="20dp"
-            android:drawableLeft="@drawable/ic_baseline_access_time_24"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="Укажите время" />
+    <EditText
+        android:id="@+id/editTextSeat"
+        style="@style/editText"
+        android:drawableLeft="@drawable/ic_baseline_airline_seat_recline_extra_24"
+        android:ems="10"
+        android:hint="Количество мест"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPrice" />
 
-    </LinearLayout>
 
+    <Button
+        android:id="@+id/creatTrip"
+        style="@style/authBtnStyle"
+        android:text="Создать поездку"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSeat"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBarPost"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/creatTrip"
+        app:layout_constraintStart_toStartOf="@+id/creatTrip"
+        app:layout_constraintTop_toBottomOf="@+id/creatTrip" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

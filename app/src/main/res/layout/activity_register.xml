@@ -34,19 +34,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:ignore="MissingConstraints" />
 
-
-    <EditText
-        android:id="@+id/user_Experience"
-        style="@style/editText"
-        android:autofillHints=""
-        android:drawableStart="@drawable/ic_baseline_timeline_24"
-        android:hint="Стаж вождения"
-        android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@+id/user_Phone"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="20dp" />
-
-
     <EditText
         android:id="@+id/user_CarModel"
         style="@style/editText"
@@ -54,7 +41,7 @@
         android:drawableStart="@drawable/ic_baseline_directions_car_24"
         android:hint="Модель автомобиля"
         android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/user_Experience"
+        app:layout_constraintTop_toBottomOf="@+id/user_Phone"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="20dp" />
 
