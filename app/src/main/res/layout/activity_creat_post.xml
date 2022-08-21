@@ -53,28 +53,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerEndTrip" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextDate"
         style="@style/editText"
         android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
         android:ems="10"
+        android:padding="12dp"
+        android:textSize="18dp"
         android:hint="Дата"
         android:clickable="true"
-        android:inputType="date"
-        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextTime"
         style="@style/editText"
         android:drawableLeft="@drawable/ic_baseline_access_time_24"
         android:ems="10"
-        android:hint="Время"
+        android:padding="12dp"
+        android:textSize="18dp"
+        android:text="Время"
+        android:textColor="@color/colorBold"
         android:clickable="true"
-        android:enabled="false"
-        android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDate" />

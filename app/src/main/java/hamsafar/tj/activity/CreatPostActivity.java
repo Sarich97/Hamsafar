@@ -3,6 +3,7 @@ package hamsafar.tj.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,10 +12,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +40,8 @@ public class CreatPostActivity extends AppCompatActivity {
 
     private ImageView backBtn;
     private Spinner startTripSpinner, endTripSpinner;
-    private EditText dateTrip, timeTrip, priceTrip, seatTrip;
+    private EditText priceTrip, seatTrip;
+    private TextView dateTrip, timeTrip;
     private Button creatTripBtn;
     private ProgressBar progressBarCreatPost;
 
@@ -45,6 +50,8 @@ public class CreatPostActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseUser currentUser;
     private String userID;
+
+    private int mYear, mMonth, mDay, mHour, mMinute;
 
 
     // SETTINGS DATA AND TIME PICKERS
@@ -87,7 +94,7 @@ public class CreatPostActivity extends AppCompatActivity {
         dateTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                shwoDatePickerDialog();
             }
         });
 
@@ -136,16 +143,77 @@ public class CreatPostActivity extends AppCompatActivity {
 
     }
 
+    private void shwoDatePickerDialog() {
+        final Calendar cal = Calendar.getInstance();
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH);
+        mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(CreatPostActivity.this, android.R.style.Theme_Holo_Light_Dialog, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                String monthName;
+                switch (i1) {
+                    case 0:
+                        monthName = "Янв";
+                        break;
+                    case 1:
+                        monthName = "Фев";
+                        break;
+                    case 2:
+                        monthName = "Мар";
+                        break;
+                    case 3:
+                        monthName = "Апр";
+                        break;
+                    case 4:
+                        monthName = "Мая";
+                        break;
+                    case 5:
+                        monthName = "Июня";
+                        break;
+                    case 6:
+                        monthName = "Июля";
+                        break;
+                    case 7:
+                        monthName = "Авг";
+                        break;
+                    case 8:
+                        monthName = "Сен";
+                        break;
+                    case 9:
+                        monthName = "Окт";
+                        break;
+                    case 10:
+                        monthName = "Ноя";
+                        break;
+                    case 11:
+                        monthName = "Дек";
+                        break;
+                    default:
+                        monthName = "Invalid month";
+                        break;
+
+                }
+                dateTrip.setText(i2 + "." + monthName + "." + i);
+            }
+        }, mDay, mMonth, mYear);
+        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        datePickerDialog.setTitle("Укажите дату");
+        datePickerDialog.show();
+    }
+
     private void showTimePickerDialog() {
-        int hourOfDay= 2;
-        int minute= 2;
+        final Calendar cal = Calendar.getInstance();
+        mHour = cal.get(Calendar.HOUR_OF_DAY);
+        mMinute = cal.get(Calendar.MINUTE);
         boolean is24HourView= true;
         timePickerDialog = new TimePickerDialog(CreatPostActivity.this, android.R.style.Theme_Holo_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 timeTrip.setText(i + ":" + i1);
             }
-        },hourOfDay,minute,is24HourView);
+        },mHour,mMinute,is24HourView);
         timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         timePickerDialog.setTitle("Укажите время");
         timePickerDialog.show();
@@ -167,7 +235,7 @@ public class CreatPostActivity extends AppCompatActivity {
                     post.put("userName", user_name);
                     post.put("userPhone", user_phone);
                     post.put("carModel", user_carModel);
-                    post.put("srartTrip", start_trip);
+                    post.put("startTrip", start_trip);
                     post.put("endTrip", end_trip);
                     post.put("dataTrip", data_trip);
                     post.put("timeTrip", time_trip);

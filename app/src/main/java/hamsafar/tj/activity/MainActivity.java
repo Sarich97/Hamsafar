@@ -22,18 +22,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
 import hamsafar.tj.activity.adapters.CardViewAdapter;
+import hamsafar.tj.activity.adapters.PostAdapter;
 import hamsafar.tj.activity.models.CardViewModel;
+import hamsafar.tj.activity.models.Post;
 
 public class MainActivity extends AppCompatActivity {
-    private  Button button;
     private ImageView userProfileBtn;
 
     private String userID;
@@ -47,17 +52,28 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerViewCard;
     private RecyclerView.Adapter cardViewAdapter;
 
+
+    // POST RECYCLVIRE
+    private RecyclerView recyclerViewPost;
+    PostAdapter postAdapter;
+    ArrayList<Post> posts = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
 
-        button = findViewById(R.id.button);
         userProfileBtn = findViewById(R.id.user_ProgileBtn);
 
-
+        // CARD VIRE
         recyclerViewCard = findViewById(R.id.recyclerViewCard); //CARDVIEW
+
+        // POST VIEW
+        recyclerViewPost = findViewById(R.id.recyclerViewPosts);
+        recyclerViewPost.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
+        postAdapter = new PostAdapter(posts, MainActivity.this);
+        recyclerViewPost.setAdapter(postAdapter);
 
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
@@ -66,13 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         cardViewRecycler();
+        showPostForUsers();
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         userProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +136,26 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(authIntent);
                     finish();
                 }
+            }
+        });
+    }
+
+    private void showPostForUsers() {
+        firebaseFirestore.collection("posts").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if (e != null) {
+
+                } else {
+                    for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                        if (doc.getType() == DocumentChange.Type.ADDED) {
+                            Post post = doc.getDocument().toObject(Post.class);
+                            posts.add(post);
+                            postAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+
             }
         });
     }
