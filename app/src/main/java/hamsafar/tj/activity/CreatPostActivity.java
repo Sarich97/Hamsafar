@@ -52,6 +52,7 @@ public class CreatPostActivity extends AppCompatActivity {
     private String userID;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
+    final Calendar cal = Calendar.getInstance();
 
 
     // SETTINGS DATA AND TIME PICKERS
@@ -144,14 +145,14 @@ public class CreatPostActivity extends AppCompatActivity {
     }
 
     private void shwoDatePickerDialog() {
-        final Calendar cal = Calendar.getInstance();
-        mYear = cal.get(Calendar.YEAR);
+        mYear = cal.get(android.icu.util.Calendar.DAY_OF_YEAR);
         mMonth = cal.get(Calendar.MONTH);
         mDay = cal.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(CreatPostActivity.this, android.R.style.Theme_Holo_Light_Dialog, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                
                 String monthName;
                 switch (i1) {
                     case 0:
@@ -204,7 +205,6 @@ public class CreatPostActivity extends AppCompatActivity {
     }
 
     private void showTimePickerDialog() {
-        final Calendar cal = Calendar.getInstance();
         mHour = cal.get(Calendar.HOUR_OF_DAY);
         mMinute = cal.get(Calendar.MINUTE);
         boolean is24HourView= true;

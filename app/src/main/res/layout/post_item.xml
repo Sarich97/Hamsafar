@@ -19,8 +19,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="155dp"
-            android:elevation="4dp">
+            android:layout_height="160dp">
 
 
             <TextView
@@ -28,10 +27,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/play"
-                android:textColor="@color/colorBlack"
-                android:text="350 сом"
+                android:textColor="@color/colorPrimary"
+                android:text="350 TJK"
                 android:textSize="24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,8 +40,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
                 android:fontFamily="@font/play"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorText"
                 android:text="14 Авг 2022"
                 app:layout_constraintBottom_toBottomOf="@+id/trip_Price"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,9 +54,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="1sp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/dotted"
+                android:background="@color/colorBG"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/trip_Price" />
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="12dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view"
                 app:srcCompat="@drawable/ic_baseline_radio_button_checked_24" />
@@ -76,7 +76,7 @@
             <View
                 android:id="@+id/view2"
                 android:layout_width="1dp"
-                android:layout_height="26dp"
+                android:layout_height="40dp"
                 android:background="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="@+id/imageView5"
                 app:layout_constraintStart_toStartOf="@+id/imageView5"
@@ -91,16 +91,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/view2"
                 app:srcCompat="@drawable/ic_baseline_location_on_24" />
 
+
             <TextView
                 android:id="@+id/start_of_route"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
                 android:fontFamily="@font/play"
-                android:textColor="@color/colorBlack"
                 android:text="Душанбе"
-                android:textSize="18dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/view2"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
@@ -110,13 +111,49 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:fontFamily="@font/play"
-                android:textColor="@color/colorBlack"
                 android:text="Истаравшан"
-                android:textSize="18dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:fontFamily="@font/play"
+                android:text="Откуда"
+                android:textSize="12dp"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toBottomOf="@+id/start_of_route" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/play"
+                android:text="Куда"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView6"
+                app:layout_constraintTop_toBottomOf="@+id/end_of_route" />
+
+            <TextView
+                android:id="@+id/date_trip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/play"
+                android:textColor="@color/colorText"
+                android:text="08:10"
+                android:textSize="13dp"
+                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
