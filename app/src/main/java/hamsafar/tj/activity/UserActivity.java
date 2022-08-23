@@ -23,12 +23,9 @@ import hamsafar.tj.R;
 
 public class UserActivity extends AppCompatActivity {
 
-    private ImageView userProfileBackBtn, userImage;
-
+    private ImageView userProfileBackBtn, userImage; // User settings
     private TextView userDetalInfoBtn, userName;
-
     private String userID, user_name, user_email, user_phone, car_model;
-
 
     private FirebaseAuth firebaseAuth; // FireBase
     private FirebaseFirestore firebaseFirestore;
