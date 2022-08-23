@@ -7,7 +7,7 @@
     tools:context=".activity.UserActivity">
 
     <ImageView
-        android:id="@+id/creatPostBackBtn"
+        android:id="@+id/userProfleBackBtn"
         style="@style/btnBackPageStyle"
         android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,17 +17,17 @@
         android:contentDescription="TODO" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/user_Image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/creatPostBackBtn"
+        app:layout_constraintTop_toBottomOf="@+id/userProfleBackBtn"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/user_Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -36,11 +36,11 @@
         android:text="Sarvar Sultonov"
         android:textColor="@color/colorText"
         android:textSize="24dp"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/creatPostBackBtn" />
+        app:layout_constraintStart_toEndOf="@+id/user_Image"
+        app:layout_constraintTop_toBottomOf="@+id/userProfleBackBtn" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/userDetalInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -51,8 +51,8 @@
         android:clickable="true"
         android:textColor="@color/colorText"
         android:text="Личная информация"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintBottom_toBottomOf="@+id/user_Image"
+        app:layout_constraintStart_toEndOf="@+id/user_Image"
+        app:layout_constraintTop_toBottomOf="@+id/user_Name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

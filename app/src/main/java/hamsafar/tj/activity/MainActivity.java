@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -39,33 +40,27 @@ import hamsafar.tj.activity.models.CardViewModel;
 import hamsafar.tj.activity.models.Post;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageView userProfileBtn;
-
-    private String userID;
-
 
     private FirebaseAuth firebaseAuth; // FireBase
     private FirebaseFirestore firebaseFirestore;
 
-
     ///   RecyclerView CARD VIEW ON MAIN PAGE
     private RecyclerView recyclerViewCard;
     private RecyclerView.Adapter cardViewAdapter;
-
+    private ImageView userProfileBtn;
 
     // POST RECYCLVIRE
     private RecyclerView recyclerViewPost;
     PostAdapter postAdapter;
     ArrayList<Post> posts = new ArrayList<>();
+    private ProgressBar progressBarPostLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
 
         userProfileBtn = findViewById(R.id.user_ProgileBtn);
-
         // CARD VIRE
         recyclerViewCard = findViewById(R.id.recyclerViewCard); //CARDVIEW
 
@@ -74,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewPost.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
         postAdapter = new PostAdapter(posts, MainActivity.this);
         recyclerViewPost.setAdapter(postAdapter);
+        progressBarPostLoad = findViewById(R.id.progressBarPost);
 
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
@@ -89,48 +85,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(currentUser !=null) {
-                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.BottomSheetDialogTheme);
-                    bottomSheetDialog.setContentView(R.layout.user_profile_sheet);
-                    bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                    bottomSheetDialog.show();
-
-                    ImageView userImage = bottomSheetDialog.findViewById(R.id.user_Image);
-                    TextView userName = bottomSheetDialog.findViewById(R.id.user_Name);
-                    TextView carModel = bottomSheetDialog.findViewById(R.id.car_Model);
-                    TextView userPhone = bottomSheetDialog.findViewById(R.id.user_Phone);
-                    TextView userEmail = bottomSheetDialog.findViewById(R.id.user_Email);
-
-                    userID = firebaseAuth.getCurrentUser().getUid();
-                    firebaseFirestore.collection("users").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.isSuccessful()) {
-                                if(task.getResult().exists()) {
-                                    String user_name = task.getResult().getString("userName");
-                                    String user_email = task.getResult().getString("userEmail");
-                                    String user_phone = task.getResult().getString("userPhone");
-                                    String car_model = task.getResult().getString("userCarModel");
-
-                                    String firstName = user_name.substring(0, 1);
-
-                                    TextDrawable user_drawble = TextDrawable.builder()
-                                            .beginConfig()
-                                            .fontSize(26) /* size in px */
-                                            .bold()
-                                            .toUpperCase()
-                                            .endConfig()
-                                            .buildRound(firstName, colorGenerator.getRandomColor()); // radius in
-                                    userImage.setImageDrawable(user_drawble);
-
-                                    userName.setText(user_name);
-                                    userEmail.setText(user_email);
-                                    userPhone.setText("+992" + user_phone);
-                                    carModel.setText(car_model);
-                                }
-                            }
-                        }
-                    });
-
+                    Intent userProfileIntent = new Intent(MainActivity.this, UserActivity.class);
+                    startActivity(userProfileIntent);
                 } else {
                     Intent authIntent = new Intent(MainActivity.this, AuthActivity.class);
                     startActivity(authIntent);
@@ -145,13 +101,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                 if (e != null) {
-
+                    progressBarPostLoad.setVisibility(View.VISIBLE);
                 } else {
                     for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
                         if (doc.getType() == DocumentChange.Type.ADDED) {
                             Post post = doc.getDocument().toObject(Post.class);
                             posts.add(post);
                             postAdapter.notifyDataSetChanged();
+                            progressBarPostLoad.setVisibility(View.INVISIBLE);
                         }
                     }
                 }
