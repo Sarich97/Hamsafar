@@ -54,9 +54,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         //SetDate
 
-
-
-
         //get user id and retrieve user image stored in Users Collection
 
     }

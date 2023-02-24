@@ -1,34 +1,39 @@
 package hamsafar.tj.activity;
 
-import androidx.annotation.NonNull;
+import static hamsafar.tj.activity.utility.Utility.showToast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import hamsafar.tj.R;
 
 public class AuthActivity extends AppCompatActivity {
 
-    private EditText userEmail, userName, userPass; // Поля ввод юзера
+    private EditText userEmail, userName, userPass, userPhoneNum; // Поля ввод юзера
     private Button userRegisterBtn; // Кнопка регистрации
     private ProgressBar registerProgress; // Прогрессбар страница(фрагмент) регистрации
-    private TextView singInUser; // Пользовательское соглашение
+    private TextView singInUser; // Кнопка входа
+    private String userID;
 
 
     private FirebaseAuth firebaseAuth;
@@ -46,103 +51,119 @@ public class AuthActivity extends AppCompatActivity {
         userEmail = findViewById(R.id.user_Email);
         userName = findViewById(R.id.user_Name);
         userPass = findViewById(R.id.user_Pass);
+        userPhoneNum = findViewById(R.id.user_Phone);
         userRegisterBtn = findViewById(R.id.registerNextBtn);
         registerProgress = findViewById(R.id.progressBarAuth);
         singInUser = findViewById(R.id.singInText);
 
 
-        singInUser.setOnClickListener(new View.OnClickListener() { // КНОПКА ПОКАЗ ОКОШКИ ВХОДА
-            @Override
-            public void onClick(View view) {
+        // КНОПКА ПОКАЗ ОКОШКИ ВХОДА
+        singInUser.setOnClickListener(view -> {
 
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(AuthActivity.this, R.style.BottomSheetDialogTheme);
-                bottomSheetDialog.setContentView(R.layout.sing_in_sheet);
-                bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(AuthActivity.this, R.style.BottomSheetDialogTheme);
+            bottomSheetDialog.setContentView(R.layout.sing_in_sheet);
+            bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 
-                TextView userEmilSingIn = bottomSheetDialog.findViewById(R.id.userEmailSingIn);
-                TextView userPassSingIn = bottomSheetDialog.findViewById(R.id.userPassSingIn);
-                Button singInBtnLogin = bottomSheetDialog.findViewById(R.id.singInButton);
-                ProgressBar singInProgressBar = bottomSheetDialog.findViewById(R.id.progressBarLogin);
-                bottomSheetDialog.show();
+            TextView userEmilSingIn = bottomSheetDialog.findViewById(R.id.userEmailSingIn);
+            TextView userPassSingIn = bottomSheetDialog.findViewById(R.id.userPassSingIn);
+            Button singInBtnLogin = bottomSheetDialog.findViewById(R.id.singInButton);
+            bottomSheetDialog.show();
 
-                singInBtnLogin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String email = userEmilSingIn.getText().toString();
-                        String pass = userPassSingIn.getText().toString();
-                        singInBtnLogin.findViewById(R.id.singInButton).setVisibility(View.INVISIBLE);
-                        singInProgressBar.setVisibility(View.VISIBLE);
+            singInBtnLogin.setOnClickListener(view1 -> {
+                String email = userEmilSingIn.getText().toString();
+                String pass = userPassSingIn.getText().toString();
 
-                        if(TextUtils.isEmpty(email)) {
-                            userEmilSingIn.setError("Обязательное поле");
-                            singInBtnLogin.setVisibility(View.VISIBLE);
-                            singInProgressBar.setVisibility(View.INVISIBLE);
-                        } else  if(TextUtils.isEmpty(pass)) {
-                            userPassSingIn.setError("Обязательное поле");
-                            singInBtnLogin.setVisibility(View.VISIBLE);
-                            singInProgressBar.setVisibility(View.INVISIBLE);
-                        } else  {
-                            singInBtnLogin.setVisibility(View.VISIBLE);
-                            singInProgressBar.setVisibility(View.INVISIBLE);
-                            loginUser(email, pass);
-                        }
-                    }
-                });
+                if(TextUtils.isEmpty(email)) {
+                    userEmilSingIn.setError("Обязательное поле");
+                } else  if(TextUtils.isEmpty(pass)) {
+                    userPassSingIn.setError("Обязательное поле");
+                } else  {
+                    singInBtnLogin.setVisibility(View.VISIBLE);
+                    loginUser(email, pass);
+                }
+            });
+        });
+
+        // Нажатие на кнопки регистрации
+        userRegisterBtn.setOnClickListener(view -> {
+            registerProgress.setVisibility(View.VISIBLE);
+            userRegisterBtn.setVisibility(View.INVISIBLE);
+            String email = userEmail.getText().toString();
+            String name = userName.getText().toString();
+            String password = userPass.getText().toString();
+            String phone = userPhoneNum.getText().toString();
+
+            if(email.length() < 5)
+            {
+                userEmail.setError("Обязательное поле и не менее 6 символов");
+                registerProgress.setVisibility(View.INVISIBLE);
+                userRegisterBtn.setVisibility(View.VISIBLE);
+            }
+            else if(name.length() < 3)
+            {
+                userName.setError("Обязательное поле и не менее 3 символов");
+                registerProgress.setVisibility(View.INVISIBLE);
+                userRegisterBtn.setVisibility(View.VISIBLE);
+
+            } else if(password.length() < 6)
+            {
+                userPass.setError("Обязательное поле и не менее 6 символов");
+                registerProgress.setVisibility(View.INVISIBLE);
+                userRegisterBtn.setVisibility(View.VISIBLE);
+
+            } else if(phone.length() < 7) {
+                userPhoneNum.setError("Обязательное поле и не менее 7 символов");
+                registerProgress.setVisibility(View.INVISIBLE);
+                userRegisterBtn.setVisibility(View.VISIBLE);
+            } else
+            {
+                createNewUser(email, name, phone, password);
             }
         });
 
-        userRegisterBtn.setOnClickListener(new View.OnClickListener() {  // Нажатие на кнопки регистрации
-            @Override
-            public void onClick(View view) {
-                registerProgress.setVisibility(View.VISIBLE);
-                userRegisterBtn.setVisibility(View.INVISIBLE);
-                String email = userEmail.getText().toString();
-                String name = userName.getText().toString();
-                String password = userPass.getText().toString();
+    }
 
-                if(email.length() < 5)
-                {
-                    userEmail.setError("Обязательное поле и не менее 6 символов");
-                    registerProgress.setVisibility(View.INVISIBLE);
-                    userRegisterBtn.setVisibility(View.VISIBLE);
-                }
-                else if(name.length() < 3)
-                {
-                    userName.setError("Обязательное поле и не менее 3 символов");
-                    registerProgress.setVisibility(View.INVISIBLE);
-                    userRegisterBtn.setVisibility(View.VISIBLE);
+    private void createNewUser(String email, String name, String phone, String password) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+                String ipAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 
-                } else if(password.length() < 6)
-                {
-                    userPass.setError("Обязательное поле и не менее 6 символов");
-                    registerProgress.setVisibility(View.INVISIBLE);
-                    userRegisterBtn.setVisibility(View.VISIBLE);
+                userID = firebaseAuth.getCurrentUser().getUid();
+                DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+                Map<String, Object> user = new HashMap<>();
+                user.put("userID", userID);
+                user.put("userEmail", userEmail);
+                user.put("userName", userName);
+                user.put("userPhone", phone);
+                user.put("ipAdress", ipAddress);
+                user.put("regDate", FieldValue.serverTimestamp());
 
-                } else
-                {
-                    Intent registerIntent = new Intent(AuthActivity.this, RegisterActivity.class);
-                    registerIntent.putExtra("userEmail", email);
-                    registerIntent.putExtra("userName", name);
-                    registerIntent.putExtra("userPass", password);
-                    startActivity(registerIntent);
-                }
+                documentReference.set(user).addOnCompleteListener(task1 -> {
+                    if(task.isSuccessful()) {
+                        Intent mainIntent = new Intent(AuthActivity.this, NextActivity.class);
+                        startActivity(mainIntent);
+                        finish();
+                    } else  {
+                        showToast(this, "Ошибка регистрации нового пользователя, повторите попытку позже");
+                    }
+                });
+            } else  {
+                showToast(this, "Ошибка регистрации нового пользователя, повторите попытку позже");
             }
         });
 
     }
 
     private void loginUser(String email, String pass) {
-        firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Intent mainIntent = new Intent(AuthActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
-                    finish();
-                } else {
-                    Toast.makeText(AuthActivity.this, "Ошибка входа в аккаунт, повторите попытку позже #23", Toast.LENGTH_LONG).show();
-                }
+        firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                Intent mainIntent = new Intent(AuthActivity.this, NextActivity.class);
+                startActivity(mainIntent);
+                finish();
+            } else {
+                showToast(this, "Ошибка входа в аккаунт, повторите попытку позже");
             }
         });
     }

@@ -63,7 +63,6 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
             super(itemView);
             itemView.setOnClickListener(this);
             //hooks
-
             image = itemView.findViewById(R.id.cardImage);
             title = itemView.findViewById(R.id.titleCard);
             relativeLayout = itemView.findViewById(R.id.cardColor);

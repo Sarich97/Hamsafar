@@ -50,12 +50,24 @@
         android:autofillHints="" />
 
     <EditText
+        android:id="@+id/user_Phone"
+        style="@style/editText"
+        android:drawableStart="@drawable/ic_baseline_phone_24"
+        android:hint="@string/phone_number"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_Name"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
         android:id="@+id/user_Pass"
         style="@style/editText"
         android:drawableStart="@drawable/ic_baseline_lock_open_24"
         android:hint="@string/create_pass"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/user_Name"
+        app:layout_constraintTop_toBottomOf="@+id/user_Phone"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="20dp"
         android:autofillHints="" />
@@ -77,7 +89,8 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
 
     <ProgressBar
         android:id="@+id/progressBarAuth"
@@ -88,5 +101,6 @@
         app:layout_constraintEnd_toEndOf="@+id/registerNextBtn"
         app:layout_constraintStart_toStartOf="@+id/registerNextBtn"
         app:layout_constraintTop_toBottomOf="@+id/registerNextBtn" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

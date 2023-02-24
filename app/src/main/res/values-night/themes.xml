@@ -19,7 +19,8 @@
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
         <item name="android:windowIsFloating">false</item>
-        <item name="android:windowSoftInputMode">adjustPan</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">stateHidden|adjustPan</item>
     </style>
 
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">

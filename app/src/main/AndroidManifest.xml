@@ -17,6 +17,15 @@
         android:theme="@style/Theme.Hamsafar"
         tools:targetApi="31">
         <activity
+            android:name=".activity.MainActivity"
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity
             android:name=".activity.PostActivity"
             android:exported="false" />
         <activity
@@ -27,20 +36,12 @@
             android:exported="false"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".activity.RegisterActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.AuthActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activity.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".activity.NextActivity"
+            android:exported="false">
         </activity>
 
         <meta-data

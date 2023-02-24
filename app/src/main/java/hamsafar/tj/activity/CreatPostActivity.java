@@ -248,7 +248,7 @@ public class CreatPostActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
-                                Intent mainIntent = new Intent(CreatPostActivity.this, MainActivity.class);
+                                Intent mainIntent = new Intent(CreatPostActivity.this, NextActivity.class);
                                 startActivity(mainIntent);
                                 finish();
                             } else {
