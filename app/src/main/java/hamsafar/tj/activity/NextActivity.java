@@ -48,7 +48,7 @@ public class NextActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_next);
 
         userProfileBtn = findViewById(R.id.user_ProgileBtn);
         // CARD VIRE
@@ -75,8 +75,7 @@ public class NextActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(currentUser !=null) {
-                    Intent userProfileIntent = new Intent(NextActivity.this, UserActivity.class);
-                    startActivity(userProfileIntent);
+
                 } else {
                     Intent authIntent = new Intent(NextActivity.this, AuthActivity.class);
                     startActivity(authIntent);

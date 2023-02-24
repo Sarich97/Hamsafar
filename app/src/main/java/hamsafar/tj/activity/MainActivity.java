@@ -11,18 +11,18 @@ import hamsafar.tj.R;
 import hamsafar.tj.activity.fragments.CreatFragment;
 import hamsafar.tj.activity.fragments.ProfileFragment;
 import hamsafar.tj.activity.fragments.TravelFragment;
-import hamsafar.tj.databinding.ActivityHomeBinding;
+import hamsafar.tj.databinding.ActivityMainBinding;
 
 public class MainActivity extends  AppCompatActivity {
 
-    ActivityHomeBinding binding;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaseFragment(new TravelFragment());
 
