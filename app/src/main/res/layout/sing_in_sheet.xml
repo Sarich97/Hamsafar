@@ -8,49 +8,5 @@
     android:fitsSystemWindows="true"
     android:background="@drawable/sheet_background">
 
-    <TextView
-        android:id="@+id/textView"
-        style="@style/authTextTitle"
-        android:text="@string/auth_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        style="@style/authTextDiv"
-        android:text="@string/auth_login_div"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/userEmailSingIn"
-        style="@style/editText"
-        android:drawableStart="@drawable/ic_baseline_alternate_email_24"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:ignore="MissingConstraints"
-        android:autofillHints=""
-        android:importantForAutofill="no" />
-
-    <EditText
-        android:id="@+id/userPassSingIn"
-        style="@style/editText"
-        android:drawableStart="@drawable/ic_baseline_lock_open_24"
-        android:hint="@string/user_pass"
-        android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/userEmailSingIn"
-        tools:ignore="MissingConstraints"
-        android:autofillHints="" />
-
-    <Button
-        android:id="@+id/singInButton"
-        style="@style/authBtnStyle"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="@string/login_btn_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPassSingIn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,12 +12,14 @@ public class Post {
     private String priceTrip;
     private String seatTrip;
     private String carModel;
+    private String commentTrip;
+    private String isDriverUser;
 
 
     public Post() {
     }
 
-    public Post(String postId, String userUD, String userName, String userPhone, String startTrip, String endTrip, String dataTrip, String timeTrip, String priceTrip, String seatTrip, String carModel) {
+    public Post(String postId, String userUD, String userName, String userPhone, String startTrip, String endTrip, String dataTrip, String timeTrip, String priceTrip, String seatTrip, String carModel, String commentTrip, String isDriverUser) {
         this.postId = postId;
         this.userUD = userUD;
         this.userName = userName;
@@ -29,7 +31,10 @@ public class Post {
         this.priceTrip = priceTrip;
         this.seatTrip = seatTrip;
         this.carModel = carModel;
+        this.commentTrip = commentTrip;
+        this.isDriverUser = isDriverUser;
     }
+
 
     public String getPostId() {
         return postId;
@@ -67,8 +72,8 @@ public class Post {
         return startTrip;
     }
 
-    public void setStartTrip(String srartTrip) {
-        this.startTrip = srartTrip;
+    public void setStartTrip(String startTrip) {
+        this.startTrip = startTrip;
     }
 
     public String getEndTrip() {
@@ -117,5 +122,21 @@ public class Post {
 
     public void setCarModel(String carModel) {
         this.carModel = carModel;
+    }
+
+    public String getCommentTrip() {
+        return commentTrip;
+    }
+
+    public void setCommentTrip(String commentTrip) {
+        this.commentTrip = commentTrip;
+    }
+
+    public String getIsDriverUser() {
+        return isDriverUser;
+    }
+
+    public void setIsDriverUser(String isDriverUser) {
+        this.isDriverUser = isDriverUser;
     }
 }

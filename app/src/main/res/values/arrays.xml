@@ -8,16 +8,22 @@
         <item>Бустон</item>
         <item>Вахдат</item>
         <item>Гиссар</item>
+        <item>Гулистон</item>
         <item>Истаравшан</item>
         <item>Истиклол</item>
         <item>Исфара</item>
         <item>Канибадам</item>
+        <item>Куляб</item>
         <item>Левакант</item>
         <item>Нурек</item>
         <item>Пенджикент</item>
         <item>Рогун</item>
         <item>Турсунзаде</item>
         <item>Хорог</item>
+        <item>Аэропорт (Душанбе)</item>
+        <item>Аэропорт (Бохтар)</item>
+        <item>Аэропорт (Куляб)</item>
+        <item>Аэропорт (Худжанд)</item>
     </string-array>
 
     <string-array name="townListEnd">
@@ -28,15 +34,21 @@
         <item>Бустон</item>
         <item>Вахдат</item>
         <item>Гиссар</item>
+        <item>Гулистон</item>
         <item>Истаравшан</item>
         <item>Истиклол</item>
         <item>Исфара</item>
         <item>Канибадам</item>
+        <item>Куляб</item>
         <item>Левакант</item>
         <item>Нурек</item>
         <item>Пенджикент</item>
         <item>Рогун</item>
         <item>Турсунзаде</item>
         <item>Хорог</item>
+        <item>Аэропорт (Душанбе)</item>
+        <item>Аэропорт (Бохтар)</item>
+        <item>Аэропорт (Куляб)</item>
+        <item>Аэропорт (Худжанд)</item>
     </string-array>
 </resources>

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
-import hamsafar.tj.activity.CreatPostActivity;
 import hamsafar.tj.activity.models.CardViewModel;
 
 public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardViewHold> {
@@ -74,8 +73,8 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
             int clickedPosition = getAdapterPosition();
             switch (clickedPosition) {
                 case 0:
-                        Intent intent = new Intent(context, CreatPostActivity.class);
-                        context.startActivity(intent);
+//                        Intent intent = new Intent(context, CreatPostActivity.class);
+//                        context.startActivity(intent);
                     break;
 
                 default:
