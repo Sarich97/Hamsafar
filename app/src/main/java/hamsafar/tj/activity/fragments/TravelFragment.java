@@ -19,6 +19,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import hamsafar.tj.activity.models.Post;
 public class TravelFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth; // FireBase
-    private FirebaseFirestore firebaseFirestore;
+    private FirebaseFirestore travelPostRef;
     ///   RecyclerView CARD VIEW ON MAIN PAGE
     private RecyclerView recyclerViewCard;
     private RecyclerView.Adapter cardViewAdapter;
@@ -42,8 +43,7 @@ public class TravelFragment extends Fragment {
     private RecyclerView recyclerViewPost;
     PostAdapter postAdapter;
     ArrayList<Post> posts = new ArrayList<>();
-    private ProgressBar progressBarPostLoad;
-
+    private ProgressBar progressBarPostLoad;;
 
 
     @Override
@@ -63,7 +63,7 @@ public class TravelFragment extends Fragment {
 
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
-        firebaseFirestore = FirebaseFirestore.getInstance();
+        travelPostRef = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         showPostForUsers();
@@ -74,7 +74,9 @@ public class TravelFragment extends Fragment {
 
 
     private void showPostForUsers() {
-        firebaseFirestore.collection("posts").addSnapshotListener((documentSnapshots, e) -> {
+        Query query = travelPostRef.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING);
+
+        query.addSnapshotListener((documentSnapshots, e) -> {
             if (e != null) {
                 progressBarPostLoad.setVisibility(View.VISIBLE);
             } else {
@@ -101,7 +103,7 @@ public class TravelFragment extends Fragment {
         recyclerViewCard.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         ArrayList<CardViewModel> cardViewModels = new ArrayList<>();
-        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_control_point_24, "Cоздать поездку", gradient3));
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_control_point_24, "Как создать поездку?", gradient3));
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_moderator_24, "Безопасное вождение", gradient2));
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_road_24, "Состояние автодорог", gradient1));
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_article_24, "Полезные статьи", gradient4));

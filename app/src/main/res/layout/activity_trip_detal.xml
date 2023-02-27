@@ -4,297 +4,329 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".activity.TripDetalActivity">
 
 
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/driverImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="14dp"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintStart_toStartOf="@+id/view2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+
+        <TextView
+            android:id="@+id/driverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/play"
+            android:text="Sarvar Sultonov"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/driverImage"
+            app:layout_constraintTop_toTopOf="@+id/driverImage" />
+
+
+        <TextView
+            android:id="@+id/statusTravel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tripstatus_back"
+            android:fontFamily="@font/play"
+            android:padding="1dp"
+            android:text=" Ищу водителя "
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/driverImage"
+            app:layout_constraintStart_toStartOf="@+id/driverName"
+            app:layout_constraintTop_toBottomOf="@+id/driverName" />
+
+        <TextView
+            android:id="@+id/trip_Price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/play"
+            android:text="договорная"
+            android:textColor="@color/colorBlack"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceText" />
+
+
+        <TextView
+            android:id="@+id/priceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/play"
+            android:text="Цена"
+            android:textColor="@color/colorText"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/trip_Price"
+            app:layout_constraintTop_toTopOf="@+id/driverImage" />
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorBG"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/driverImage" />
+
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:srcCompat="@drawable/ic_baseline_radio_button_checked_24" />
+
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="@+id/imageView5"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/view2"
+            app:layout_constraintStart_toStartOf="@+id/view2"
+            app:layout_constraintTop_toBottomOf="@+id/view2"
+            app:srcCompat="@drawable/ic_baseline_location_on_24" />
+
+
+        <TextView
+            android:id="@+id/start_of_route"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/play"
+            android:text="Душанбе"
+            android:textColor="@color/colorBlack"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/view2"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+        <TextView
+            android:id="@+id/end_of_route"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/play"
+            android:text="Истаравшан"
+            android:textColor="@color/colorBlack"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/imageView6"
+            app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/play"
+            android:text="Откуда"
+            android:textSize="12dp"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:layout_constraintTop_toBottomOf="@+id/start_of_route" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/play"
+            android:text="Куда"
+            android:textSize="12dp"
+            app:layout_constraintStart_toEndOf="@+id/imageView6"
+            app:layout_constraintTop_toBottomOf="@+id/end_of_route" />
+
+
+        <View
+            android:id="@+id/viewD"
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorBG"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+
+        <RelativeLayout
+            android:id="@+id/relactiveTrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@+id/viewD">
+
+            <TextView
+                android:id="@+id/dateTimeTrip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/play"
+                android:text="24.фев.2021 в 14:30"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:drawableLeft="@drawable/ic_baseline_access_time_24"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/play"
+                android:text="Время поездки:"
+                android:textColor="@color/colorText"
+                android:textSize="16dp" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relactiveCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@+id/relactiveTrip">
+
+            <TextView
+                android:id="@+id/seatTrip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:drawableLeft="@drawable/ic_baseline_airline_seat_recline_extra_24"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/play"
+                android:text="Кол-во мест\n4 чел."
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/carModel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:drawableLeft="@drawable/ic_baseline_directions_car_24"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/play"
+                android:text="Марка автомобиля\nMersader Bens"
+                android:textColor="@color/colorText"
+                android:textSize="16dp" />
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/relactiveCard">
+
+            <Button
+                android:id="@+id/bookButton"
+                style="@style/ButtonTripSt"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:text="Забронировать"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/bookDeletButton"
+                style="@style/ButtonTripStDelete"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:text="Отменить бронирование"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/bookEndButton"
+                style="@style/ButtonTripStDelete"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:text="Удалить заявку"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/booksRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="350dp">
-
-
-            <ImageView
-                android:id="@+id/driverImage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="14dp"
-                app:layout_constraintBottom_toTopOf="@+id/view"
-                app:layout_constraintStart_toStartOf="@+id/view2"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
-
-
-            <TextView
-                android:id="@+id/driverName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sarvar Sultonov"
-                android:fontFamily="@font/play"
-                android:textStyle="bold"
-                android:textColor="@color/colorBlack"
-                android:layout_marginStart="10dp"
-                android:textSize="18dp"
-                app:layout_constraintStart_toEndOf="@+id/driverImage"
-                app:layout_constraintTop_toTopOf="@+id/driverImage" />
-
-
-            <TextView
-                android:id="@+id/statusTravel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/tripstatus_back"
-                android:fontFamily="@font/play"
-                android:padding="1dp"
-                android:text=" Ищу водителя "
-                android:textColor="@color/colorWhite"
-                android:textSize="12dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/driverImage"
-                app:layout_constraintStart_toStartOf="@+id/driverName"
-                app:layout_constraintTop_toBottomOf="@+id/driverName" />
-
-            <TextView
-                android:id="@+id/trip_Price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/play"
-                android:text="договорная"
-                android:textStyle="bold"
-                android:textColor="@color/colorBlack"
-                android:textSize="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/priceText" />
-
-
-            <TextView
-                android:id="@+id/priceText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/play"
-                android:text="Цена"
-                android:textColor="@color/colorText"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/trip_Price"
-                app:layout_constraintTop_toTopOf="@+id/driverImage" />
-
-
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="1sp"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/colorBG"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/driverImage" />
-
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view"
-                app:srcCompat="@drawable/ic_baseline_radio_button_checked_24" />
-
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="1dp"
-                android:layout_height="30dp"
-                android:background="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="@+id/imageView5"
-                app:layout_constraintStart_toStartOf="@+id/imageView5"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@+id/view2"
-                app:layout_constraintStart_toStartOf="@+id/view2"
-                app:layout_constraintTop_toBottomOf="@+id/view2"
-                app:srcCompat="@drawable/ic_baseline_location_on_24" />
-
-
-            <TextView
-                android:id="@+id/start_of_route"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/play"
-                android:text="Душанбе"
-                android:textStyle="bold"
-                android:layout_marginStart="12dp"
-                android:textColor="@color/colorBlack"
-                android:textSize="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/view2"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView5" />
-
-            <TextView
-                android:id="@+id/end_of_route"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:fontFamily="@font/play"
-                android:textStyle="bold"
-                android:text="Истаравшан"
-                android:textColor="@color/colorBlack"
-                android:textSize="16dp"
-                app:layout_constraintStart_toEndOf="@+id/imageView6"
-                app:layout_constraintTop_toTopOf="@+id/imageView6" />
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:fontFamily="@font/play"
-                android:text="Откуда"
-                android:textSize="12dp"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toBottomOf="@+id/start_of_route" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp"
-                android:fontFamily="@font/play"
-                android:text="Куда"
-                android:textSize="12dp"
-                app:layout_constraintStart_toEndOf="@+id/imageView6"
-                app:layout_constraintTop_toBottomOf="@+id/end_of_route" />
-
-
-            <View
-                android:id="@+id/viewD"
-                android:layout_width="match_parent"
-                android:layout_height="1sp"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/colorBG"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-
-            <RelativeLayout
-                android:id="@+id/relactiveTrip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="@+id/viewD">
-
-                <TextView
-                    android:id="@+id/dateTimeTrip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:fontFamily="@font/play"
-                    android:text="24.фев.2021 в 14:30"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_baseline_access_time_24"
-                    android:drawablePadding="12dp"
-                    android:layout_marginStart="0dp"
-                    android:fontFamily="@font/play"
-                    android:text="Время поездки:"
-                    android:textColor="@color/colorText"
-                    android:textSize="16dp"/>
-
-
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/relactiveCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="34dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="@+id/relactiveTrip">
-
-                <TextView
-                    android:id="@+id/seatTrip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:drawablePadding="12dp"
-                    android:drawableLeft="@drawable/ic_baseline_airline_seat_recline_extra_24"
-                    android:fontFamily="@font/play"
-                    android:text="Кол-во мест\n4 чел."
-                    android:textColor="@color/colorBlack"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/carModel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_baseline_directions_car_24"
-                    android:drawablePadding="12dp"
-                    android:layout_marginStart="0dp"
-                    android:fontFamily="@font/play"
-                    android:text="Марка автомобиля\nMersader Bens"
-                    android:textColor="@color/colorText"
-                    android:textSize="16dp"/>
-
-
-
-            </RelativeLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/relactiveCard">
-
-                <Button
-                    style="@style/ButtonTripSt"
-                    android:id="@+id/bookButton"
-                    android:layout_width="0dp"
-                    android:layout_height="52dp"
-                    android:layout_weight="1"
-                    android:text="Забронировать" />
-            </LinearLayout>
-
-
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/play"
+        android:text="Пассажиры/Водители"
+        android:textColor="@color/colorBlack"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
