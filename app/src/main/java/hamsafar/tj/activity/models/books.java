@@ -1,16 +1,9 @@
 package hamsafar.tj.activity.models;
 
 public class books {
-    private String postID, userID, userName, userPhone;
+    private String postID, userID, userName, userPhone, postCreateID;
 
     public books () {}
-
-    public books(String postID, String userID, String userName, String userPhone) {
-        this.postID = postID;
-        this.userID = userID;
-        this.userName = userName;
-        this.userPhone = userPhone;
-    }
 
     public String getPostID() {
         return postID;
@@ -42,5 +35,21 @@ public class books {
 
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
+    }
+
+    public String getPostCreateID() {
+        return postCreateID;
+    }
+
+    public void setPostCreateID(String postCreateID) {
+        this.postCreateID = postCreateID;
+    }
+
+    public books(String postID, String userID, String userName, String userPhone, String postCreateID) {
+        this.postID = postID;
+        this.userID = userID;
+        this.userName = userName;
+        this.userPhone = userPhone;
+        this.postCreateID = postCreateID;
     }
 }

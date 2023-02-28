@@ -30,10 +30,9 @@ import hamsafar.tj.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText userEmail, userName, userPass, userPhoneNum; // Поля ввод юзера
-    private Button userRegisterBtn; // Кнопка регистрации
-    private ProgressBar registerProgress; // Прогрессбар страница(фрагмент) регистрации
-    private TextView singInUser; // Кнопка входа
+    private EditText userName, userPhoneNum; // Поля ввод юзера
+    private Button creatNewUserBtn; // Кнопка регистрации
+    private ProgressBar progressBarRegister; // Прогрессбар страница(фрагмент) регистрации
     private String userID;
 
 
@@ -48,43 +47,45 @@ public class RegisterActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();  // DataBase variable
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         userName = findViewById(R.id.user_Name);
         userPhoneNum = findViewById(R.id.user_Phone);
-        userRegisterBtn = findViewById(R.id.registerNextBtn);
-        registerProgress = findViewById(R.id.progressBarAuth);
+        creatNewUserBtn = findViewById(R.id.registerUserBtn);
+        progressBarRegister = findViewById(R.id.progressRegisterActivity);
 
 
 
         // Нажатие на кнопки регистрации
-        userRegisterBtn.setOnClickListener(view -> {
-            registerProgress.setVisibility(View.VISIBLE);
-            userRegisterBtn.setVisibility(View.INVISIBLE);
+        creatNewUserBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                creatNewUserBtn.setVisibility(View.INVISIBLE);
+                progressBarRegister.setVisibility(View.VISIBLE);
 
-            String email = getIntent().getExtras().getString("userEmail");
-            String name = userName.getText().toString();
-            String phone = userPhoneNum.getText().toString();
-            String password = getIntent().getExtras().getString("userPass");
 
-            if(name.length() < 3)
-            {
-                userName.setError("Обязательное поле и не менее 3 символов");
-                registerProgress.setVisibility(View.INVISIBLE);
-                userRegisterBtn.setVisibility(View.VISIBLE);
+                String email = getIntent().getExtras().getString("userEmail");
+                String name = userName.getText().toString();
+                String phone = userPhoneNum.getText().toString();
+                String password = getIntent().getExtras().getString("userPass");
 
-            } else if(phone.length() < 7) {
-                userPhoneNum.setError("Обязательное поле и не менее 7 символов");
-                registerProgress.setVisibility(View.INVISIBLE);
-                userRegisterBtn.setVisibility(View.VISIBLE);
-            } else
-            {
-                registerProgress.setVisibility(View.INVISIBLE);
-                userRegisterBtn.setVisibility(View.VISIBLE);
-                createNewUser(email, password,name, phone);
+                if(name.length() < 3)
+                {
+                    userName.setError("Обязательное поле и не менее 3 символов");
+                    progressBarRegister.setVisibility(View.INVISIBLE);
+                    creatNewUserBtn.setVisibility(View.VISIBLE);
+
+                } else if(phone.length() < 7) {
+                    userPhoneNum.setError("Обязательное поле и не менее 7 символов");
+                    progressBarRegister.setVisibility(View.INVISIBLE);
+                    creatNewUserBtn.setVisibility(View.VISIBLE);
+                } else
+                {
+                    progressBarRegister.setVisibility(View.INVISIBLE);
+                    creatNewUserBtn.setVisibility(View.VISIBLE);
+                    createNewUser(email, password,name, phone);
+                }
             }
         });
-
     }
 
     private void createNewUser(String email, String password, String name, String phone) {
@@ -110,14 +111,14 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(mainIntent);
                         finish();
                     } else  {
-                        registerProgress.setVisibility(View.INVISIBLE);
-                        userRegisterBtn.setVisibility(View.VISIBLE);
+                        progressBarRegister.setVisibility(View.INVISIBLE);
+                        creatNewUserBtn.setVisibility(View.VISIBLE);
                         showToast(this, "Ошибка регистрации нового пользователя, повторите попытку позже");
                     }
                 });
             } else  {
-                registerProgress.setVisibility(View.INVISIBLE);
-                userRegisterBtn.setVisibility(View.VISIBLE);
+                progressBarRegister.setVisibility(View.INVISIBLE);
+                creatNewUserBtn.setVisibility(View.VISIBLE);
                 showToast(this, "Ошибка регистрации нового пользователя, повторите попытку позже");
             }
         });

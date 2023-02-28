@@ -118,6 +118,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             postIntent.putExtra("driverID",postAdapter.getUserUD());
             postIntent.putExtra("phone",postAdapter.getUserPhone());
             postIntent.putExtra("isUserDriver",postAdapter.getIsDriverUser());
+            postIntent.putExtra("commentTrip",postAdapter.getCommentTrip());
             postIntent.putExtra("postID",postAdapter.getPostId());
             context.startActivity(postIntent);
 

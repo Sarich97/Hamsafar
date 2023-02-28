@@ -7,11 +7,26 @@
     android:background="@color/colorWhite"
     tools:context=".activity.TripDetalActivity">
 
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
@@ -230,7 +245,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="16dp"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="@+id/relactiveTrip">
@@ -243,7 +258,7 @@
                 android:drawableLeft="@drawable/ic_baseline_airline_seat_recline_extra_24"
                 android:drawablePadding="12dp"
                 android:fontFamily="@font/play"
-                android:text="Кол-во мест\n4 чел."
+                android:text="4 чел."
                 android:textColor="@color/colorBlack"
                 android:textSize="16dp" />
 
@@ -255,7 +270,7 @@
                 android:drawableLeft="@drawable/ic_baseline_directions_car_24"
                 android:drawablePadding="12dp"
                 android:fontFamily="@font/play"
-                android:text="Марка автомобиля\nMersader Bens"
+                android:text="Mersader Bens"
                 android:textColor="@color/colorText"
                 android:textSize="16dp" />
 
@@ -263,46 +278,36 @@
         </RelativeLayout>
 
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textCommentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:drawableLeft="@drawable/baseline_insert_comment_24"
+            android:drawablePadding="12dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/relactiveCard">
+            android:maxLines="3"
+            android:textSize="16dp"
+            android:text="Коментарии: "
+            android:textColor="@color/colorText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relactiveCard" />
 
-            <Button
-                android:id="@+id/bookButton"
-                style="@style/ButtonTripSt"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:text="Забронировать"
-                android:visibility="gone" />
 
-            <Button
-                android:id="@+id/bookDeletButton"
-                style="@style/ButtonTripStDelete"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:text="Отменить бронирование"
-                android:visibility="gone" />
+        <View
+            android:id="@+id/viewF"
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorBG"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textCommentView" />
 
-            <Button
-                android:id="@+id/bookEndButton"
-                style="@style/ButtonTripStDelete"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginBottom="12dp"
-                android:layout_weight="1"
-                android:text="Удалить заявку"
-                android:visibility="gone" />
-        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -312,7 +317,7 @@
         android:id="@+id/booksRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -322,11 +327,63 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/play"
         android:text="Пассажиры/Водители"
         android:textColor="@color/colorBlack"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/bookButton"
+        style="@style/ButtonTripSt"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:text="Забронировать"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <Button
+        android:id="@+id/bookDeletButton"
+        style="@style/ButtonTripStDelete"
+        android:layout_width="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_height="52dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:text="Отменить бронирование"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/bookEndButton"
+        style="@style/ButtonTripStDelete"
+        android:layout_width="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_height="52dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:text="Удалить заявку"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

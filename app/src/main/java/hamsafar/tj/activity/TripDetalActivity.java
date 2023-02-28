@@ -33,7 +33,8 @@ import hamsafar.tj.activity.models.books;
 
 public class TripDetalActivity extends AppCompatActivity {
 
-    private TextView tripNameD, tripStatusD, tripPriceD, tripStartD,tripEndD, tripDateD, tripCarModelD, tripSeatD;
+    private TextView tripNameD, tripStatusD, tripPriceD, tripStartD,tripEndD;
+    private TextView commentTripD, tripDateD, tripCarModelD, tripSeatD;
     private ImageView userImage;
     private Button bookTripBtn, endBookTripBtn, deleteTripBtn;
 
@@ -71,6 +72,7 @@ public class TripDetalActivity extends AppCompatActivity {
         bookTripBtn = findViewById(R.id.bookButton);
         endBookTripBtn = findViewById(R.id.bookDeletButton);
         deleteTripBtn = findViewById(R.id.bookEndButton);
+        commentTripD = findViewById(R.id.textCommentView);
 
         firebaseAuth = FirebaseAuth.getInstance();
         UsersRef = FirebaseFirestore.getInstance();
@@ -95,18 +97,32 @@ public class TripDetalActivity extends AppCompatActivity {
         String tripNameUser = getIntent().getExtras().getString("driverName");
         String tripUserId = getIntent().getExtras().getString("driverID");
         String tripUserPhone = getIntent().getExtras().getString("phone");
+        String comments = getIntent().getExtras().getString("commentTrip");
         String isUserDriver = getIntent().getExtras().getString("isUserDriver");
         String postID = getIntent().getExtras().getString("postID");
 
 
+
         tripNameD.setText(tripNameUser);
         tripStatusD.setText(isUserDriver);
-        tripPriceD.setText(tripPrice + " cомони");
+
         tripStartD.setText(tripStart);
         tripEndD.setText(tripEnd);
         tripDateD.setText(tripDate);
-        tripCarModelD.setText("Марка автомобиля\n" + tripBrandCar);
-        tripSeatD.setText("Кол-во мест\n" + tripSeat);
+        tripSeatD.setText(tripSeat + " чел.");
+        commentTripD.setText("Коментарии: " + comments);
+
+        if(tripBrandCar == null) {
+            tripCarModelD.setText("Марко автомобиля\nНе важно");
+        } else {
+            tripCarModelD.setText(tripBrandCar);
+        }
+
+        if(tripPrice == null) {
+            tripPriceD.setText("договорная");
+        } else {
+            tripPriceD.setText(tripPrice + " cомони");
+        }
 
 
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
@@ -230,6 +246,7 @@ public class TripDetalActivity extends AppCompatActivity {
     }
 
     private void bookTrip(String user_name, String user_phone, String postID) {
+        String tripUserId = getIntent().getExtras().getString("driverID");
         bookRef.collection("posts/" + postID + "/books").document(userKey).get().addOnCompleteListener(task -> {
             if (!task.getResult().exists()) {
                 Map<String, Object> book = new HashMap<>();
@@ -237,6 +254,7 @@ public class TripDetalActivity extends AppCompatActivity {
                 book.put("userName", user_name);
                 book.put("userPhone", user_phone);
                 book.put("postID", postID);
+                book.put("postCreateID", tripUserId);
                 book.put("timestamp", FieldValue.serverTimestamp());
                 bookTripBtn.setVisibility(View.GONE);
                 endBookTripBtn.setVisibility(View.VISIBLE);

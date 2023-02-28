@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/userImage"
+        android:id="@+id/userImageProfile"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="12dp"
@@ -27,27 +27,27 @@
 
 
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/userNameProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:fontFamily="@font/play"
-        android:text="Sarvar Sultonov"
+        android:text=" "
         android:textColor="@color/colorBlack"
         android:textSize="18dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/userImage"
-        app:layout_constraintTop_toTopOf="@+id/userImage" />
+        app:layout_constraintStart_toEndOf="@+id/userImageProfile"
+        app:layout_constraintTop_toTopOf="@+id/userImageProfile" />
 
     <TextView
-        android:id="@+id/userPhone"
+        android:id="@+id/userPhoneProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/play"
         android:textColor="@color/colorSt"
-        android:text="+992987405615"
-        app:layout_constraintStart_toStartOf="@+id/userName"
-        app:layout_constraintTop_toBottomOf="@+id/userName" />
+        android:text=" "
+        app:layout_constraintStart_toStartOf="@+id/userNameProfile"
+        app:layout_constraintTop_toBottomOf="@+id/userNameProfile" />
 
 
     <View
@@ -60,7 +60,7 @@
         android:background="@color/colorBG"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userImage" />
+        app:layout_constraintTop_toBottomOf="@+id/userImageProfile" />
 
     <TextView
         android:id="@+id/textView13"
@@ -72,7 +72,7 @@
         android:textSize="18dp"
         android:layout_marginTop="16dp"
         android:text="Актуальные заявки"
-        app:layout_constraintStart_toStartOf="@+id/userImage"
+        app:layout_constraintStart_toStartOf="@+id/userImageProfile"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

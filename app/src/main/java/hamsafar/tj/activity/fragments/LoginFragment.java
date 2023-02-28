@@ -46,33 +46,40 @@ public class LoginFragment extends Fragment {
         loginProgress = view.findViewById(R.id.progressBarAuthLogin);
 
 
+
         userLoginBtn.setOnClickListener(view1 -> {
 
-            loginProgress.setVisibility(View.VISIBLE);
-            userLoginBtn.setVisibility(View.INVISIBLE);
-            String email = userEmail.getText().toString();
-            String password = userPass.getText().toString();
-            if(email.length() < 5)
-            {
-                userEmail.setError("Обязательное поле и не менее 5 символов");
-                loginProgress.setVisibility(View.INVISIBLE);
-                userLoginBtn.setVisibility(View.VISIBLE);
+            authUserFun();
 
-            } else if(password.length() < 6)
-            {
-                userPass.setError("Обязательное поле и не менее 6 символов");
-                loginProgress.setVisibility(View.INVISIBLE);
-                userLoginBtn.setVisibility(View.VISIBLE);
-
-            } else
-            {
-                loginProgress.setVisibility(View.INVISIBLE);
-                userLoginBtn.setVisibility(View.VISIBLE);
-                loginUser(email, password);
-            }
         });
 
         return view;
+    }
+
+    private void authUserFun() {
+        userLoginBtn.setVisibility(View.GONE);
+        loginProgress.setVisibility(View.VISIBLE);
+
+        String email = userEmail.getText().toString();
+        String password = userPass.getText().toString();
+        if(email.length() < 5)
+        {
+            userEmail.setError("Обязательное поле и не менее 5 символов");
+            loginProgress.setVisibility(View.INVISIBLE);
+            userLoginBtn.setVisibility(View.VISIBLE);
+
+        } else if(password.length() < 6)
+        {
+            userPass.setError("Обязательное поле и не менее 6 символов");
+            loginProgress.setVisibility(View.INVISIBLE);
+            userLoginBtn.setVisibility(View.VISIBLE);
+
+        } else
+        {
+            loginProgress.setVisibility(View.INVISIBLE);
+            userLoginBtn.setVisibility(View.VISIBLE);
+            loginUser(email, password);
+        }
     }
 
     private void loginUser(String email, String pass) {
