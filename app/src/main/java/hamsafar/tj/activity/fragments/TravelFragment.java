@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +42,9 @@ public class TravelFragment extends Fragment {
     private RecyclerView recyclerViewCard;
     private RecyclerView.Adapter cardViewAdapter;
 
+    private ImageView imageViewNotPost;
+    private TextView textViewNotPost;
+
     private RecyclerView recyclerViewPost;
     PostAdapter postAdapter;
     ArrayList<Post> posts = new ArrayList<>();
@@ -66,6 +71,9 @@ public class TravelFragment extends Fragment {
         progressBarPostLoad = view.findViewById(R.id.progressBarPost);
 
 
+        imageViewNotPost = view.findViewById(R.id.imageViewNotPost);
+        textViewNotPost = view.findViewById(R.id.textViewNotPosts);
+
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         travelPostRef = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -82,14 +90,22 @@ public class TravelFragment extends Fragment {
 
         query.addSnapshotListener((documentSnapshots, e) -> {
             if (e != null) {
-                progressBarPostLoad.setVisibility(View.VISIBLE);
+                progressBarPostLoad.setVisibility(View.INVISIBLE);
+                imageViewNotPost.setVisibility(View.VISIBLE);
+                textViewNotPost.setVisibility(View.VISIBLE);
             } else {
                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
                         Post post = doc.getDocument().toObject(Post.class);
                         posts.add(post);
                         postAdapter.notifyDataSetChanged();
+                        imageViewNotPost.setVisibility(View.INVISIBLE);
+                        textViewNotPost.setVisibility(View.INVISIBLE);
                         progressBarPostLoad.setVisibility(View.INVISIBLE);
+                    } else {
+                        progressBarPostLoad.setVisibility(View.INVISIBLE);
+                        imageViewNotPost.setVisibility(View.VISIBLE);
+                        textViewNotPost.setVisibility(View.VISIBLE);
                     }
                 }
             }

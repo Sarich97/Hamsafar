@@ -115,13 +115,13 @@ public class ProfileFragment extends Fragment {
                         Post post = doc.getDocument().toObject(Post.class);
                         if(post.getUserUD().equals(userID))
                         {
+                            loadPostImage.setVisibility(View.INVISIBLE);
+                            textPostNot.setVisibility(View.INVISIBLE);
                             posts.add(post);
                             postAdapter.notifyDataSetChanged();
-                            textPostNot.setVisibility(View.INVISIBLE);
                         } else {
                             loadPostImage.setVisibility(View.VISIBLE);
                             textPostNot.setVisibility(View.VISIBLE);
-                            postAdapter.notifyDataSetChanged();
                         }
 
                     }

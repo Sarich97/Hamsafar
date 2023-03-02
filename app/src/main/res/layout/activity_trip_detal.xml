@@ -342,7 +342,7 @@
 
     <Button
         android:id="@+id/bookButton"
-        style="@style/ButtonTripSt"
+        style="@style/ButtonnStyle"
         android:layout_width="0dp"
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
