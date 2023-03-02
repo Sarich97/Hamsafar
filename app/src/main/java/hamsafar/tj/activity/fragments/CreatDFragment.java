@@ -34,6 +34,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,11 +44,11 @@ import hamsafar.tj.activity.MainActivity;
 
 public class CreatDFragment extends Fragment {
 
-    private Spinner startTripSpinnerD, endTripSpinnerD;
-    private EditText priceTripD, seatTripD, carModelD, commentsEdit;
-    private TextView dateTripD, timeTripD;
-    private Button creatTripBtnD;
-    private ProgressBar progressBarCreatPostD;
+    private Spinner spinnerStartTrip, spinnerEndTrip;
+    private EditText editTextPrice, editTextSeat, editTextCarModel, editTextComment;
+    private TextView textViewDateTrip, textViewTimeTrip;
+    private Button buttonCreatTrip;
+    private ProgressBar progressBarPost;
 
 
     private FirebaseAuth firebaseAuth;
@@ -71,64 +72,64 @@ public class CreatDFragment extends Fragment {
         currentUser = firebaseAuth.getCurrentUser();
 
 
-        startTripSpinnerD = view.findViewById(R.id.spinnerStartTripD);
-        endTripSpinnerD = view.findViewById(R.id.spinnerEndTripD);
-        dateTripD = view.findViewById(R.id.editTextDateD);
-        timeTripD = view.findViewById(R.id.editTextTimeD);
-        priceTripD = view.findViewById(R.id.editTextPriceD);
-        seatTripD = view.findViewById(R.id.editTextSeatD);
-        carModelD = view.findViewById(R.id.editCarModelD);
-        creatTripBtnD = view.findViewById(R.id.creatTripD);
-        commentsEdit = view.findViewById(R.id.editTextCommentD);
-        progressBarCreatPostD = view.findViewById(R.id.progressBarPostD);
+        spinnerStartTrip = view.findViewById(R.id.spinnerStartTripD);
+        spinnerEndTrip = view.findViewById(R.id.spinnerEndTripD);
+        textViewDateTrip = view.findViewById(R.id.editTextDateD);
+        textViewTimeTrip = view.findViewById(R.id.editTextTimeD);
+        editTextPrice = view.findViewById(R.id.editTextPriceD);
+        editTextSeat = view.findViewById(R.id.editTextSeatD);
+        editTextCarModel = view.findViewById(R.id.editCarModelD);
+        buttonCreatTrip = view.findViewById(R.id.creatTripD);
+        editTextComment = view.findViewById(R.id.editTextCommentD);
+        progressBarPost = view.findViewById(R.id.progressBarPostD);
 
 
-        dateTripD.setOnClickListener(clickDateTime -> shwoDatePickerDialog());
+        textViewDateTrip.setOnClickListener(clickDateTime -> shwoDatePickerDialog());
 
-        timeTripD.setOnClickListener(clickTime -> showTimePickerDialog());
+        textViewTimeTrip.setOnClickListener(clickTime -> showTimePickerDialog());
 
-        creatTripBtnD.setOnClickListener(view13 -> {
-            creatTripBtnD.setVisibility(View.INVISIBLE);
-            progressBarCreatPostD.setVisibility(View.VISIBLE);
+        buttonCreatTrip.setOnClickListener(view13 -> {
+            buttonCreatTrip.setVisibility(View.INVISIBLE);
+            progressBarPost.setVisibility(View.VISIBLE);
 
-            String start_Trip = startTripSpinnerD.getSelectedItem().toString();
-            String end_Trip = endTripSpinnerD.getSelectedItem().toString();
-            String data_Trip = dateTripD.getText().toString();
-            String time_Trip = timeTripD.getText().toString();
-            String price_Trip = priceTripD.getText().toString();
-            String seat_Trip = seatTripD.getText().toString();
-            String car_model = carModelD.getText().toString();
-            String comments = commentsEdit.getText().toString();
+            String start_Trip = spinnerStartTrip.getSelectedItem().toString();
+            String end_Trip = spinnerEndTrip.getSelectedItem().toString();
+            String data_Trip = textViewDateTrip.getText().toString();
+            String time_Trip = textViewTimeTrip.getText().toString();
+            String price_Trip = editTextPrice.getText().toString();
+            String seat_Trip = editTextSeat.getText().toString();
+            String car_model = editTextCarModel.getText().toString();
+            String comments = editTextComment.getText().toString();
 
 
             if(start_Trip.equals("Откуда")) {
                 showToast(getContext(),"Укажите начальную точку маршрута");
-                creatTripBtnD.setVisibility(View.VISIBLE);
-                progressBarCreatPostD.setVisibility(View.INVISIBLE);
+                buttonCreatTrip.setVisibility(View.VISIBLE);
+                progressBarPost.setVisibility(View.INVISIBLE);
             }  else if(end_Trip.equals("Куда")) {
                 showToast(getContext(), "Укажите конечную точку маршрута");
-                creatTripBtnD.setVisibility(View.VISIBLE);
-                progressBarCreatPostD.setVisibility(View.INVISIBLE);
+                buttonCreatTrip.setVisibility(View.VISIBLE);
+                progressBarPost.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(data_Trip)) {
-                dateTripD.setError("Укажите дату");
-                creatTripBtnD.setVisibility(View.VISIBLE);
-                progressBarCreatPostD.setVisibility(View.INVISIBLE);
+                textViewDateTrip.setError("Укажите дату");
+                buttonCreatTrip.setVisibility(View.VISIBLE);
+                progressBarPost.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(time_Trip)) {
-                timeTripD.setError("Укажите время");
-                creatTripBtnD.setVisibility(View.VISIBLE);
-                progressBarCreatPostD.setVisibility(View.INVISIBLE);
+                textViewTimeTrip.setError("Укажите время");
+                buttonCreatTrip.setVisibility(View.VISIBLE);
+                progressBarPost.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(price_Trip)) {
-                priceTripD.setError("Укажите цену");
-                creatTripBtnD.setVisibility(View.VISIBLE);
-                progressBarCreatPostD.setVisibility(View.INVISIBLE);
+                editTextSeat.setError("Укажите цену");
+                buttonCreatTrip.setVisibility(View.VISIBLE);
+                progressBarPost.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(seat_Trip)) {
-                seatTripD.setError("Укажите количество мест");
-                creatTripBtnD.setVisibility(View.VISIBLE);
-                progressBarCreatPostD.setVisibility(View.INVISIBLE);
+                editTextSeat.setError("Укажите количество мест");
+                buttonCreatTrip.setVisibility(View.VISIBLE);
+                progressBarPost.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(car_model)) {
-                carModelD.setError("Укажите марку вашего автомобиля");
-                creatTripBtnD.setVisibility(View.VISIBLE);
-                progressBarCreatPostD.setVisibility(View.INVISIBLE);
+                editTextCarModel.setError("Укажите марку вашего автомобиля");
+                buttonCreatTrip.setVisibility(View.VISIBLE);
+                progressBarPost.setVisibility(View.INVISIBLE);
             } else  {
                 creatPost(start_Trip, end_Trip, data_Trip, time_Trip, price_Trip, seat_Trip, car_model, comments);
             }
@@ -167,8 +168,8 @@ public class CreatDFragment extends Fragment {
                         startActivity(mainIntent);
                         getActivity().finish();
                     } else {
-                        creatTripBtnD.setVisibility(View.VISIBLE);
-                        progressBarCreatPostD.setVisibility(View.INVISIBLE);
+                        buttonCreatTrip.setVisibility(View.VISIBLE);
+                        progressBarPost.setVisibility(View.INVISIBLE);
                         showToast(getContext(), "Ошибка публикации поста. Повторите попытку через несколько минут");
                     }
                 });
@@ -178,6 +179,7 @@ public class CreatDFragment extends Fragment {
 
     private void shwoDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -1);
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -229,9 +231,10 @@ public class CreatDFragment extends Fragment {
 
                     }
 
-                    dateTripD.setText(dayOfMonth + "." + (monthName) + "." + year);
+                    textViewDateTrip.setText(dayOfMonth + "." + (monthName) + "." + year);
 
                 }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
         datePickerDialog.show();
     }
 
@@ -240,7 +243,7 @@ public class CreatDFragment extends Fragment {
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
         boolean is24HourView= true;
-        timePickerDialog = new TimePickerDialog(getContext(), (timePicker, i, i1) -> timeTripD.setText(i + ":" + i1),mHour,mMinute,is24HourView);
+        timePickerDialog = new TimePickerDialog(getContext(), (timePicker, i, i1) -> textViewTimeTrip.setText(i + ":" + i1),mHour,mMinute,is24HourView);
         timePickerDialog.show();
     }
 }

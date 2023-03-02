@@ -35,11 +35,11 @@ import hamsafar.tj.activity.MainActivity;
 
 public class CreatPFragment extends Fragment {
 
-    private Spinner startTripSpinnerP, endTripSpinnerP;
-    private TextView dateTripP, timeTripP;
-    private EditText commentTripP;
-    private Button creatTripBtnP;
-    private ProgressBar progressBarCreatPostP;
+    private Spinner spinnerStartTrip, spinnerEndTrip;
+    private TextView textViewDate, textViewTime;
+    private EditText editTextComment;
+    private Button buttonCreatTripPas;
+    private ProgressBar progressBarCreat;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -63,45 +63,45 @@ public class CreatPFragment extends Fragment {
         currentUser = firebaseAuth.getCurrentUser();
 
 
-        startTripSpinnerP = view.findViewById(R.id.spinnerStartTripP);
-        endTripSpinnerP = view.findViewById(R.id.spinnerEndTripP);
-        dateTripP = view.findViewById(R.id.editTextDateP);
-        timeTripP = view.findViewById(R.id.editTextTimeP);
-        creatTripBtnP = view.findViewById(R.id.creatTripP);
-        commentTripP = view.findViewById(R.id.editTextCommentP);
-        progressBarCreatPostP = view.findViewById(R.id.progressBarPostP);
+        spinnerStartTrip = view.findViewById(R.id.spinnerStartTripP);
+        spinnerEndTrip = view.findViewById(R.id.spinnerEndTripP);
+        textViewDate = view.findViewById(R.id.editTextDateP);
+        textViewTime = view.findViewById(R.id.editTextTimeP);
+        buttonCreatTripPas = view.findViewById(R.id.creatTripP);
+        editTextComment = view.findViewById(R.id.editTextCommentP);
+        progressBarCreat = view.findViewById(R.id.progressBarPostP);
 
-        dateTripP.setOnClickListener(view1 -> shwoDatePickerDialog());
+        textViewDate.setOnClickListener(view1 -> shwoDatePickerDialog());
 
-        timeTripP.setOnClickListener(view12 -> showTimePickerDialog());
+        textViewTime.setOnClickListener(view12 -> showTimePickerDialog());
 
 
-        creatTripBtnP.setOnClickListener(clickCreatBtn -> {
-            creatTripBtnP.setVisibility(View.INVISIBLE);
-            progressBarCreatPostP.setVisibility(View.VISIBLE);
+        buttonCreatTripPas.setOnClickListener(clickCreatBtn -> {
+            buttonCreatTripPas.setVisibility(View.INVISIBLE);
+            progressBarCreat.setVisibility(View.VISIBLE);
 
-            String start_Trip = startTripSpinnerP.getSelectedItem().toString();
-            String end_Trip = endTripSpinnerP.getSelectedItem().toString();
-            String data_Trip = dateTripP.getText().toString();
-            String time_Trip = timeTripP.getText().toString();
-            String commets_Trip = commentTripP.getText().toString();
+            String start_Trip = spinnerStartTrip.getSelectedItem().toString();
+            String end_Trip = spinnerEndTrip.getSelectedItem().toString();
+            String data_Trip = textViewDate.getText().toString();
+            String time_Trip = textViewTime.getText().toString();
+            String commets_Trip = editTextComment.getText().toString();
 
             if(start_Trip.equals("Откуда")) {
                 showToast(getContext(),"Укажите начальную точку маршрута");
-                creatTripBtnP.setVisibility(View.VISIBLE);
-                progressBarCreatPostP.setVisibility(View.INVISIBLE);
+                buttonCreatTripPas.setVisibility(View.VISIBLE);
+                progressBarCreat.setVisibility(View.INVISIBLE);
             }  else if(end_Trip.equals("Куда")) {
                 showToast(getContext(), "Укажите конечную точку маршрута");
-                creatTripBtnP.setVisibility(View.VISIBLE);
-                progressBarCreatPostP.setVisibility(View.INVISIBLE);
+                buttonCreatTripPas.setVisibility(View.VISIBLE);
+                progressBarCreat.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(data_Trip)) {
-                dateTripP.setError("Укажите дату");
-                creatTripBtnP.setVisibility(View.VISIBLE);
-                progressBarCreatPostP.setVisibility(View.INVISIBLE);
+                textViewDate.setError("Укажите дату");
+                buttonCreatTripPas.setVisibility(View.VISIBLE);
+                progressBarCreat.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(time_Trip)) {
-                timeTripP.setError("Укажите время");
-                creatTripBtnP.setVisibility(View.VISIBLE);
-                progressBarCreatPostP.setVisibility(View.INVISIBLE);
+                textViewTime.setError("Укажите время");
+                buttonCreatTripPas.setVisibility(View.VISIBLE);
+                progressBarCreat.setVisibility(View.INVISIBLE);
             } else {
                 creatPost(start_Trip, end_Trip, data_Trip, time_Trip, commets_Trip);
             }
@@ -141,8 +141,8 @@ public class CreatPFragment extends Fragment {
                         startActivity(mainIntent);
                         getActivity().finish();
                     } else {
-                        dateTripP.setVisibility(View.VISIBLE);
-                        progressBarCreatPostP.setVisibility(View.INVISIBLE);
+                        textViewDate.setVisibility(View.VISIBLE);
+                        progressBarCreat.setVisibility(View.INVISIBLE);
                         showToast(getContext(), "Ошибка публикации поста. Повторите попытку через несколько минут");
                     }
                 });
@@ -203,7 +203,7 @@ public class CreatPFragment extends Fragment {
 
                     }
 
-                    dateTripP.setText(dayOfMonth + "." + (monthName) + "." + year);
+                    textViewDate.setText(dayOfMonth + "." + (monthName) + "." + year);
 
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
@@ -214,7 +214,7 @@ public class CreatPFragment extends Fragment {
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
         boolean is24HourView= true;
-        timePickerDialog = new TimePickerDialog(getContext(), (timePicker, i, i1) -> timeTripP.setText(i + ":" + i1),mHour,mMinute,is24HourView);
+        timePickerDialog = new TimePickerDialog(getContext(), (timePicker, i, i1) -> textViewTime.setText(i + ":" + i1),mHour,mMinute,is24HourView);
         timePickerDialog.show();
     }
 }

@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/textView"
         style="@style/authTextTitle"
-        android:text="@string/auth_salam"
+        android:text="@string/textRegisterTitle"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,7 +20,7 @@
         android:id="@+id/textView2"
         style="@style/authTextDiv"
         android:layout_marginTop="20dp"
-        android:text="Укажите ваше имя и номер телефона"
+        android:text="@string/textEditRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         android:id="@+id/user_Name"
         style="@style/editText"
         android:drawableStart="@drawable/ic_baseline_person_outline_24"
-        android:hint="@string/user_name"
+        android:hint="@string/editUserName"
         android:inputType="textPersonName"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         tools:ignore="MissingConstraints"
@@ -41,7 +41,7 @@
         android:id="@+id/user_Phone"
         style="@style/editText"
         android:drawableStart="@drawable/ic_baseline_phone_24"
-        android:hint="@string/phone_number"
+        android:hint="@string/editPhoneUser"
         android:importantForAutofill="no"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,21 +49,30 @@
         app:layout_constraintTop_toBottomOf="@+id/user_Name"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/registerUserBtn"
-        style="@style/authBtnStyle"
-        android:text="@string/registetr_btn_text"
+    <Spinner
+        android:id="@+id/spinnerGetCityUser"
+        style="@style/SpinnerThemeGetTown"
+        android:entries="@array/townListReg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_Phone" />
 
+    <Button
+        android:id="@+id/registerUserBtn"
+        style="@style/ButtonnStyle"
+        android:text="@string/buttonRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerGetCityUser" />
+
 
     <TextView
-        android:id="@+id/singInText"
+        android:id="@+id/team_of_servis"
         style="@style/btnTextViewStyleOnAuthPages"
-        android:text="@string/political_auth"
+        android:text="@string/textTeamOfServis"
         android:textColor="@color/colorText"
         android:textSize="14sp"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

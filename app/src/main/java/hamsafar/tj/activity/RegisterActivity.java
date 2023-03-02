@@ -1,5 +1,10 @@
 package hamsafar.tj.activity;
 
+import static hamsafar.tj.R.string.erro_registerMessage;
+import static hamsafar.tj.R.string.erro_registerMessageS;
+import static hamsafar.tj.R.string.field_nameRegister;
+import static hamsafar.tj.R.string.field_phoneRegister;
+import static hamsafar.tj.R.string.spinner_CityMessage;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -32,7 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText userName, userPhoneNum; // Поля ввод юзера
     private Button creatNewUserBtn; // Кнопка регистрации
-    private ProgressBar progressBarRegister; // Прогрессбар страница(фрагмент) регистрации
+    private Spinner userCitySpinner;
+    private ProgressBar progressRegister; // Прогрессбар страница(фрагмент) регистрации
+    private TextView textViewTeamOfServis;
     private String userID;
 
 
@@ -50,45 +58,48 @@ public class RegisterActivity extends AppCompatActivity {
 
         userName = findViewById(R.id.user_Name);
         userPhoneNum = findViewById(R.id.user_Phone);
+        userCitySpinner = findViewById(R.id.spinnerGetCityUser);
         creatNewUserBtn = findViewById(R.id.registerUserBtn);
-        progressBarRegister = findViewById(R.id.progressRegisterActivity);
+        progressRegister = findViewById(R.id.progressRegisterActivity);
+        textViewTeamOfServis = findViewById(R.id.team_of_servis);
 
 
 
         // Нажатие на кнопки регистрации
-        creatNewUserBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                creatNewUserBtn.setVisibility(View.INVISIBLE);
-                progressBarRegister.setVisibility(View.VISIBLE);
+        creatNewUserBtn.setOnClickListener(view -> {
+
+            String email = getIntent().getExtras().getString("userEmail");
+            String name = userName.getText().toString();
+            String phone = userPhoneNum.getText().toString();
+            String user_city = userCitySpinner.getSelectedItem().toString();
+            String password = getIntent().getExtras().getString("userPass");
+
+            if(name.length() < 3)
+            {
+                userName.setError(getString(field_nameRegister));
 
 
-                String email = getIntent().getExtras().getString("userEmail");
-                String name = userName.getText().toString();
-                String phone = userPhoneNum.getText().toString();
-                String password = getIntent().getExtras().getString("userPass");
-
-                if(name.length() < 3)
-                {
-                    userName.setError("Обязательное поле и не менее 3 символов");
-                    progressBarRegister.setVisibility(View.INVISIBLE);
-                    creatNewUserBtn.setVisibility(View.VISIBLE);
-
-                } else if(phone.length() < 7) {
-                    userPhoneNum.setError("Обязательное поле и не менее 7 символов");
-                    progressBarRegister.setVisibility(View.INVISIBLE);
-                    creatNewUserBtn.setVisibility(View.VISIBLE);
-                } else
-                {
-                    progressBarRegister.setVisibility(View.INVISIBLE);
-                    creatNewUserBtn.setVisibility(View.VISIBLE);
-                    createNewUser(email, password,name, phone);
-                }
+            } else if(phone.length() < 7) {
+                userPhoneNum.setError(getString(field_phoneRegister));
+            } else if(user_city.equals(getString(spinner_CityMessage))) {
+                showToast(this,getString(spinner_CityMessage));
+            } else
+            {
+                createNewUser(email, password,name, phone, user_city);
             }
+        });
+
+        textViewTeamOfServis.setOnClickListener(view -> {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(RegisterActivity.this, R.style.BottomSheetDialogTheme);
+            bottomSheetDialog.setContentView(R.layout.terms_of_use_sheet);
+            bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            bottomSheetDialog.show();
         });
     }
 
-    private void createNewUser(String email, String password, String name, String phone) {
+    private void createNewUser(String email, String password, String name, String phone, String user_city) {
+        progressRegister.setVisibility(View.VISIBLE);
+        creatNewUserBtn.setVisibility(View.INVISIBLE);
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
@@ -102,6 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.put("userEmail", email);
                 user.put("userName", name);
                 user.put("userPhone", phone);
+                user.put("userCity", user_city);
                 user.put("ipAdress", ipAddress);
                 user.put("regDate", FieldValue.serverTimestamp());
 
@@ -110,16 +122,18 @@ public class RegisterActivity extends AppCompatActivity {
                         Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                         startActivity(mainIntent);
                         finish();
-                    } else  {
-                        progressBarRegister.setVisibility(View.INVISIBLE);
+                        progressRegister.setVisibility(View.INVISIBLE);
                         creatNewUserBtn.setVisibility(View.VISIBLE);
-                        showToast(this, "Ошибка регистрации нового пользователя, повторите попытку позже");
+                    } else  {
+                        progressRegister.setVisibility(View.INVISIBLE);
+                        creatNewUserBtn.setVisibility(View.VISIBLE);
+                        showToast(this, getString(erro_registerMessage));
                     }
                 });
             } else  {
-                progressBarRegister.setVisibility(View.INVISIBLE);
+                progressRegister.setVisibility(View.INVISIBLE);
                 creatNewUserBtn.setVisibility(View.VISIBLE);
-                showToast(this, "Ошибка регистрации нового пользователя, повторите попытку позже");
+                showToast(this, getString(erro_registerMessageS));
             }
         });
 

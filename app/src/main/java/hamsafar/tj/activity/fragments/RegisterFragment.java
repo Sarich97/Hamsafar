@@ -1,11 +1,15 @@
 package hamsafar.tj.activity.fragments;
 
+import static hamsafar.tj.R.string.field_emailMessage;
+import static hamsafar.tj.R.string.field_passMessage;
+
 import android.content.Intent;
 import android.os.Bundle;
 
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +23,8 @@ import hamsafar.tj.activity.RegisterActivity;
 
 public class RegisterFragment extends Fragment {
 
-    private EditText userEmail, userPass; // Поля ввод юзера
-    private Button userRegisterBtn; // Кнопка регистрации
-    private ProgressBar registerProgress; // Прогрессбар страница(фрагмент) регистрации
-
+    private EditText editTextEmail, editTextPass; // Поля ввод юзера
+    private Button buttonRegister; // Кнопка регистрации
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,34 +33,27 @@ public class RegisterFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_register, container, false);
 
 
-        userEmail = view.findViewById(R.id.user_Email);
-        userPass = view.findViewById(R.id.user_Pass);
-        userRegisterBtn = view.findViewById(R.id.registerNextBtn);
-        registerProgress = view.findViewById(R.id.progressBarAuth);
+        editTextEmail = view.findViewById(R.id.user_Email);
+        editTextPass = view.findViewById(R.id.user_Pass);
+        buttonRegister = view.findViewById(R.id.registerNextBtn);
 
 
-        userRegisterBtn.setOnClickListener(click -> {
-            userRegisterBtn.setVisibility(View.GONE);
-            registerProgress.setVisibility(View.VISIBLE);
-            String email = userEmail.getText().toString();
-            String password = userPass.getText().toString();
+        buttonRegister.setOnClickListener(click -> {
 
-            if(email.length() < 5)
+            String email = editTextEmail.getText().toString();
+            String password = editTextPass.getText().toString();
+
+            if(TextUtils.isEmpty(email))
             {
-                userEmail.setError("Обязательное поле и не менее 5 символов");
-                registerProgress.setVisibility(View.INVISIBLE);
-                userRegisterBtn.setVisibility(View.VISIBLE);
+                editTextEmail.setError(getString(field_emailMessage));
 
-            } else if(password.length() < 6)
+
+            } else if(TextUtils.isEmpty(password))
             {
-                userPass.setError("Обязательное поле и не менее 6 символов");
-                registerProgress.setVisibility(View.INVISIBLE);
-                userRegisterBtn.setVisibility(View.VISIBLE);
+                editTextPass.setError(getString(field_passMessage));
 
             } else
             {
-                registerProgress.setVisibility(View.INVISIBLE);
-                userRegisterBtn.setVisibility(View.VISIBLE);
                 createNewUser(email, password);
             }
         });

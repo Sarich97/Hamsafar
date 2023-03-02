@@ -163,8 +163,13 @@ public class TripDetalActivity extends AppCompatActivity {
         });
 
         deleteTripBtn.setOnClickListener(view -> {
-            UsersRef.collection("posts").document(postID).delete();
-            gotoMainIntent();
+            if(booksArrayList.size() > 0) {
+                showToast(this,"Нельзя удалить поезду пока есть активные заявки");
+            } else  {
+                bookRef.collection("posts").document(postID).delete();
+                gotoMainIntent();
+            }
+
         });
 
     }

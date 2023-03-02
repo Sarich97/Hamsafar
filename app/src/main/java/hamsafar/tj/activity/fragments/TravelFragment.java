@@ -45,6 +45,10 @@ public class TravelFragment extends Fragment {
     ArrayList<Post> posts = new ArrayList<>();
     private ProgressBar progressBarPostLoad;;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

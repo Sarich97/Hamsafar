@@ -1,28 +1,41 @@
 <resources>
     <string name="app_name">Hamsafar</string>
-    <string name="migrant_media_login_page">Войдите в аккаунт, чтобы максимально использовать возможности Migrant Media</string>
-    <string name="btn_login">Вход в аккаунт</string>
-    <string name="email">Ваш email</string>
-    <string name="password">Ваш пароль</string>
-    <string name="create_pass">Придумайте пароль</string>
-    <string name="user_name">Ваше имя</string>
+    <string name="buttonLogin">Вход в аккаунт</string>
+    <string name="editEmail">Ваш email</string>
+    <string name="editPass">Ваш пароль</string>
+    <string name="editPassCreat">Придумайте пароль</string>
+    <string name="editUserName">Ваше имя</string>
     <string name="creat_post">Новая запись</string>
-    <string name="add_post">Опубликовать</string>
-    <string name="text_post">Введите текст записи..</string>
-    <string name="registetr_btn_text">Зарегистрироваться</string>
     <string name="login_btn_text">Вход в аккаунт</string>
     <string name="user_pass">Ваш пароль</string>
-    <string name="register_btn_text">Зарегистрироваться</string>
-    <string name="political_auth">Нажимая <b>«Зарегистрироваться»,</b> Вы принимаете <b>настоящие условия</b> использования сервиса</string>
-    <string name="auth_salam">Регистрация</string>
-    <string name="auth_text_div">Зарегистрируйтесь чтобы создавать поездки</string>
-    <string name="auth_title">Вход в аккаунт</string>
-    <string name="auth_login_div">Войдите в аккаунт чтобы воспользоваться всеми возможностями сервиса</string>
-    <string name="phone_number">+992 | номер телефона</string>
-    <string name="button">Button</string>
-    <string name="sing_in">У вас есть аккаунт? <b>Вход</b></string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="buttonRegister">Зарегистрироваться</string>
+    <string name="textTeamOfServis">Нажимая <b>«Зарегистрироваться»,</b> Вы принимаете <b>настоящие условия</b> использования сервиса</string>
+    <string name="textRegisterTitle">Регистрация</string>
+    <string name="textRegisterDiv">Зарегистрируйтесь чтобы создавать поездки</string>
+    <string name="textAuthTitle">Вход в аккаунт</string>
+    <string name="textLoginDiv">Войдите в аккаунт чтобы воспользоваться всеми возможностями сервиса</string>
+    <string name="editPhoneUser">+992 | номер телефона</string>
+    <string name="field_emailMessage">Обязательное поле и не менее 5 символов</string>
+    <string name="field_passMessage">Обязательное поле и не менее 6 символов</string>
+    <string name="notFoundUserMessage">Ошибка входа в аккаунт, пользователь с таким email не найден</string>
+    <string name="buttonRegisterCoun">Продолжить</string>
+    <string name="field_nameRegister">Обязательное поле и не менее 3 символов</string>
+    <string name="field_phoneRegister">Обязательное поле и не менее 7 символов без +992</string>
+    <string name="erro_registerMessage">Ошибка регистрации нового пользователя, повторите попытку позже\nПользователь с таким email уже существует</string>
+    <string name="erro_registerMessageS">Ошибка регистрации нового пользователя, повторите попытку позже</string>
+    <string name="spinner_CityMessage">Укажите ваш город</string>
+    <string name="textEditRegister">Укажите ваше имя и номер телефона</string>
+    <string name="textEditCreat">Укажите направление маршрута</string>
+    <string name="textEditCreatTrip">Укажите дату и время маршрута</string>
+    <string name="textEditCreatAn">Укажите цену, кол-во мест и марки авто</string>
+    <string name="buttonCreatTrip">Создать поездку</string>
+    <string name="editDate">Дата</string>
+    <string name="editTime">Время</string>
+    <string name="editCarModel">Марка автомобиля</string>
+    <string name="editPrice">Цена за пассажира</string>
+    <string name="editSeat">Количество мест</string>
+    <string name="editComments">Комментарии...</string>
+    <string name="buttonTripCreat">Создать заявку</string>
 
 
 </resources>

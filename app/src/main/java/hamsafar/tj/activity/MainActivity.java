@@ -29,10 +29,10 @@ public class MainActivity extends  AppCompatActivity {
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch (item.getItemId()) {
-                case R.id.nav_directory:
+                case R.id.nav_posts:
                     replaseFragment(new TravelFragment());
                     break;
-                case R.id.nav_post:
+                case R.id.nav_creat:
                     replaseFragment(new CreatFragment());
                     break;
                 case R.id.nav_profile:

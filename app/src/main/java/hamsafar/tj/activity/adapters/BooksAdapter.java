@@ -25,9 +25,9 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     private static final String TAG = "MyActivity";
     private ArrayList<books> booksArrayList;
     private Context context;
-    private FirebaseFirestore firebaseFirestore;
+    private FirebaseFirestore bookRef;
     private FirebaseAuth firebaseAuth;
-    private String userKey;
+    private String userKey, postId;
 
     public BooksAdapter(ArrayList<books> books, Context context) {
         this.booksArrayList = books;
@@ -38,12 +38,17 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     @Override
     public BooksAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.books_item, parent, false);
+
+        bookRef = FirebaseFirestore.getInstance();
         return new ViewHolder(view);
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull BooksAdapter.ViewHolder holder, int position) {
+
+
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         userKey = firebaseAuth.getCurrentUser().getUid();
@@ -53,8 +58,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
         if(userKey.equals(books.getPostCreateID())) {
             holder.call_btn.setVisibility(View.VISIBLE);
+            holder.delete_btn.setVisibility(View.VISIBLE);
         } else {
             holder.call_btn.setVisibility(View.GONE);
+            holder.delete_btn.setVisibility(View.GONE);
         }
 
         String userNameName = books.getUserName().substring(0,1);
@@ -67,6 +74,12 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
                 .endConfig()
                 .buildRoundRect(userNameName, colorGenerator.getRandomColor(),4); // radius in
         holder.img_user.setImageDrawable(user_drawble);
+
+        final String postId = books.getPostID();
+        final String booksId = booksArrayList.get(position).getUserID();
+        holder.delete_btn.setOnClickListener(view1 -> {
+            bookRef.collection("posts/" + postId + "/books").document(booksId).delete();
+        });
     }
 
     @Override
@@ -80,13 +93,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
         ImageView img_user;
         TextView user_name;
-        Button call_btn;
+        Button call_btn, delete_btn;
 
         public ViewHolder(View view) {
             super(view);
             img_user = view.findViewById(R.id.userImageBooks);
             user_name = view.findViewById(R.id.userNameBook);
             call_btn = view.findViewById(R.id.buttonCall);
+            delete_btn  = view.findViewById(R.id.buttonDelete);
+
 
             //tv_date = view.findViewById(R.id.comment_date);
         }
