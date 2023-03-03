@@ -40,9 +40,9 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
     @Override
     public void onBindViewHolder(@NonNull CardViewHold holder, int position) {
         CardViewModel cardHelper = cardViewModels.get(position);
-        holder.image.setImageResource(cardHelper.getImageCard());
-        holder.title.setText(cardHelper.getTitleCard());
-        holder.relativeLayout.setBackground(cardHelper.getColorCard());
+        holder.imageViewCard.setImageResource(cardHelper.getImageCard());
+        holder.textViewTitleCard.setText(cardHelper.getTitleCard());
+        holder.relativeLayoutCard.setBackground(cardHelper.getColorCard());
     }
 
     @Override
@@ -53,18 +53,18 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
 
     public class CardViewHold extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView image;
-        TextView title;
-        RelativeLayout relativeLayout;
+        ImageView imageViewCard;
+        TextView textViewTitleCard;
+        RelativeLayout relativeLayoutCard;
 
 
         public CardViewHold(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             //hooks
-            image = itemView.findViewById(R.id.cardImage);
-            title = itemView.findViewById(R.id.titleCard);
-            relativeLayout = itemView.findViewById(R.id.cardColor);
+            imageViewCard = itemView.findViewById(R.id.cardImage);
+            textViewTitleCard = itemView.findViewById(R.id.titleCard);
+            relativeLayoutCard = itemView.findViewById(R.id.cardColor);
 
         }
 

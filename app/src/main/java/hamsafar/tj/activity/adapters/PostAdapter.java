@@ -28,9 +28,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     private ArrayList<Post> postsItems;
     private Context context;
 
-    private String user_id;
     FirebaseFirestore firebaseFirestore;
-    FirebaseAuth mAuth;
+
 
     public PostAdapter(ArrayList<Post> posts, Context context) {
         this.postsItems = posts;
@@ -53,16 +52,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolder holder, int position) {
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
         Post posts = postsItems.get(position);
-        holder.startTrip.setText(posts.getStartTrip());
-        holder.endTrip.setText(posts.getEndTrip());
-        holder.dateTime.setText(posts.getDataTrip() + " в " + posts.getTimeTrip());
-        holder.statusTrip.setText(posts.getIsDriverUser());
-        holder.driverName.setText(posts.getUserName());
+        holder.textViewStartTrip.setText(posts.getStartTrip());
+        holder.textViewEndTrip.setText(posts.getEndTrip());
+        holder.textViewDateTime.setText(posts.getDataTrip() + " в " + posts.getTimeTrip());
+        holder.textViewStatusTrip.setText(posts.getIsDriverUser());
+        holder.textViewDriverName.setText(posts.getUserName());
 
         if(posts.getPriceTrip() == null) {
-            holder.priceTrip.setText("Договорная");
+            holder.textViewPrice.setText("Договорная");
         } else {
-            holder.priceTrip.setText(posts.getPriceTrip() + " cомони");
+            holder.textViewPrice.setText(posts.getPriceTrip() + " cомони");
         }
 
         String firstName = posts.getUserName().substring(0,1);
@@ -73,7 +72,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 .toUpperCase()
                 .endConfig()
                 .buildRoundRect(firstName, colorGenerator.getRandomColor(),4); // radius in
-        holder.driverImagePost.setImageDrawable(user_drawble);
+        holder.imageViewDriverImage.setImageDrawable(user_drawble);
         //SetDate
 
         //get user id and retrieve user image stored in Users Collection
@@ -87,18 +86,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView startTrip, endTrip, priceTrip,driverName, dateTime, statusTrip;
-        ImageView driverImagePost;
+        TextView textViewStartTrip, textViewEndTrip, textViewPrice,textViewDriverName, textViewDateTime, textViewStatusTrip;
+        ImageView imageViewDriverImage;
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            startTrip = view.findViewById(R.id.start_of_route);
-            endTrip = view.findViewById(R.id.end_of_route);
-            priceTrip = view.findViewById(R.id.trip_Price);
-            driverName = view.findViewById(R.id.driverName);
-            driverImagePost = view.findViewById(R.id.driverImage);
-            dateTime = view.findViewById(R.id.dateTimeTrip);
-            statusTrip = view.findViewById(R.id.statusTravel);
+            textViewStartTrip = view.findViewById(R.id.start_of_route);
+            textViewEndTrip = view.findViewById(R.id.end_of_route);
+            textViewPrice = view.findViewById(R.id.trip_Price);
+            textViewDriverName = view.findViewById(R.id.driverName);
+            imageViewDriverImage = view.findViewById(R.id.driverImage);
+            textViewDateTime = view.findViewById(R.id.dateTimeTrip);
+            textViewStatusTrip = view.findViewById(R.id.statusTravel);
             view.setOnClickListener(this);
         }
 

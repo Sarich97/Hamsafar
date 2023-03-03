@@ -91,21 +91,15 @@ public class TravelFragment extends Fragment {
         query.addSnapshotListener((documentSnapshots, e) -> {
             if (e != null) {
                 progressBarPostLoad.setVisibility(View.INVISIBLE);
-                imageViewNotPost.setVisibility(View.VISIBLE);
-                textViewNotPost.setVisibility(View.VISIBLE);
             } else {
                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
                         Post post = doc.getDocument().toObject(Post.class);
                         posts.add(post);
                         postAdapter.notifyDataSetChanged();
-                        imageViewNotPost.setVisibility(View.INVISIBLE);
-                        textViewNotPost.setVisibility(View.INVISIBLE);
                         progressBarPostLoad.setVisibility(View.INVISIBLE);
                     } else {
                         progressBarPostLoad.setVisibility(View.INVISIBLE);
-                        imageViewNotPost.setVisibility(View.VISIBLE);
-                        textViewNotPost.setVisibility(View.VISIBLE);
                     }
                 }
             }
