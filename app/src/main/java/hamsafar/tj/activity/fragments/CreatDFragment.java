@@ -1,8 +1,10 @@
 package hamsafar.tj.activity.fragments;
 
+import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,6 +52,7 @@ public class CreatDFragment extends Fragment {
     private TextView textViewDateTrip, textViewTimeTrip;
     private Button buttonCreatTrip;
     private ProgressBar progressBarPost;
+    private Dialog dialogCreatPost;
 
 
     private FirebaseAuth firebaseAuth;
@@ -70,6 +74,8 @@ public class CreatDFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance(); // DateBase settings
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
+
+        dialogCreatPost= new Dialog(getContext());
 
 
         spinnerStartTrip = view.findViewById(R.id.spinnerStartTripD);
@@ -177,6 +183,14 @@ public class CreatDFragment extends Fragment {
         });
     }
 
+    private void showDialogCreatPost() {
+        dialogCreatPost.setContentView(R.layout.creat_post_dialog);
+        dialogCreatPost.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView imageView = dialogCreatPost.findViewById(R.id.imageDialog);
+        TextView textView = dialogCreatPost.findViewById(R.id.textDialog);
+        dialogCreatPost.show();
+    }
+
     private void shwoDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, -1);
@@ -231,7 +245,7 @@ public class CreatDFragment extends Fragment {
 
                     }
 
-                    textViewDateTrip.setText(dayOfMonth + "." + (monthName) + "." + year);
+                    textViewDateTrip.setText(String.format("%s-%s-%d", dayMonthText(dayOfMonth), monthName, year));
 
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());

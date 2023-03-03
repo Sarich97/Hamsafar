@@ -33,10 +33,10 @@ import hamsafar.tj.activity.models.books;
 
 public class TripDetalActivity extends AppCompatActivity {
 
-    private TextView tripNameD, tripStatusD, tripPriceD, tripStartD,tripEndD;
-    private TextView commentTripD, tripDateD, tripCarModelD, tripSeatD;
-    private ImageView userImage;
-    private Button bookTripBtn, endBookTripBtn, deleteTripBtn;
+    private TextView textViewDriverName, textViewTripStatus, textViewTripPrice, textViewTripStart,textViewTripEnd;
+    private TextView textViewComment, textViewDateTime, textViewCarModel, textViewSeat;
+    private ImageView imageViewUserImage;
+    private Button buttonBookTrip, buttonBookCancel, buttonBookDelete;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore UsersRef,bookRef;
@@ -60,19 +60,19 @@ public class TripDetalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_detal);
 
-        userImage = findViewById(R.id.driverImage);
-        tripNameD = findViewById(R.id.driverName);
-        tripStatusD = findViewById(R.id.statusTravel);
-        tripPriceD = findViewById(R.id.trip_Price);
-        tripStartD = findViewById(R.id.start_of_route);
-        tripEndD = findViewById(R.id.end_of_route);
-        tripDateD = findViewById(R.id.dateTimeTrip);
-        tripCarModelD = findViewById(R.id.carModel);
-        tripSeatD = findViewById(R.id.seatTrip);
-        bookTripBtn = findViewById(R.id.bookButton);
-        endBookTripBtn = findViewById(R.id.bookDeletButton);
-        deleteTripBtn = findViewById(R.id.bookEndButton);
-        commentTripD = findViewById(R.id.textCommentView);
+        imageViewUserImage = findViewById(R.id.driverImage);
+        textViewDriverName = findViewById(R.id.driverName);
+        textViewTripStatus = findViewById(R.id.statusTravel);
+        textViewTripPrice = findViewById(R.id.trip_Price);
+        textViewTripStart = findViewById(R.id.start_of_route);
+        textViewTripEnd = findViewById(R.id.end_of_route);
+        textViewDateTime = findViewById(R.id.dateTimeTrip);
+        textViewCarModel = findViewById(R.id.carModel);
+        textViewSeat = findViewById(R.id.seatTrip);
+        buttonBookTrip = findViewById(R.id.bookButton);
+        buttonBookCancel = findViewById(R.id.bookDeletButton);
+        buttonBookDelete = findViewById(R.id.bookEndButton);
+        textViewComment = findViewById(R.id.textCommentView);
 
         firebaseAuth = FirebaseAuth.getInstance();
         UsersRef = FirebaseFirestore.getInstance();
@@ -103,25 +103,25 @@ public class TripDetalActivity extends AppCompatActivity {
 
 
 
-        tripNameD.setText(tripNameUser);
-        tripStatusD.setText(isUserDriver);
+        textViewDriverName.setText(tripNameUser);
+        textViewTripStatus.setText(isUserDriver);
 
-        tripStartD.setText(tripStart);
-        tripEndD.setText(tripEnd);
-        tripDateD.setText(tripDate);
-        tripSeatD.setText(tripSeat + " чел.");
-        commentTripD.setText("Коментарии: " + comments);
+        textViewTripStart.setText(tripStart);
+        textViewTripEnd.setText(tripEnd);
+        textViewDateTime.setText(tripDate);
+        textViewSeat.setText(tripSeat + " чел.");
+        textViewComment.setText("Коментарии: " + comments);
 
         if(tripBrandCar == null) {
-            tripCarModelD.setText("Марко автомобиля\nНе важно");
+            textViewCarModel.setText("Марко автомобиля\nНе важно");
         } else {
-            tripCarModelD.setText(tripBrandCar);
+            textViewCarModel.setText(tripBrandCar);
         }
 
         if(tripPrice == null) {
-            tripPriceD.setText("договорная");
+            textViewTripPrice.setText("договорная");
         } else {
-            tripPriceD.setText(tripPrice + " cомони");
+            textViewTripPrice.setText(tripPrice + " cомони");
         }
 
 
@@ -134,14 +134,14 @@ public class TripDetalActivity extends AppCompatActivity {
                 .toUpperCase()
                 .endConfig()
                 .buildRoundRect(firstName, colorGenerator.getRandomColor(),4); // radius in
-        userImage.setImageDrawable(user_drawble);
+        imageViewUserImage.setImageDrawable(user_drawble);
 
 
         showBookBtnStatus();
         showBooksList();
 
 
-        bookTripBtn.setOnClickListener(view -> {
+        buttonBookTrip.setOnClickListener(view -> {
             UsersRef.collection("users").document(userKey).get().addOnCompleteListener(task -> {
                 if(task.isSuccessful()) {
                     String user_name = task.getResult().getString("userName");
@@ -153,16 +153,16 @@ public class TripDetalActivity extends AppCompatActivity {
 
         });
 
-        endBookTripBtn.setOnClickListener(view -> {
+        buttonBookCancel.setOnClickListener(view -> {
             bookRef.collection("posts/" + postID + "/books").document(userKey).delete();
-            endBookTripBtn.setVisibility(View.GONE);
+            buttonBookCancel.setVisibility(View.GONE);
             booksAdapter.notifyDataSetChanged();
-            bookTripBtn.setVisibility(View.VISIBLE);
+            buttonBookTrip.setVisibility(View.VISIBLE);
             gotoMainIntent();
             showToast(this,"Ваше бронирование отменено");
         });
 
-        deleteTripBtn.setOnClickListener(view -> {
+        buttonBookDelete.setOnClickListener(view -> {
             if(booksArrayList.size() > 0) {
                 showToast(this,"Нельзя удалить поезду пока есть активные заявки");
             } else  {
@@ -205,16 +205,16 @@ public class TripDetalActivity extends AppCompatActivity {
                 try {
                     if (documentSnapshot.exists()) {
                         buttonGetForPassengerRequest();
-                        bookTripBtn.setVisibility(View.GONE);
-                        endBookTripBtn.setVisibility(View.VISIBLE);
+                        buttonBookTrip.setVisibility(View.GONE);
+                        buttonBookCancel.setVisibility(View.VISIBLE);
                     } else {
                         if(userKey.equals(tripUserId)) {
-                            deleteTripBtn.setVisibility(View.VISIBLE);
-                            bookTripBtn.setVisibility(View.GONE);
+                            buttonBookDelete.setVisibility(View.VISIBLE);
+                            buttonBookTrip.setVisibility(View.GONE);
                         } else {
                             buttonSetForPassengerRequest();
-                            endBookTripBtn.setVisibility(View.GONE);
-                            bookTripBtn.setVisibility(View.VISIBLE);
+                            buttonBookCancel.setVisibility(View.GONE);
+                            buttonBookTrip.setVisibility(View.VISIBLE);
                         }
 
                     }
@@ -232,9 +232,9 @@ public class TripDetalActivity extends AppCompatActivity {
         String tripUserId = getIntent().getExtras().getString("driverID");
         if(isUserDriver.equals("Ищу водителя"))
         {
-            bookTripBtn.setText("Принять заявку");
+            buttonBookTrip.setText("Принять заявку");
         } else {
-            bookTripBtn.setText("Забронировать");
+            buttonBookTrip.setText("Забронировать");
         }
     }
 
@@ -244,9 +244,9 @@ public class TripDetalActivity extends AppCompatActivity {
         String tripUserId = getIntent().getExtras().getString("driverID");
         if(isUserDriver.equals("Ищу водителя"))
         {
-            endBookTripBtn.setText("Отменить заявку");
+            buttonBookCancel.setText("Отменить заявку");
         } else {
-            endBookTripBtn.setText("Отменить бронирование");
+            buttonBookCancel.setText("Отменить бронирование");
         }
     }
 
@@ -261,8 +261,8 @@ public class TripDetalActivity extends AppCompatActivity {
                 book.put("postID", postID);
                 book.put("postCreateID", tripUserId);
                 book.put("timestamp", FieldValue.serverTimestamp());
-                bookTripBtn.setVisibility(View.GONE);
-                endBookTripBtn.setVisibility(View.VISIBLE);
+                buttonBookTrip.setVisibility(View.GONE);
+                buttonBookCancel.setVisibility(View.VISIBLE);
                 showToast(this,"Вы успешно забронировали поездку");
                 bookRef.collection("posts/" + postID + "/books").document(userKey).set(book);
             } else {

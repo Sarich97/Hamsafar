@@ -9,14 +9,14 @@
 
     <TextView
         android:id="@+id/textView"
-        style="@style/authTextTitle"
+        style="@style/textViewTitle"
         android:text="@string/textRegisterTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
-        style="@style/authTextDiv"
+        style="@style/textViewDiv"
         android:text="@string/textRegisterDiv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.52"
@@ -49,7 +49,7 @@
 
     <Button
         android:id="@+id/registerNextBtn"
-        style="@style/ButtonnStyle"
+        style="@style/buttonThemesGreen"
         android:text="@string/buttonRegisterCoun"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

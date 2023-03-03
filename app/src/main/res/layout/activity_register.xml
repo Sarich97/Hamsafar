@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/textView"
-        style="@style/authTextTitle"
+        style="@style/textViewTitle"
         android:text="@string/textRegisterTitle"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/textView2"
-        style="@style/authTextDiv"
+        style="@style/textViewDiv"
         android:layout_marginTop="20dp"
         android:text="@string/textEditRegister"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
 
     <Spinner
         android:id="@+id/spinnerGetCityUser"
-        style="@style/SpinnerThemeGetTown"
+        style="@style/spinnerTheamCityReg"
         android:entries="@array/townListReg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
 
     <Button
         android:id="@+id/registerUserBtn"
-        style="@style/ButtonnStyle"
+        style="@style/buttonThemesGreen"
         android:text="@string/buttonRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,7 @@
 
     <TextView
         android:id="@+id/team_of_servis"
-        style="@style/btnTextViewStyleOnAuthPages"
+        style="@style/textViewTeamOfServis"
         android:text="@string/textTeamOfServis"
         android:textColor="@color/colorText"
         android:textSize="14sp"

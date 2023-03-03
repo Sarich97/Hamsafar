@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,9 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
+import hamsafar.tj.activity.RegisterActivity;
 import hamsafar.tj.activity.models.CardViewModel;
 
 public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardViewHold> {
@@ -73,8 +77,10 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
             int clickedPosition = getAdapterPosition();
             switch (clickedPosition) {
                 case 0:
-//                        Intent intent = new Intent(context, CreatPostActivity.class);
-//                        context.startActivity(intent);
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(itemView.getContext(), R.style.BottomSheetDialogTheme);
+                    bottomSheetDialog.setContentView(R.layout.roadstate_sheet);
+                    bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    bottomSheetDialog.show();
                     break;
 
                 default:

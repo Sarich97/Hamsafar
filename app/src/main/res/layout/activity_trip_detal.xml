@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/play"
-            android:text="Sarvar Sultonov"
+            android:text=" "
             android:textColor="@color/colorBlack"
             android:textSize="18dp"
             android:textStyle="bold"
@@ -76,7 +76,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/play"
-            android:text="договорная"
+            android:text="сомони"
             android:textColor="@color/colorBlack"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:fontFamily="@font/play"
-            android:text="Душанбе"
+            android:text=" "
             android:textColor="@color/colorBlack"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:fontFamily="@font/play"
-            android:text="Истаравшан"
+            android:text=" "
             android:textColor="@color/colorBlack"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -220,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/play"
-                android:text="24.фев.2021 в 14:30"
+                android:text="дата"
                 android:textColor="@color/colorBlack"
                 android:textSize="16dp" />
 
@@ -258,7 +258,7 @@
                 android:drawableLeft="@drawable/ic_baseline_airline_seat_recline_extra_24"
                 android:drawablePadding="12dp"
                 android:fontFamily="@font/play"
-                android:text="4 чел."
+                android:text="кол-во чел."
                 android:textColor="@color/colorBlack"
                 android:textSize="16dp" />
 
@@ -270,7 +270,7 @@
                 android:drawableLeft="@drawable/ic_baseline_directions_car_24"
                 android:drawablePadding="12dp"
                 android:fontFamily="@font/play"
-                android:text="Mersader Bens"
+                android:text="марка авто"
                 android:textColor="@color/colorText"
                 android:textSize="16dp" />
 
@@ -342,11 +342,8 @@
 
     <Button
         android:id="@+id/bookButton"
-        style="@style/ButtonnStyle"
+        style="@style/buttonThemesGreen"
         android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
         android:text="Забронировать"
@@ -358,14 +355,10 @@
 
     <Button
         android:id="@+id/bookDeletButton"
-        style="@style/ButtonTripStDelete"
-        android:layout_width="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        style="@style/buttonThemesRed"
         android:layout_marginBottom="16dp"
-        android:layout_height="52dp"
         android:layout_weight="1"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:text="Отменить бронирование"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -373,14 +366,12 @@
 
     <Button
         android:id="@+id/bookEndButton"
-        style="@style/ButtonTripStDelete"
+        style="@style/buttonThemesRed"
         android:layout_width="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:layout_height="52dp"
         android:layout_weight="1"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:text="Удалить заявку"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

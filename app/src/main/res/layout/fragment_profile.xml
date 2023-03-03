@@ -82,6 +82,7 @@
         android:fontFamily="@font/play"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
+        android:visibility="invisible"
         android:textSize="18dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="13dp"
@@ -109,9 +110,8 @@
                 android:fontFamily="@font/play"
                 android:text="У вас нет активных заявок"
                 android:textAlignment="center"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorGrey"
                 android:textSize="18dp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewProfilNotPost" />

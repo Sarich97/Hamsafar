@@ -42,16 +42,17 @@
     </style>
 
 
-    <style name="authTextTitle">
+    <style name="textViewTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginTop">10dp</item>
         <item name="android:fontFamily">@font/play_bold</item>
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">30dp</item>
     </style>
 
-    <style name="authTextDiv">
+    <style name="textViewDiv">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">24dp</item>
@@ -62,23 +63,37 @@
     </style>
 
 
-    <style name="ButtonTh">
+    <style name="buttonThemesGreen">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">24dp</item>
-        <item name="android:layout_marginBottom">68dp</item>
-        <item name="android:layout_marginEnd">24dp</item>
-        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginStart">22dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginEnd">22dp</item>
         <item name="android:fontFamily">@font/play</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:clickable">true</item>
-        <item name="android:minHeight">48dp</item>
+        <item name="android:background">@drawable/btn_style</item>
     </style>
 
-    <style name="btnTextViewStyleOnAuthPages">
+
+    <style name="buttonThemesRed">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginStart">22dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginEnd">22dp</item>
+        <item name="android:fontFamily">@font/play</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:background">@drawable/btn_style_red</item>
+    </style>
+
+
+    <style name="textViewTeamOfServis">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">24dp</item>
@@ -91,16 +106,7 @@
         <item name="android:minHeight">48dp</item>
     </style>
 
-    <style name="btnBackPageStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">24dp</item>
-        <item name="android:layout_marginTop">12dp</item>
-        <item name="android:clickable">true</item>
-        <item name="android:minHeight">48dp</item>
-    </style>
-
-    <style name="SpinnerTheme">
+    <style name="spinnerTheam">
         <item name="android:textStyle">bold</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -117,20 +123,24 @@
         <item name="android:background">@drawable/edit_text_input</item>
     </style>
 
-    <style name="dataTimePicker">
-        <item name="android:layout_width">0.0dip</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1.0</item>
-        <item name="android:fontFamily">@font/play</item>
-        <item name="android:textSize">16dp</item>
-        <item name="android:textAllCaps">false</item>
+    <style name="spinnerTheamCityReg">
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorWhite</item>
-
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:fontFamily">@font/play</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textColorHint">@color/colorBold</item>
+        <item name="android:textColor">@color/colorBold</item>
+        <item name="android:background">@drawable/edit_text_input</item>
     </style>
 
-    <style name="passengerSeatStyle">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="dataTimePicker">
+        <item name="android:layout_width">0.0dip</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1.0</item>
         <item name="android:fontFamily">@font/play</item>
@@ -154,5 +164,6 @@
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
 
 </resources>

@@ -1,5 +1,6 @@
 package hamsafar.tj.activity.fragments;
 
+import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import android.app.DatePickerDialog;
@@ -152,6 +153,7 @@ public class CreatPFragment extends Fragment {
 
     private void shwoDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -1);
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -202,10 +204,10 @@ public class CreatPFragment extends Fragment {
                             break;
 
                     }
-
-                    textViewDate.setText(dayOfMonth + "." + (monthName) + "." + year);
+                    textViewDate.setText(String.format("%s-%s-%d", dayMonthText(dayOfMonth), monthName, year));
 
                 }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
         datePickerDialog.show();
     }
 

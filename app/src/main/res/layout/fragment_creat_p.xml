@@ -20,7 +20,7 @@
 
             <TextView
                 android:id="@+id/textView6"
-                style="@style/authTextDiv"
+                style="@style/textViewDiv"
                 android:text="@string/textEditCreat"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,7 @@
 
             <Spinner
                 android:id="@+id/spinnerStartTripP"
-                style="@style/SpinnerTheme"
+                style="@style/spinnerTheam"
                 android:layout_marginBottom="12dp"
                 android:entries="@array/townList"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
 
             <Spinner
                 android:id="@+id/spinnerEndTripP"
-                style="@style/SpinnerTheme"
+                style="@style/spinnerTheam"
                 android:layout_marginBottom="12dp"
                 android:entries="@array/townListEnd"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
 
             <TextView
                 android:id="@+id/textView5"
-                style="@style/authTextDiv"
+                style="@style/textViewDiv"
                 android:layout_marginTop="12dp"
                 android:text="@string/textEditCreatTrip"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
 
             <Button
                 android:id="@+id/creatTripP"
-                style="@style/ButtonnStyle"
+                style="@style/buttonThemesGreen"
                 android:text="@string/buttonTripCreat"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

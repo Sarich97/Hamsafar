@@ -36,9 +36,9 @@ import hamsafar.tj.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText userName, userPhoneNum; // Поля ввод юзера
-    private Button creatNewUserBtn; // Кнопка регистрации
-    private Spinner userCitySpinner;
+    private EditText editTextUserName, editTextUserPhone; // Поля ввод юзера
+    private Button buttonCreatNewUser; // Кнопка регистрации
+    private Spinner spinnerUserCity;
     private ProgressBar progressRegister; // Прогрессбар страница(фрагмент) регистрации
     private TextView textViewTeamOfServis;
     private String userID;
@@ -56,31 +56,31 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();  // DataBase variable
 
-        userName = findViewById(R.id.user_Name);
-        userPhoneNum = findViewById(R.id.user_Phone);
-        userCitySpinner = findViewById(R.id.spinnerGetCityUser);
-        creatNewUserBtn = findViewById(R.id.registerUserBtn);
+        editTextUserName = findViewById(R.id.user_Name);
+        editTextUserPhone = findViewById(R.id.user_Phone);
+        spinnerUserCity = findViewById(R.id.spinnerGetCityUser);
+        buttonCreatNewUser = findViewById(R.id.registerUserBtn);
         progressRegister = findViewById(R.id.progressRegisterActivity);
         textViewTeamOfServis = findViewById(R.id.team_of_servis);
 
 
 
         // Нажатие на кнопки регистрации
-        creatNewUserBtn.setOnClickListener(view -> {
+        buttonCreatNewUser.setOnClickListener(view -> {
 
             String email = getIntent().getExtras().getString("userEmail");
-            String name = userName.getText().toString();
-            String phone = userPhoneNum.getText().toString();
-            String user_city = userCitySpinner.getSelectedItem().toString();
+            String name = editTextUserName.getText().toString();
+            String phone = editTextUserPhone.getText().toString();
+            String user_city = spinnerUserCity.getSelectedItem().toString();
             String password = getIntent().getExtras().getString("userPass");
 
             if(name.length() < 3)
             {
-                userName.setError(getString(field_nameRegister));
+                editTextUserName.setError(getString(field_nameRegister));
 
 
             } else if(phone.length() < 7) {
-                userPhoneNum.setError(getString(field_phoneRegister));
+                editTextUserPhone.setError(getString(field_phoneRegister));
             } else if(user_city.equals(getString(spinner_CityMessage))) {
                 showToast(this,getString(spinner_CityMessage));
             } else
@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void createNewUser(String email, String password, String name, String phone, String user_city) {
         progressRegister.setVisibility(View.VISIBLE);
-        creatNewUserBtn.setVisibility(View.INVISIBLE);
+        buttonCreatNewUser.setVisibility(View.INVISIBLE);
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
@@ -123,16 +123,16 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(mainIntent);
                         finish();
                         progressRegister.setVisibility(View.INVISIBLE);
-                        creatNewUserBtn.setVisibility(View.VISIBLE);
+                        buttonCreatNewUser.setVisibility(View.VISIBLE);
                     } else  {
                         progressRegister.setVisibility(View.INVISIBLE);
-                        creatNewUserBtn.setVisibility(View.VISIBLE);
+                        buttonCreatNewUser.setVisibility(View.VISIBLE);
                         showToast(this, getString(erro_registerMessage));
                     }
                 });
             } else  {
                 progressRegister.setVisibility(View.INVISIBLE);
-                creatNewUserBtn.setVisibility(View.VISIBLE);
+                buttonCreatNewUser.setVisibility(View.VISIBLE);
                 showToast(this, getString(erro_registerMessageS));
             }
         });
