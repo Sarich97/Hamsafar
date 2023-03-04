@@ -1,6 +1,8 @@
 package hamsafar.tj.activity.fragments;
 
 import static hamsafar.tj.activity.utility.Utility.dayMonthText;
+import static hamsafar.tj.activity.utility.Utility.getMonthText;
+import static hamsafar.tj.activity.utility.Utility.minuteText;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import android.app.DatePickerDialog;
@@ -161,50 +163,7 @@ public class CreatPFragment extends Fragment {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 (view, year, monthOfYear, dayOfMonth) -> {
-                    String monthName;
-                    switch (monthOfYear) {
-                        case 0:
-                            monthName = "Янв";
-                            break;
-                        case 1:
-                            monthName = "Фев";
-                            break;
-                        case 2:
-                            monthName = "Март";
-                            break;
-                        case 3:
-                            monthName = "Апр";
-                            break;
-                        case 4:
-                            monthName = "Мая";
-                            break;
-                        case 5:
-                            monthName = "Июня";
-                            break;
-                        case 6:
-                            monthName = "Июля";
-                            break;
-                        case 7:
-                            monthName = "Авг";
-                            break;
-                        case 8:
-                            monthName = "Сен";
-                            break;
-                        case 9:
-                            monthName = "Окт";
-                            break;
-                        case 10:
-                            monthName = "Ноя";
-                            break;
-                        case 11:
-                            monthName = "Дек";
-                            break;
-                        default:
-                            monthName = "Invalid month";
-                            break;
-
-                    }
-                    textViewDate.setText(String.format("%s-%s-%d", dayMonthText(dayOfMonth), monthName, year));
+                    textViewDate.setText(String.format("%s-%s-%d", dayMonthText(dayOfMonth), getMonthText(monthOfYear), year));
 
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
@@ -216,7 +175,9 @@ public class CreatPFragment extends Fragment {
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
         boolean is24HourView= true;
-        timePickerDialog = new TimePickerDialog(getContext(), (timePicker, i, i1) -> textViewTime.setText(i + ":" + i1),mHour,mMinute,is24HourView);
+        timePickerDialog = new TimePickerDialog(getContext(), (timePicker, i, i1) -> {
+            textViewTime.setText(String.format("%s:%s", dayMonthText(i), minuteText(i1)));
+        },mHour,mMinute,is24HourView);
         timePickerDialog.show();
     }
 }

@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.Color;
 import android.os.Bundle;
+
+import com.google.android.material.badge.BadgeDrawable;
 
 import hamsafar.tj.R;
 import hamsafar.tj.activity.fragments.CreatFragment;
@@ -18,6 +21,12 @@ public class MainActivity extends  AppCompatActivity {
     ActivityMainBinding binding;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -25,6 +34,12 @@ public class MainActivity extends  AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaseFragment(new TravelFragment());
+
+
+
+        BadgeDrawable badgeDrawable = binding.bottomNavigationView.getOrCreateBadge(R.id.nav_creat);
+        badgeDrawable.setNumber(10);
+        badgeDrawable.setVisible(true);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
