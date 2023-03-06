@@ -40,16 +40,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageDialog" />
 
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonCalncel"
                 style="@style/buttonThemesGreen"
                 android:layout_marginBottom="24dp"
+
                 android:text="Да"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textDialog" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button"
                 style="@style/buttonThemesRed"
                 android:text="Отмена"

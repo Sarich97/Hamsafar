@@ -340,7 +340,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bookButton"
         style="@style/buttonThemesGreen"
         android:layout_width="0dp"
@@ -353,7 +353,7 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bookDeletButton"
         style="@style/buttonThemesRed"
         android:layout_marginBottom="16dp"
@@ -364,12 +364,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bookEndButton"
         style="@style/buttonThemesRed"
-        android:layout_width="0dp"
         android:layout_marginBottom="16dp"
-        android:layout_height="52dp"
         android:layout_weight="1"
         android:visibility="invisible"
         android:text="Удалить заявку"
