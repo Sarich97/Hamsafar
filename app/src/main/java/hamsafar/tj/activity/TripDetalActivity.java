@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +45,7 @@ public class TripDetalActivity extends AppCompatActivity {
     private FirebaseFirestore UsersRef,bookRef;
     private String post_id;
     private String userKey;
+    private Dialog dialogCreatPost;
 
 
     private RecyclerView recyclerViewBook;
@@ -78,6 +82,9 @@ public class TripDetalActivity extends AppCompatActivity {
         UsersRef = FirebaseFirestore.getInstance();
         bookRef = FirebaseFirestore.getInstance();
         userKey = firebaseAuth.getCurrentUser().getUid();
+
+
+        dialogCreatPost= new Dialog(TripDetalActivity.this);
 
 
 
@@ -256,6 +263,15 @@ public class TripDetalActivity extends AppCompatActivity {
         }
     }
 
+    private void showDialogCreatPost() {
+        dialogCreatPost.setContentView(R.layout.creat_post_dialog);
+        dialogCreatPost.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView imageView = dialogCreatPost.findViewById(R.id.imageDialog);
+        TextView textView = dialogCreatPost.findViewById(R.id.textDialog);
+        dialogCreatPost.show();
+    }
+
+
     private void bookTrip(String user_name, String user_phone, String postID) {
         String tripUserId = getIntent().getExtras().getString("driverID");
         String tripStart = getIntent().getExtras().getString("locationFrom");
@@ -263,6 +279,7 @@ public class TripDetalActivity extends AppCompatActivity {
         String tripDate = getIntent().getExtras().getString("date");
 
         bookRef.collection("posts/" + postID + "/books").document(userKey).get().addOnCompleteListener(task -> {
+            buttonBookTrip.setVisibility(View.GONE);
             if (!task.getResult().exists()) {
                 Map<String, Object> book = new HashMap<>();
                 book.put("userID", userKey);
@@ -276,10 +293,11 @@ public class TripDetalActivity extends AppCompatActivity {
                 book.put("timestamp", FieldValue.serverTimestamp());
                 buttonBookTrip.setVisibility(View.GONE);
                 buttonBookCancel.setVisibility(View.VISIBLE);
-                showToast(this,"Вы успешно забронировали поездку");
+                showDialogCreatPost();
                 //bookRef.collection("posts/" + postID + "/books").document(userKey).set(book);
                 bookRef.collection("notificat/" + tripUserId +  "/books").document(postID).set(book);
             } else {
+
 //                firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUser).delete();
             }
         });

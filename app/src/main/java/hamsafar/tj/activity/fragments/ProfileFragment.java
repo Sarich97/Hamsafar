@@ -11,22 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+
 
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
-import hamsafar.tj.activity.adapters.PostAdapter;
-import hamsafar.tj.activity.models.Post;
+import hamsafar.tj.activity.adapters.CardViewAdapter;
+import hamsafar.tj.activity.adapters.ListAdapter;
+import hamsafar.tj.activity.models.CardViewModel;
+import hamsafar.tj.activity.models.listModel;
 
 
 public class ProfileFragment extends Fragment {
@@ -35,13 +35,12 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore,travelPostRef ;
     private String userID;
 
-    private RecyclerView recyclerViewPost;
-    PostAdapter postAdapter;
-    ArrayList<Post> posts = new ArrayList<>();
+    private TextView textViewUserName, textViewUserEmail;
+    private ImageView userImageP;
 
-    private TextView userNameP, userPhoneP;
-    private ImageView userImageP, loadPostImage;
-    private TextView textPostNot;
+
+    private RecyclerView recyclerViewList;
+    private RecyclerView.Adapter recyclerList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +48,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-
+        recyclerViewList = view.findViewById(R.id.recyclerViewList); //CARDVIEW
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -58,23 +57,32 @@ public class ProfileFragment extends Fragment {
         userID = firebaseAuth.getCurrentUser().getUid();
 
 
-        recyclerViewPost = view.findViewById(R.id.recyclerViewMyPosts);
-        recyclerViewPost.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        postAdapter = new PostAdapter(posts, getContext());
-        recyclerViewPost.setAdapter(postAdapter);
-
-        userNameP = view.findViewById(R.id.userNameProfile);
-        userPhoneP = view.findViewById(R.id.userPhoneProfile);
+        textViewUserName = view.findViewById(R.id.userNameProfile);
+        textViewUserEmail = view.findViewById(R.id.userEmail);
         userImageP = view.findViewById(R.id.userImageProfile);
-        loadPostImage = view.findViewById(R.id.imageViewProfilNotPost);
-        textPostNot = view.findViewById(R.id.textViewNotPosts);
 
-        showPostForUser();
+
         showProfileForUser();
+        showListMenu();
 
 
 
         return view;
+    }
+
+    private void showListMenu() {
+        recyclerViewList.setHasFixedSize(true);
+        recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        ArrayList<listModel> listModels = new ArrayList<>();
+        listModels.add(new listModel(R.drawable.baseline_note_add_24, "Мои заявки"));
+        listModels.add(new listModel(R.drawable.baseline_person_24_green, "Редактировать профиль"));
+        listModels.add(new listModel(R.drawable.baseline_privacy_tip_24, "Политика конфиденциальности"));
+        listModels.add(new listModel(R.drawable.baseline_help_24, "Помощь"));
+        listModels.add(new listModel(R.drawable.baseline_lens_blur_24, "О приложении"));
+
+        recyclerList = new ListAdapter(listModels, getContext());
+        recyclerViewList.setAdapter(recyclerList);
     }
 
     private void showProfileForUser() {
@@ -82,10 +90,10 @@ public class ProfileFragment extends Fragment {
             if(task.isSuccessful()) {
                 ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
                 String user_name = task.getResult().getString("userName");
-                String user_phone = task.getResult().getString("userPhone");
+                String user_phone = task.getResult().getString("userEmail");
 
-                userNameP.setText(user_name);
-                userPhoneP.setText(user_phone);
+                textViewUserName.setText(user_name);
+                textViewUserEmail.setText(user_phone);
 
                 String userNameName = user_name.substring(0,1);
 
@@ -104,31 +112,28 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void showPostForUser() {
-        Query query = travelPostRef.collection("posts");
-
-        query.addSnapshotListener((documentSnapshots, e) -> {
-            if (e != null) {
-            } else {
-                for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-                    if (doc.getType() == DocumentChange.Type.ADDED) {
-                        Post post = doc.getDocument().toObject(Post.class);
-                        if(post.getUserUD().equals(userID))
-                        {
-                            loadPostImage.setVisibility(View.INVISIBLE);
-                            textPostNot.setVisibility(View.INVISIBLE);
-                            posts.add(post);
-                            postAdapter.notifyDataSetChanged();
-                        } else {
-                            loadPostImage.setVisibility(View.VISIBLE);
-                            textPostNot.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-                }
-            }
-
-        });
-    }
+//    private void showPostForUser() {
+//        Query query = travelPostRef.collection("posts");
+//
+//        query.addSnapshotListener((documentSnapshots, e) -> {
+//            if (e != null) {
+//            } else {
+//                for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+//                    if (doc.getType() == DocumentChange.Type.ADDED) {
+//                        Post post = doc.getDocument().toObject(Post.class);
+//                        if(post.getUserUD().equals(userID))
+//                        {
+//                            posts.add(post);
+//                            postAdapter.notifyDataSetChanged();
+//                        } else {
+//
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//        });
+//    }
 
 }

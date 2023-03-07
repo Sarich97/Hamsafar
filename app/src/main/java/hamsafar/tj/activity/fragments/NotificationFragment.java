@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +36,7 @@ public class NotificationFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private CollectionReference notificatRef;
     private String userKey;
+    private ImageView imageViewUNLoadData;
 
     private RecyclerView recyclerViewBookNotif;
     NotificAdapter notificAdapter;
@@ -50,6 +52,8 @@ public class NotificationFragment extends Fragment {
         bookRef = FirebaseFirestore.getInstance();
         notificatRef = bookRef.collection("notificat");
         userKey = firebaseAuth.getCurrentUser().getUid();
+
+        imageViewUNLoadData = view.findViewById(R.id.imageViewNotifiivat);
 
         recyclerViewBookNotif = view.findViewById(R.id.booksRecyclerViewNotif);
         recyclerViewBookNotif.setHasFixedSize(true);
@@ -70,6 +74,7 @@ public class NotificationFragment extends Fragment {
                if (books.getPostCreateID().equals(userKey)) {
                    booksArrayList.add(books);
                    notificAdapter.notifyDataSetChanged();
+                   imageViewUNLoadData.setVisibility(View.INVISIBLE);
                } else {
 
                }

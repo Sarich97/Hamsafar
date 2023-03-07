@@ -77,7 +77,7 @@ public class CreatDFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
-        dialogCreatPost= new Dialog(getContext());
+
 
 
         spinnerStartTrip = view.findViewById(R.id.spinnerStartTripD);
@@ -183,14 +183,6 @@ public class CreatDFragment extends Fragment {
                 });
             }
         });
-    }
-
-    private void showDialogCreatPost() {
-        dialogCreatPost.setContentView(R.layout.creat_post_dialog);
-        dialogCreatPost.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        ImageView imageView = dialogCreatPost.findViewById(R.id.imageDialog);
-        TextView textView = dialogCreatPost.findViewById(R.id.textDialog);
-        dialogCreatPost.show();
     }
 
     private void shwoDatePickerDialog() {

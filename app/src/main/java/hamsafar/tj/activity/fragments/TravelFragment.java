@@ -42,8 +42,6 @@ public class TravelFragment extends Fragment {
     private RecyclerView recyclerViewCard;
     private RecyclerView.Adapter cardViewAdapter;
 
-    private ImageView imageViewNotPost;
-    private TextView textViewNotPost;
 
     private RecyclerView recyclerViewPost;
     PostAdapter postAdapter;
@@ -71,8 +69,7 @@ public class TravelFragment extends Fragment {
         progressBarPostLoad = view.findViewById(R.id.progressBarPost);
 
 
-        imageViewNotPost = view.findViewById(R.id.imageViewNotPost);
-        textViewNotPost = view.findViewById(R.id.textViewNotPosts);
+
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         travelPostRef = FirebaseFirestore.getInstance();

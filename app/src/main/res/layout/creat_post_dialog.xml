@@ -23,39 +23,33 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/undraw_server_push_re_303w" />
+                app:srcCompat="@drawable/undraw_speed_test_re_pe1f" />
 
             <TextView
                 android:id="@+id/textDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 android:fontFamily="@font/play"
-                android:text="Вы успешно создали\nновую заявку"
+                android:text="Ваша заявка успешно отправлена\nОжидайте подтверждения"
                 android:textAlignment="center"
-                android:textColor="@color/colorGrey"
-                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:textSize="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageDialog" />
 
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/buttonCalncel"
-                style="@style/buttonThemesGreen"
+                style="@style/buttonDialogsGreen"
                 android:layout_marginBottom="24dp"
-
-                android:text="Да"
+                android:text="             Хорошо             "
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textDialog" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button"
-                style="@style/buttonThemesRed"
-                android:text="Отмена"
-                app:layout_constraintBottom_toBottomOf="@+id/buttonCalncel"
-                app:layout_constraintEnd_toStartOf="@+id/buttonCalncel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textDialog" />
 

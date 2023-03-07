@@ -72,10 +72,16 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
                 .buildRoundRect(firstName, colorGenerator.getRandomColor(), 4); // radius in
         holder.imageViewDriverImage.setImageDrawable(user_drawble);
         //SetDate
-
+        holder.buttonCancel.setOnClickListener(view -> {
+            final String postCrearot = books.getPostCreateID();
+            final String postID = books.getPostID();
+            showToast(view.getContext(), "Вы отменили заказ");
+            bookRef.collection("notificat/" + postCrearot + "/books").document(postID).delete();
+            notifyDataSetChanged();
+            booksItems.remove(booksItems.get(position));
+        });
 
         holder.buttonConfim.setOnClickListener(view -> {
-            showToast(view.getContext(), "Вы успешно потвердили заказ");
 
             final String postCrearot = books.getPostCreateID();
             final String postID = books.getPostID();
