@@ -1,29 +1,33 @@
 package hamsafar.tj.activity.models;
 
+import java.util.ArrayList;
+
 public class listModel {
-    private int imageList;
-    private String textList;
+    int listImage;
+    String textViewList;
 
-    listModel() {}
+   listModel(ArrayList<listModel> listModels) {
 
-    public listModel(int imageList, String textList) {
-        this.imageList = imageList;
-        this.textList = textList;
+   }
+
+    public listModel(int listImage, String textViewList) {
+        this.listImage = listImage;
+        this.textViewList = textViewList;
     }
 
-    public int getImageList() {
-        return imageList;
+    public int getListImage() {
+        return listImage;
     }
 
-    public void setImageList(int imageList) {
-        this.imageList = imageList;
+    public void setListImage(int listImage) {
+        this.listImage = listImage;
     }
 
-    public String getTextList() {
-        return textList;
+    public String getTextViewList() {
+        return textViewList;
     }
 
-    public void setTextList(String textList) {
-        this.textList = textList;
+    public void setTextViewList(String textViewList) {
+        this.textViewList = textViewList;
     }
 }

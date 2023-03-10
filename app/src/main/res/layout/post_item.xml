@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:layout_marginBottom="0.4dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,8 +23,8 @@
 
             <ImageView
                 android:id="@+id/driverImage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
                 android:layout_marginTop="14dp"
                 app:layout_constraintBottom_toTopOf="@+id/view"
                 app:layout_constraintStart_toStartOf="@+id/view2"

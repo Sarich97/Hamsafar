@@ -54,7 +54,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         Post posts = postsItems.get(position);
         holder.textViewStartTrip.setText(posts.getStartTrip());
         holder.textViewEndTrip.setText(posts.getEndTrip());
-        holder.textViewDateTime.setText(posts.getDataTrip() + " в " + posts.getTimeTrip());
+        holder.textViewDateTime.setText(posts.getTimeTrip() + " - " + posts.getDataTrip());
         holder.textViewStatusTrip.setText(posts.getIsDriverUser());
         holder.textViewDriverName.setText(posts.getUserName());
 

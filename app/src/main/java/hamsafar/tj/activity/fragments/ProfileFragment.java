@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -39,8 +40,9 @@ public class ProfileFragment extends Fragment {
     private ImageView userImageP;
 
 
-    private RecyclerView recyclerViewList;
-    private RecyclerView.Adapter recyclerList;
+    private RecyclerView listViewMenu;
+    private RecyclerView.Adapter adapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +50,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        recyclerViewList = view.findViewById(R.id.recyclerViewList); //CARDVIEW
+        listViewMenu = view.findViewById(R.id.recyclerViewList); //CARDVIEW
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -63,27 +65,27 @@ public class ProfileFragment extends Fragment {
 
 
         showProfileForUser();
-        showListMenu();
+        showMenuForUser();
 
 
 
         return view;
     }
 
-    private void showListMenu() {
-        recyclerViewList.setHasFixedSize(true);
-        recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+    private void showMenuForUser() {
+        listViewMenu.setHasFixedSize(true);
+        listViewMenu.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         ArrayList<listModel> listModels = new ArrayList<>();
         listModels.add(new listModel(R.drawable.baseline_note_add_24, "Мои заявки"));
         listModels.add(new listModel(R.drawable.baseline_person_24_green, "Редактировать профиль"));
         listModels.add(new listModel(R.drawable.baseline_privacy_tip_24, "Политика конфиденциальности"));
         listModels.add(new listModel(R.drawable.baseline_help_24, "Помощь"));
-        listModels.add(new listModel(R.drawable.baseline_lens_blur_24, "О приложении"));
 
-        recyclerList = new ListAdapter(listModels, getContext());
-        recyclerViewList.setAdapter(recyclerList);
+        adapter = new ListAdapter(listModels, getContext());
+        listViewMenu.setAdapter(adapter);
     }
+
 
     private void showProfileForUser() {
         firebaseFirestore.collection("users").document(userID).get().addOnCompleteListener(task -> {

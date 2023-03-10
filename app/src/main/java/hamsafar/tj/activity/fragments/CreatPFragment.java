@@ -163,7 +163,7 @@ public class CreatPFragment extends Fragment {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 (view, year, monthOfYear, dayOfMonth) -> {
-                    textViewDate.setText(String.format("%s-%s-%d", dayMonthText(dayOfMonth), getMonthText(monthOfYear), year));
+                    textViewDate.setText(String.format("%s.%s", dayMonthText(dayOfMonth), getMonthText(monthOfYear)));
 
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());

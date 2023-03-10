@@ -11,7 +11,6 @@
         android:id="@+id/imageView"
         android:layout_width="260dp"
         android:layout_height="135dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -26,7 +25,7 @@
         android:layout_height="0dp"
         android:background="@drawable/auth_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.6">
+        app:layout_constraintHeight_percent="0.7">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"

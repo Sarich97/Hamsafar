@@ -35,8 +35,7 @@
                 android:fontFamily="@font/play"
                 android:text="Ваша заявка успешно отправлена\nОжидайте подтверждения"
                 android:textAlignment="center"
-                android:textStyle="bold"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorGrey"
                 android:textSize="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +43,7 @@
 
 
             <Button
-                android:id="@+id/buttonCalncel"
+                android:id="@+id/buttonCancelDialog"
                 style="@style/buttonDialogsGreen"
                 android:layout_marginBottom="24dp"
                 android:text="             Хорошо             "

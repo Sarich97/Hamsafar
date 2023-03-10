@@ -37,8 +37,8 @@ import hamsafar.tj.activity.models.books;
 public class TripDetalActivity extends AppCompatActivity {
 
     private TextView textViewDriverName, textViewTripStatus, textViewTripPrice, textViewTripStart,textViewTripEnd;
-    private TextView textViewComment, textViewDateTime, textViewCarModel, textViewSeat;
-    private ImageView imageViewUserImage;
+    private TextView textViewComment, textViewDateTime, textViewCarModel, textViewSeat, textViewBookStatus;
+    private ImageView imageViewUserImage, buttonBackActivity;
     private Button buttonBookTrip, buttonBookCancel, buttonBookDelete;
 
     private FirebaseAuth firebaseAuth;
@@ -72,10 +72,12 @@ public class TripDetalActivity extends AppCompatActivity {
         textViewTripEnd = findViewById(R.id.end_of_route);
         textViewDateTime = findViewById(R.id.dateTimeTrip);
         textViewCarModel = findViewById(R.id.carModel);
+        textViewBookStatus = findViewById(R.id.textViewBook);
         textViewSeat = findViewById(R.id.seatTrip);
         buttonBookTrip = findViewById(R.id.bookButton);
         buttonBookCancel = findViewById(R.id.bookDeletButton);
         buttonBookDelete = findViewById(R.id.bookEndButton);
+        buttonBackActivity = findViewById(R.id.imageViewBackButton);
         textViewComment = findViewById(R.id.textCommentView);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -131,6 +133,13 @@ public class TripDetalActivity extends AppCompatActivity {
             textViewTripPrice.setText(tripPrice + " cомони");
         }
 
+        if(isUserDriver.equals("Ищу водителя"))
+        {
+            textViewBookStatus.setText("Ваш водитель");
+        } else {
+            textViewBookStatus.setText("Ваши пассажиры");
+        }
+
 
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
         String firstName = tripNameUser.substring(0,1);
@@ -175,9 +184,16 @@ public class TripDetalActivity extends AppCompatActivity {
                 showToast(this,"Нельзя удалить поезду пока есть активные заявки");
             } else  {
                 bookRef.collection("posts").document(postID).delete();
+                showToast(this,"Вы удалили свою заявку!");
                 gotoMainIntent();
             }
 
+        });
+
+
+        buttonBackActivity.setOnClickListener(view -> {
+            onBackPressed();
+            finish();
         });
 
     }
@@ -268,7 +284,13 @@ public class TripDetalActivity extends AppCompatActivity {
         dialogCreatPost.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ImageView imageView = dialogCreatPost.findViewById(R.id.imageDialog);
         TextView textView = dialogCreatPost.findViewById(R.id.textDialog);
+        Button buttonCancelD = dialogCreatPost.findViewById(R.id.buttonCancelDialog);
         dialogCreatPost.show();
+
+        buttonCancelD.setOnClickListener(view -> {
+            dialogCreatPost.cancel();
+        });
+
     }
 
 
