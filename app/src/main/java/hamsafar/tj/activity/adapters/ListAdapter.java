@@ -1,6 +1,8 @@
 package hamsafar.tj.activity.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
-import hamsafar.tj.activity.EditProfileActivity;
 import hamsafar.tj.activity.MyPostActivity;
-import hamsafar.tj.activity.RegisterActivity;
 import hamsafar.tj.activity.models.listModel;
 
 
@@ -82,14 +83,19 @@ public class ListViewHold extends RecyclerView.ViewHolder implements View.OnClic
                     context.startActivity(intentMyPost);
                     break;
                 case 1:
-                    Intent intentEdit = new Intent(context, EditProfileActivity.class);
-                    context.startActivity(intentEdit);
+                    BottomSheetDialog bottomSheetDialogEdit = new BottomSheetDialog(context, R.style.BottomSheetDialogTheme);
+                    bottomSheetDialogEdit.setContentView(R.layout.edit_profile_sheet);
+                    bottomSheetDialogEdit.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    bottomSheetDialogEdit.show();
                     break;
                 case 2:
                     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialogTheme);
                     bottomSheetDialog.setContentView(R.layout.terms_of_use_sheet);
                     bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                     bottomSheetDialog.show();
+                    break;
+                case 4:
+
                     break;
 
                 default:

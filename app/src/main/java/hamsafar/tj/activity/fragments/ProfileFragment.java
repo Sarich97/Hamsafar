@@ -1,5 +1,8 @@
 package hamsafar.tj.activity.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
+import hamsafar.tj.activity.AuthActivity;
 import hamsafar.tj.activity.adapters.CardViewAdapter;
 import hamsafar.tj.activity.adapters.ListAdapter;
 import hamsafar.tj.activity.models.CardViewModel;
@@ -36,7 +40,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore,travelPostRef ;
     private String userID;
 
-    private TextView textViewUserName, textViewUserEmail;
+    private TextView textViewUserName, textViewUserEmail, textViewSinhOutBtn;
     private ImageView userImageP;
 
 
@@ -62,11 +66,15 @@ public class ProfileFragment extends Fragment {
         textViewUserName = view.findViewById(R.id.userNameProfile);
         textViewUserEmail = view.findViewById(R.id.userEmail);
         userImageP = view.findViewById(R.id.userImageProfile);
+        textViewSinhOutBtn = view.findViewById(R.id.logoutTextBtn);
 
 
         showProfileForUser();
         showMenuForUser();
 
+        textViewSinhOutBtn.setOnClickListener(view1 -> {
+
+        });
 
 
         return view;
