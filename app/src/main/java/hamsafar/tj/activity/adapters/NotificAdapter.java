@@ -74,7 +74,7 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
         //SetDate
         holder.buttonCancel.setOnClickListener(view -> {
             final String postCrearot = books.getPostCreateID();
-            final String postID = books.getPostID();
+            final String postID = books.getUserID();
             showToast(view.getContext(), "Вы отменили заказ");
             bookRef.collection("notificat/" + postCrearot + "/books").document(postID).delete();
             notifyDataSetChanged();
@@ -84,7 +84,7 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
         holder.buttonConfim.setOnClickListener(view -> {
 
             final String postCrearot = books.getPostCreateID();
-            final String postID = books.getPostID();
+            final String postID = books.getUserID();
             bookRef.collection("posts/" + books.getPostID() +  "/books").document(books.getUserID()).get().addOnCompleteListener(task -> {
                 if (!task.getResult().exists()) {
                     Map<String, Object> book = new HashMap<>();

@@ -77,6 +77,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
         final String postId = books.getPostID();
         final String booksId = booksArrayList.get(position).getUserID();
         holder.buttonDeleteUser.setOnClickListener(view1 -> {
+            notifyDataSetChanged();
+            booksArrayList.remove(booksArrayList.get(position));
             bookRef.collection("posts/" + postId + "/books").document(booksId).delete();
         });
     }

@@ -40,6 +40,12 @@ public class MainActivity extends  AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        showNotificationForUser();
+        super.onStart();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

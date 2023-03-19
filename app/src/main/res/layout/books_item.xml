@@ -52,15 +52,16 @@
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
         android:backgroundTint="@color/colorRed"
         android:fontFamily="@font/play"
-        android:layout_marginEnd="4dp"
         android:text="Отменить"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/userImageBooks"
         app:layout_constraintEnd_toStartOf="@+id/buttonCall"
+        app:layout_constraintStart_toEndOf="@+id/userNameBook"
         app:layout_constraintTop_toTopOf="@+id/userImageBooks" />
 
 

@@ -73,7 +73,10 @@ public class ProfileFragment extends Fragment {
         showMenuForUser();
 
         textViewSinhOutBtn.setOnClickListener(view1 -> {
-
+            firebaseAuth.signOut();
+            Intent authIntent = new Intent(getContext(), AuthActivity.class);
+            startActivity(authIntent);
+            getActivity().finish();
         });
 
 
@@ -86,6 +89,7 @@ public class ProfileFragment extends Fragment {
 
         ArrayList<listModel> listModels = new ArrayList<>();
         listModels.add(new listModel(R.drawable.baseline_note_add_24, "Мои заявки"));
+        listModels.add(new listModel(R.drawable.ic_baseline_directions_car_24, "Мои поездки"));
         listModels.add(new listModel(R.drawable.baseline_person_24_green, "Редактировать профиль"));
         listModels.add(new listModel(R.drawable.baseline_privacy_tip_24, "Политика конфиденциальности"));
         listModels.add(new listModel(R.drawable.baseline_help_24, "Помощь"));

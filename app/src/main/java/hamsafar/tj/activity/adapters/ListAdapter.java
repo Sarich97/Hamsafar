@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
+import hamsafar.tj.activity.EditProfileActivity;
 import hamsafar.tj.activity.MyPostActivity;
 import hamsafar.tj.activity.models.listModel;
 
@@ -82,13 +83,15 @@ public class ListViewHold extends RecyclerView.ViewHolder implements View.OnClic
                     Intent intentMyPost = new Intent(context, MyPostActivity.class);
                     context.startActivity(intentMyPost);
                     break;
+
                 case 1:
-                    BottomSheetDialog bottomSheetDialogEdit = new BottomSheetDialog(context, R.style.BottomSheetDialogTheme);
-                    bottomSheetDialogEdit.setContentView(R.layout.edit_profile_sheet);
-                    bottomSheetDialogEdit.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                    bottomSheetDialogEdit.show();
+
                     break;
                 case 2:
+                    Intent editIntent = new Intent(context, EditProfileActivity.class);
+                    context.startActivity(editIntent);
+                    break;
+                case 3:
                     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialogTheme);
                     bottomSheetDialog.setContentView(R.layout.terms_of_use_sheet);
                     bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);

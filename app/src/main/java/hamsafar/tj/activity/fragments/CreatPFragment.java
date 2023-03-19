@@ -8,6 +8,7 @@ import static hamsafar.tj.activity.utility.Utility.showToast;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -55,6 +56,8 @@ public class CreatPFragment extends Fragment {
 
     private TimePickerDialog timePickerDialog;
 
+    private MediaPlayer mediaPlayerSound;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +67,8 @@ public class CreatPFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance(); // DateBase settings
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
+
+        mediaPlayerSound = MediaPlayer.create(getActivity(), R.raw.sound);
 
 
         spinnerStartTrip = view.findViewById(R.id.spinnerStartTripP);
@@ -140,6 +145,7 @@ public class CreatPFragment extends Fragment {
 
                 documentReference.set(post).addOnCompleteListener(task1 -> {
                     if(task1.isSuccessful()) {
+                        mediaPlayerSound.start();
                         Intent mainIntent = new Intent(getContext(), MainActivity.class);
                         startActivity(mainIntent);
                         getActivity().finish();

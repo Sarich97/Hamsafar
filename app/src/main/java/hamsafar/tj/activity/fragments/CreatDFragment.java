@@ -11,6 +11,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -56,6 +57,8 @@ public class CreatDFragment extends Fragment {
     private ProgressBar progressBarPost;
     private Dialog dialogCreatPost;
 
+    private MediaPlayer mediaPlayerSound;
+
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -77,6 +80,7 @@ public class CreatDFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
+        mediaPlayerSound = MediaPlayer.create(getActivity(), R.raw.sound);
 
 
 
@@ -127,7 +131,7 @@ public class CreatDFragment extends Fragment {
                 buttonCreatTrip.setVisibility(View.VISIBLE);
                 progressBarPost.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(price_Trip)) {
-                editTextSeat.setError("Укажите цену");
+                editTextPrice.setError("Укажите цену");
                 buttonCreatTrip.setVisibility(View.VISIBLE);
                 progressBarPost.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(seat_Trip)) {
@@ -172,6 +176,7 @@ public class CreatDFragment extends Fragment {
 
                 documentReference.set(post).addOnCompleteListener(task1 -> {
                     if(task1.isSuccessful()) {
+                        mediaPlayerSound.start();
                         Intent mainIntent = new Intent(getContext(), MainActivity.class);
                         startActivity(mainIntent);
                         getActivity().finish();
