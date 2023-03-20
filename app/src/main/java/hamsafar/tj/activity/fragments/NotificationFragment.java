@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import hamsafar.tj.R;
 import hamsafar.tj.activity.adapters.NotificAdapter;
+import hamsafar.tj.activity.models.Post;
 import hamsafar.tj.activity.models.books;
 
 public class NotificationFragment extends Fragment {
@@ -41,6 +42,8 @@ public class NotificationFragment extends Fragment {
     private RecyclerView recyclerViewBookNotif;
     NotificAdapter notificAdapter;
     ArrayList<books> booksArrayList = new ArrayList<>();
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,10 +65,12 @@ public class NotificationFragment extends Fragment {
         recyclerViewBookNotif.setAdapter(notificAdapter);
 
 
+
         showNotificationList();
 
         return view;
     }
+
 
     private void showNotificationList() {
        notificatRef.document(userKey).collection("books").get().addOnSuccessListener(queryDocumentSnapshots -> {

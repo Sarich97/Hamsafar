@@ -80,6 +80,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
             notifyDataSetChanged();
             booksArrayList.remove(booksArrayList.get(position));
             bookRef.collection("posts/" + postId + "/books").document(booksId).delete();
+            bookRef.collection("notificat/" + books.getPostCreateID() + "/books").document(booksId+postId).delete();
         });
     }
 

@@ -42,6 +42,7 @@ public class MainActivity extends  AppCompatActivity {
     @Override
     protected void onStart() {
         showNotificationForUser();
+        replaseFragment(new TravelFragment());
         super.onStart();
     }
 
@@ -92,9 +93,15 @@ public class MainActivity extends  AppCompatActivity {
             for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                 books books = documentSnapshot.toObject(books.class);
                 if (books.getPostCreateID().equals(userKey)) {
-                    badgeDrawable = binding.bottomNavigationView.getOrCreateBadge(R.id.nav_notification);
-                    badgeDrawable.setBackgroundColor(Color.RED);
-                    badgeDrawable.setVisible(true);
+                    if(books.getNotifiStatus().equals("show")) {
+                        books.setNotifiStatus("null");
+                        badgeDrawable = binding.bottomNavigationView.getOrCreateBadge(R.id.nav_notification);
+                        badgeDrawable.setBackgroundColor(Color.RED);
+                        badgeDrawable.setVisible(true);
+                    } else {
+
+                    }
+
                 } else {
                     badgeDrawable.setVisible(false);
                 }

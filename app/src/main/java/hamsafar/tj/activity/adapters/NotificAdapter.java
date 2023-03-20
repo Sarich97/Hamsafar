@@ -72,41 +72,6 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
                 .buildRoundRect(firstName, colorGenerator.getRandomColor(), 4); // radius in
         holder.imageViewDriverImage.setImageDrawable(user_drawble);
         //SetDate
-        holder.buttonCancel.setOnClickListener(view -> {
-            final String postCrearot = books.getPostCreateID();
-            final String postID = books.getUserID();
-            showToast(view.getContext(), "Вы отменили заказ");
-            bookRef.collection("notificat/" + postCrearot + "/books").document(postID).delete();
-            notifyDataSetChanged();
-            booksItems.remove(booksItems.get(position));
-        });
-
-        holder.buttonConfim.setOnClickListener(view -> {
-
-            final String postCrearot = books.getPostCreateID();
-            final String postID = books.getUserID();
-            bookRef.collection("posts/" + books.getPostID() +  "/books").document(books.getUserID()).get().addOnCompleteListener(task -> {
-                if (!task.getResult().exists()) {
-                    Map<String, Object> book = new HashMap<>();
-                    book.put("userID", books.getUserID());
-                    book.put("userName", books.getUserName());
-                    book.put("userPhone", books.getUserPhone());
-                    book.put("postID", books.getPostID());
-                    book.put("postCreateID", books.getPostCreateID());
-                    book.put("locationFrom", books.getLocationFrom());
-                    book.put("locationTo", books.getLocationTo());
-                    book.put("date", books.getDate());
-                    book.put("timestamp", FieldValue.serverTimestamp());
-                    showToast(view.getContext(), "Вы успешно потвердили заказ");
-                    bookRef.collection("posts/" + books.getPostID() + "/books").document(books.getUserID()).set(book);
-                    bookRef.collection("notificat/" + postCrearot + "/books").document(postID).delete();
-                    notifyDataSetChanged();
-                    booksItems.remove(booksItems.get(position));
-                }
-            });
-        });
-        //get user id and retrieve user image stored in Users Collection
-
     }
 
 
@@ -119,7 +84,6 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
 
         TextView textViewStartTrip, textViewEndTrip, textViewDriverName, textViewDateTime;
         ImageView imageViewDriverImage;
-        Button buttonConfim, buttonCancel;
 
         public ViewHolder(@NonNull View view) {
             super(view);
@@ -128,8 +92,6 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
             textViewDriverName = view.findViewById(R.id.driverName);
             imageViewDriverImage = view.findViewById(R.id.driverImage);
             textViewDateTime = view.findViewById(R.id.dateTimeTrip);
-            buttonConfim = view.findViewById(R.id.buttonConf);
-            buttonCancel = view.findViewById(R.id.buttonCan);
         }
 
     }

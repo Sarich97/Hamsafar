@@ -47,7 +47,7 @@ public class TripDetalActivity extends AppCompatActivity {
     private Button buttonBookTrip, buttonBookCancel, buttonBookDelete;
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore UsersRef,bookRef;
+    private FirebaseFirestore UsersRef,bookRef, noteRef;
     private String post_id;
     private String userKey;
     private Dialog dialogCreatPost;
@@ -88,6 +88,7 @@ public class TripDetalActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         UsersRef = FirebaseFirestore.getInstance();
         bookRef = FirebaseFirestore.getInstance();
+        noteRef = FirebaseFirestore.getInstance();
         userKey = firebaseAuth.getCurrentUser().getUid();
 
 
@@ -127,7 +128,7 @@ public class TripDetalActivity extends AppCompatActivity {
         textViewComment.setText("Коментарии: " + comments);
 
         if(tripBrandCar == null) {
-            textViewCarModel.setText("Марко автомобиля\nНе важно");
+            textViewCarModel.setText("Марко автомобиля\n");
         } else {
             textViewCarModel.setText(tripBrandCar);
         }
@@ -163,7 +164,7 @@ public class TripDetalActivity extends AppCompatActivity {
 
 
         buttonBookTrip.setOnClickListener(view -> {
-            if(booksArrayList.size() > Integer.valueOf(tripSeat))
+            if(booksArrayList.size() + 1 > Integer.valueOf(tripSeat))
             {
                 showToast(this, "Количество мест ограничено");
             } else {
@@ -176,13 +177,11 @@ public class TripDetalActivity extends AppCompatActivity {
                     }
                 });
             }
-
-
         });
 
         buttonBookCancel.setOnClickListener(view -> {
             bookRef.collection("posts/" + postID + "/books").document(userKey).delete();
-            bookRef.collection("notificat/" + tripUserId + "/books").document(userKey).delete();
+            bookRef.collection("notificat/" + tripUserId + "/books").document(userKey+postID).delete();
             buttonBookCancel.setVisibility(View.GONE);
             booksAdapter.notifyDataSetChanged();
             gotoMainIntent();
@@ -196,7 +195,8 @@ public class TripDetalActivity extends AppCompatActivity {
             } else  {
                 bookRef.collection("posts").document(postID).delete();
                 showToast(this,"Вы удалили свою заявку!");
-                gotoMainIntent();
+                onBackPressed();
+                finish();
             }
 
         });
@@ -235,7 +235,7 @@ public class TripDetalActivity extends AppCompatActivity {
         String postID = getIntent().getExtras().getString("postID");
         String tripUserId = getIntent().getExtras().getString("driverID");
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-            bookRef.collection("notificat/" + tripUserId + "/books").document(userKey).addSnapshotListener((documentSnapshot, e) -> {
+            bookRef.collection("posts/" + postID + "/books").document(userKey).addSnapshotListener((documentSnapshot, e) -> {
 
                 String passengerID = documentSnapshot.getString("userID");
                 try {
@@ -334,11 +334,13 @@ public class TripDetalActivity extends AppCompatActivity {
         String tripStart = getIntent().getExtras().getString("locationFrom");
         String tripEnd = getIntent().getExtras().getString("locationTo");
         String tripDate = getIntent().getExtras().getString("date");
-
+        String notifiID = userKey + postID;
         bookRef.collection("posts/" + postID + "/books").document(userKey).get().addOnCompleteListener(task -> {
             buttonBookTrip.setVisibility(View.GONE);
             if (!task.getResult().exists()) {
                 Map<String, Object> book = new HashMap<>();
+                book.put("notifiID",notifiID);
+                book.put("notifiStatus","show");
                 book.put("userID", userKey);
                 book.put("userName", user_name);
                 book.put("userPhone", user_phone);
@@ -352,7 +354,8 @@ public class TripDetalActivity extends AppCompatActivity {
                 buttonBookCancel.setVisibility(View.VISIBLE);
                 showDialogCreatPost();
                 //bookRef.collection("posts/" + postID + "/books").document(userKey).set(book);
-                bookRef.collection("notificat/" + tripUserId +  "/books").document(userKey).set(book);
+                noteRef.collection("notificat/" + tripUserId +  "/books").document(notifiID).set(book);
+                bookRef.collection("posts/" + postID +  "/books").document(userKey).set(book);
             } else {
 
 //                firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUser).delete();
