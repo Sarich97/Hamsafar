@@ -31,6 +31,9 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
+
+
+
             <EditText
                 android:id="@+id/userEmaiEdit"
                 style="@style/editText"
@@ -46,7 +49,7 @@
 
 
             <EditText
-                android:id="@+id/user_Name"
+                android:id="@+id/userNameEdit"
                 style="@style/editText"
                 android:autofillHints=""
                 android:focusable="false"
@@ -56,8 +59,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/userEmaiEdit"
                 tools:ignore="MissingConstraints"/>
 
+
+
             <EditText
-                android:id="@+id/user_Phone"
+                android:id="@+id/userPhoneEdit"
                 style="@style/editText"
                 android:drawableStart="@drawable/ic_baseline_phone_24"
                 android:hint="@string/editPhoneUser"
@@ -65,18 +70,29 @@
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_Name"
+                app:layout_constraintTop_toBottomOf="@+id/userNameEdit"
                 tools:ignore="MissingConstraints" />
 
 
             <Button
-                android:id="@+id/singInButton"
+                android:id="@+id/editInfoButton"
                 style="@style/buttonThemesGreen"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="Редактировать"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_Phone" />
+                app:layout_constraintTop_toBottomOf="@+id/userPhoneEdit" />
+
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@+id/editInfoButton"
+                app:layout_constraintStart_toStartOf="@+id/editInfoButton"
+                app:layout_constraintTop_toTopOf="@+id/editInfoButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

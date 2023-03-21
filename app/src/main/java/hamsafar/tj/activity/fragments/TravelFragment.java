@@ -76,7 +76,6 @@ public class TravelFragment extends Fragment {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         showPostForUsers();
-        cardViewRecycler();
 
         return view;
     }

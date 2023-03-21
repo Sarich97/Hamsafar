@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import hamsafar.tj.R;
 import hamsafar.tj.activity.EditProfileActivity;
 import hamsafar.tj.activity.MyPostActivity;
+import hamsafar.tj.activity.MyTripActivity;
 import hamsafar.tj.activity.models.listModel;
 
 
@@ -85,7 +86,8 @@ public class ListViewHold extends RecyclerView.ViewHolder implements View.OnClic
                     break;
 
                 case 1:
-
+                    Intent tripIntent = new Intent(context, MyTripActivity.class);
+                    context.startActivity(tripIntent);
                     break;
                 case 2:
                     Intent editIntent = new Intent(context, EditProfileActivity.class);

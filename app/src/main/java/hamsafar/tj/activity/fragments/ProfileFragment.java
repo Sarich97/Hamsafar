@@ -92,7 +92,6 @@ public class ProfileFragment extends Fragment {
         listModels.add(new listModel(R.drawable.ic_baseline_directions_car_24, "Мои поездки"));
         listModels.add(new listModel(R.drawable.baseline_person_24_green, "Редактировать профиль"));
         listModels.add(new listModel(R.drawable.baseline_privacy_tip_24, "Политика конфиденциальности"));
-        listModels.add(new listModel(R.drawable.baseline_help_24, "Помощь"));
 
         adapter = new ListAdapter(listModels, getContext());
         listViewMenu.setAdapter(adapter);
