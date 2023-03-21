@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -32,6 +33,7 @@ public class MainActivity extends  AppCompatActivity {
     private String userKey;
 
     private BadgeDrawable badgeDrawable;
+    private int currentPageId = -1;
 
     @Override
     protected void onDestroy() {
@@ -42,7 +44,6 @@ public class MainActivity extends  AppCompatActivity {
     @Override
     protected void onStart() {
         showNotificationForUser();
-        replaseFragment(new TravelFragment());
         super.onStart();
     }
 
@@ -67,19 +68,53 @@ public class MainActivity extends  AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.nav_posts:
-                    replaseFragment(new TravelFragment());
+                    if (currentPageId == item.getItemId()) {
+                        return false;
+                    } else {
+                        replaseFragment(new TravelFragment());
+                        currentPageId = item.getItemId();
+                    }
                     break;
                 case R.id.nav_creat:
-                    replaseFragment(new CreatFragment());
+                    if (currentPageId == item.getItemId()) {
+                        return false;
+                    } else {
+                        replaseFragment(new CreatFragment());
+                        currentPageId = item.getItemId();
+                    }
                     break;
                 case R.id.nav_notification:
-                    if(badgeDrawable !=null) {
-                        badgeDrawable.setVisible(false);
+                    if (currentPageId == item.getItemId()) {
+                        return false;
+                    } else {
+                        if(badgeDrawable !=null) {
+                            badgeDrawable.setVisible(false);
+                            notificatRef.document(userKey).collection("books").get().addOnSuccessListener(queryDocumentSnapshots -> {
+                                for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
+                                    books books = documentSnapshot.toObject(books.class);
+                                    if (books.getPostCreateID().equals(userKey)) {
+                                        if(books.getNotifiStatus().equals("show")) {
+                                            notificatRef.document(userKey).collection("books").document(books.getUserID()+books.getPostID()).update("notifiStatus", "null");
+                                        } else {
+
+                                        }
+
+                                    } else {
+                                    }
+                                }
+                            });
+                        }
+                        replaseFragment(new NotificationFragment());
+                        currentPageId = item.getItemId();
                     }
-                    replaseFragment(new NotificationFragment());
                     break;
                 case R.id.nav_profile:
-                    replaseFragment(new ProfileFragment());
+                    if (currentPageId == item.getItemId()) {
+                        return false;
+                    } else {
+                        replaseFragment(new ProfileFragment());
+                        currentPageId = item.getItemId();
+                    }
                     break;
             }
 
@@ -94,7 +129,6 @@ public class MainActivity extends  AppCompatActivity {
                 books books = documentSnapshot.toObject(books.class);
                 if (books.getPostCreateID().equals(userKey)) {
                     if(books.getNotifiStatus().equals("show")) {
-                        books.setNotifiStatus("null");
                         badgeDrawable = binding.bottomNavigationView.getOrCreateBadge(R.id.nav_notification);
                         badgeDrawable.setBackgroundColor(Color.RED);
                         badgeDrawable.setVisible(true);
