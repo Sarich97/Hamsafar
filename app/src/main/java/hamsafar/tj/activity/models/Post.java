@@ -14,12 +14,13 @@ public class Post {
     private String carModel;
     private String commentTrip;
     private String isDriverUser;
+    private String statusTrip;
 
 
-    public Post() {
-    }
+    public Post() {}
 
-    public Post(String postId, String userUD, String userName, String userPhone, String startTrip, String endTrip, String dataTrip, String timeTrip, String priceTrip, String seatTrip, String carModel, String commentTrip, String isDriverUser) {
+
+    public Post(String postId, String userUD, String userName, String userPhone, String startTrip, String endTrip, String dataTrip, String timeTrip, String priceTrip, String seatTrip, String carModel, String commentTrip, String isDriverUser, String statusTrip) {
         this.postId = postId;
         this.userUD = userUD;
         this.userName = userName;
@@ -33,6 +34,7 @@ public class Post {
         this.carModel = carModel;
         this.commentTrip = commentTrip;
         this.isDriverUser = isDriverUser;
+        this.statusTrip = statusTrip;
     }
 
 
@@ -138,5 +140,13 @@ public class Post {
 
     public void setIsDriverUser(String isDriverUser) {
         this.isDriverUser = isDriverUser;
+    }
+
+    public String getStatusTrip() {
+        return statusTrip;
+    }
+
+    public void setStatusTrip(String statusTrip) {
+        this.statusTrip = statusTrip;
     }
 }

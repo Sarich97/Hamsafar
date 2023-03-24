@@ -64,6 +64,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             holder.textViewPrice.setText(posts.getPriceTrip() + " cомони");
         }
 
+        if(posts.getIsDriverUser().equals("Поездка завершена")) {
+            holder.textViewStatusTrip.setBackgroundResource(R.drawable.tripstatuis_red);
+        }
+
         String firstName = posts.getUserName().substring(0,1);
         TextDrawable user_drawble = TextDrawable.builder()
                 .beginConfig()

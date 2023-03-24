@@ -171,6 +171,7 @@ public class CreatDFragment extends Fragment {
                 post.put("seatTrip", seat_trip);
                 post.put("commentTrip", comments);
                 post.put("isDriverUser", "Ищу пассажиров");
+                post.put("statusTrip", "show");
                 post.put("postId", documentReference.getId());
                 post.put("timestamp", FieldValue.serverTimestamp());
 

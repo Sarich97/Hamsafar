@@ -377,11 +377,11 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bookEndButton"
-        style="@style/buttonThemesRed"
+        style="@style/buttonThemesYellow"
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
         android:visibility="invisible"
-        android:text="Удалить заявку"
+        android:text="Завершить заявку"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -396,5 +396,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_arrow_back_24white" />
+
+
+    <ImageView
+        android:id="@+id/imageViewDeletePost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_delete_forever_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

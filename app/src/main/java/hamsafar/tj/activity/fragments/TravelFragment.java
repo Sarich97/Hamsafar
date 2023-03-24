@@ -91,9 +91,13 @@ public class TravelFragment extends Fragment {
                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
                         Post post = doc.getDocument().toObject(Post.class);
-                        posts.add(post);
-                        postAdapter.notifyDataSetChanged();
-                        progressBarPostLoad.setVisibility(View.INVISIBLE);
+                        if(post.getStatusTrip().equals("show")) {
+                            posts.add(post);
+                            postAdapter.notifyDataSetChanged();
+                            progressBarPostLoad.setVisibility(View.INVISIBLE);
+                        } else {
+
+                        }
                     } else {
                         progressBarPostLoad.setVisibility(View.INVISIBLE);
                     }

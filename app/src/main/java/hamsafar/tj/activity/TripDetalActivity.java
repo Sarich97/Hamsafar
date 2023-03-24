@@ -21,6 +21,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
@@ -43,11 +44,11 @@ public class TripDetalActivity extends AppCompatActivity {
 
     private TextView textViewDriverName, textViewTripStatus, textViewTripPrice, textViewTripStart,textViewTripEnd;
     private TextView textViewComment, textViewDateTime, textViewCarModel, textViewSeat, textViewBookStatus;
-    private ImageView imageViewUserImage, buttonBackActivity;
-    private Button buttonBookTrip, buttonBookCancel, buttonBookDelete;
+    private ImageView imageViewUserImage, buttonBackActivity, imageViewButtonDelete;
+    private Button buttonBookTrip, buttonBookCancel, buttonBookFinish;
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore UsersRef,bookRef, noteRef;
+    private FirebaseFirestore UsersRef,bookRef, noteRef, postRef;
     private String post_id;
     private String userKey;
     private Dialog dialogCreatPost;
@@ -81,14 +82,16 @@ public class TripDetalActivity extends AppCompatActivity {
         textViewSeat = findViewById(R.id.seatTrip);
         buttonBookTrip = findViewById(R.id.bookButton);
         buttonBookCancel = findViewById(R.id.bookDeletButton);
-        buttonBookDelete = findViewById(R.id.bookEndButton);
+        buttonBookFinish = findViewById(R.id.bookEndButton);
         buttonBackActivity = findViewById(R.id.imageViewBackButton);
         textViewComment = findViewById(R.id.textCommentView);
+        imageViewButtonDelete =  findViewById(R.id.imageViewDeletePost);
 
         firebaseAuth = FirebaseAuth.getInstance();
         UsersRef = FirebaseFirestore.getInstance();
         bookRef = FirebaseFirestore.getInstance();
         noteRef = FirebaseFirestore.getInstance();
+        postRef = FirebaseFirestore.getInstance();
         userKey = firebaseAuth.getCurrentUser().getUid();
 
 
@@ -127,10 +130,20 @@ public class TripDetalActivity extends AppCompatActivity {
         textViewSeat.setText(tripSeat + " чел.");
         textViewComment.setText("Коментарии: " + comments);
 
+        showBookBtnStatus();
+        showBooksList();
+
         if(tripBrandCar == null) {
             textViewCarModel.setText("Марко автомобиля\n");
         } else {
             textViewCarModel.setText(tripBrandCar);
+        }
+
+        if(isUserDriver.equals("Поездка завершена")) {
+            textViewTripStatus.setBackgroundResource(R.drawable.tripstatuis_red);
+            buttonBookTrip.setVisibility(View.INVISIBLE);
+            buttonBookCancel.setVisibility(View.INVISIBLE);
+            buttonBookFinish.setVisibility(View.INVISIBLE);
         }
 
         if(tripPrice == null) {
@@ -146,6 +159,10 @@ public class TripDetalActivity extends AppCompatActivity {
             textViewBookStatus.setText("Пассажиры");
         }
 
+        if(tripUserId.equals(userKey)){
+            imageViewButtonDelete.setVisibility(View.VISIBLE);
+        }
+
 
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
         String firstName = tripNameUser.substring(0,1);
@@ -157,11 +174,6 @@ public class TripDetalActivity extends AppCompatActivity {
                 .endConfig()
                 .buildRoundRect(firstName, colorGenerator.getRandomColor(),4); // radius in
         imageViewUserImage.setImageDrawable(user_drawble);
-
-
-        showBookBtnStatus();
-        showBooksList();
-
 
         buttonBookTrip.setOnClickListener(view -> {
             if(booksArrayList.size() + 1 > Integer.valueOf(tripSeat))
@@ -189,15 +201,21 @@ public class TripDetalActivity extends AppCompatActivity {
             showToast(this,"Ваше бронирование отменено");
         });
 
-        buttonBookDelete.setOnClickListener(view -> {
-            if(booksArrayList.size() > 0) {
-                showToast(this,"Нельзя удалить поезду пока есть активные заявки");
-            } else  {
-                bookRef.collection("posts").document(postID).delete();
-                showToast(this,"Вы удалили свою заявку!");
-                onBackPressed();
-                finish();
-            }
+        buttonBookFinish.setOnClickListener(view -> { // Завершить заявку а не удалить
+            DocumentReference documentReference = postRef.collection("posts").document(postID);
+            Map<String, Object> posts = new HashMap<>();
+            posts.put("isDriverUser", "Поездка завершена");
+            posts.put("statusTrip", "null");
+            documentReference.update(posts).addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    Intent mainIntent = new Intent(TripDetalActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    finish();
+                    showToast(this, "Вы успешно завершили заявку");
+                } else {
+                    showToast(this, "Ошибка. Заявка не завершена");
+                }
+            });
 
         });
 
@@ -205,6 +223,17 @@ public class TripDetalActivity extends AppCompatActivity {
         buttonBackActivity.setOnClickListener(view -> {
             onBackPressed();
             finish();
+        });
+
+        imageViewButtonDelete.setOnClickListener(view -> {
+            if(booksArrayList.size() > 0) {
+                showToast(this,"Нельзя удалить поезду пока есть активные заявки");
+            } else  {
+                bookRef.collection("posts").document(postID).delete();
+                showToast(this,"Вы удалили свою заявку!");
+                gotoMainIntent();
+                finish();
+            }
         });
 
     }
@@ -234,53 +263,68 @@ public class TripDetalActivity extends AppCompatActivity {
     private void showBookBtnStatus() {
         String postID = getIntent().getExtras().getString("postID");
         String tripUserId = getIntent().getExtras().getString("driverID");
+        String isUserDriver = getIntent().getExtras().getString("isUserDriver");
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
             bookRef.collection("posts/" + postID + "/books").document(userKey).addSnapshotListener((documentSnapshot, e) -> {
 
                 String passengerID = documentSnapshot.getString("userID");
                 try {
                     if (documentSnapshot.exists()) {
-                        if(userKey.equals(tripUserId)) {
-                            buttonBookDelete.setVisibility(View.VISIBLE);
-                            buttonBookTrip.setVisibility(View.GONE);
+                        if(isUserDriver.equals("Поездка завершена")) {
+                            textViewTripStatus.setBackgroundResource(R.drawable.tripstatuis_red);
+                            buttonBookTrip.setVisibility(View.INVISIBLE);
+                            buttonBookCancel.setVisibility(View.INVISIBLE);
+                            buttonBookFinish.setVisibility(View.INVISIBLE);
                         } else {
-                            if(passengerID.equals(userKey)){
-                                buttonGetForPassengerRequest();
+                            if(userKey.equals(tripUserId)) {
+                                buttonBookFinish.setVisibility(View.VISIBLE);
                                 buttonBookTrip.setVisibility(View.GONE);
-                                buttonBookCancel.setVisibility(View.VISIBLE);
                             } else {
+                                if(passengerID.equals(userKey)){
+                                    buttonGetForPassengerRequest();
+                                    buttonBookTrip.setVisibility(View.GONE);
+                                    buttonBookCancel.setVisibility(View.VISIBLE);
+                                } else {
+                                    bookRef.collection("posts/" + postID +  "/books").document(userKey).addSnapshotListener((value, error) -> {
+                                        if(value.exists()) {
+                                            buttonBookTrip.setVisibility(View.GONE);
+                                            buttonBookCancel.setVisibility(View.GONE);
+                                        } else {
+                                            buttonGetForPassengerRequest();
+                                            buttonBookTrip.setVisibility(View.VISIBLE);
+                                            buttonBookCancel.setVisibility(View.GONE);
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+
+                    } else {
+                        if(isUserDriver.equals("Поездка завершена")) {
+                            textViewTripStatus.setBackgroundResource(R.drawable.tripstatuis_red);
+                            buttonBookTrip.setVisibility(View.INVISIBLE);
+                            buttonBookCancel.setVisibility(View.INVISIBLE);
+                            buttonBookFinish.setVisibility(View.INVISIBLE);
+                        } else {
+                            if(userKey.equals(tripUserId)) {
+                                buttonBookFinish.setVisibility(View.VISIBLE);
+                                buttonBookTrip.setVisibility(View.GONE);
+                            } else {
+
                                 bookRef.collection("posts/" + postID +  "/books").document(userKey).addSnapshotListener((value, error) -> {
                                     if(value.exists()) {
                                         buttonBookTrip.setVisibility(View.GONE);
                                         buttonBookCancel.setVisibility(View.GONE);
                                     } else {
-                                        buttonGetForPassengerRequest();
+                                        buttonSetForPassengerRequest();
                                         buttonBookTrip.setVisibility(View.VISIBLE);
                                         buttonBookCancel.setVisibility(View.GONE);
+
                                     }
                                 });
-
                             }
                         }
-                    } else {
-                        if(userKey.equals(tripUserId)) {
-                            buttonBookDelete.setVisibility(View.VISIBLE);
-                            buttonBookTrip.setVisibility(View.GONE);
-                        } else {
-
-                            bookRef.collection("posts/" + postID +  "/books").document(userKey).addSnapshotListener((value, error) -> {
-                                if(value.exists()) {
-                                    buttonBookTrip.setVisibility(View.GONE);
-                                    buttonBookCancel.setVisibility(View.GONE);
-                                } else {
-                                    buttonSetForPassengerRequest();
-                                    buttonBookTrip.setVisibility(View.VISIBLE);
-                                    buttonBookCancel.setVisibility(View.GONE);
-
-                                }
-                            });
-                        }
-
                     }
                 }
                 catch (NullPointerException E){
@@ -334,6 +378,7 @@ public class TripDetalActivity extends AppCompatActivity {
         String tripStart = getIntent().getExtras().getString("locationFrom");
         String tripEnd = getIntent().getExtras().getString("locationTo");
         String tripDate = getIntent().getExtras().getString("date");
+        String tripSeat = getIntent().getExtras().getString("seatTrip");
         String notifiID = userKey + postID;
         bookRef.collection("posts/" + postID + "/books").document(userKey).get().addOnCompleteListener(task -> {
             buttonBookTrip.setVisibility(View.GONE);
@@ -356,6 +401,18 @@ public class TripDetalActivity extends AppCompatActivity {
                 //bookRef.collection("posts/" + postID + "/books").document(userKey).set(book);
                 noteRef.collection("notificat/" + tripUserId +  "/books").document(notifiID).set(book);
                 bookRef.collection("posts/" + postID +  "/books").document(userKey).set(book);
+                if(booksArrayList.size() + 1 == Integer.valueOf(tripSeat)) {
+                    DocumentReference documentReference = postRef.collection("posts").document(postID);
+                    Map<String, Object> posts = new HashMap<>();
+                    posts.put("statusTrip", "null");
+                    documentReference.update(posts).addOnCompleteListener(taskPost -> {
+                        if(taskPost.isSuccessful()) {
+
+                        } else {
+                            showToast(this, "Ошибка. Повторите попытку позже");
+                        }
+                    });
+                }
             } else {
 
 //                firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUser).delete();
