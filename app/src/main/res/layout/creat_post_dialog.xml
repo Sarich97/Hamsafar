@@ -33,7 +33,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/play"
-                android:text="Ваша заявка успешно отправлена\nОжидайте подтверждения"
+                android:text="Ваша заявка успешно отправлена\nЖелаем вам хорошей поездки!"
                 android:textAlignment="center"
                 android:textColor="@color/colorGrey"
                 android:textSize="15dp"

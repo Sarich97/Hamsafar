@@ -3,11 +3,13 @@ package hamsafar.tj.activity;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -197,6 +199,7 @@ public class TripDetalActivity extends AppCompatActivity {
             buttonBookCancel.setVisibility(View.GONE);
             booksAdapter.notifyDataSetChanged();
             gotoMainIntent();
+            UpDatePostInfo();
             buttonBookTrip.setVisibility(View.VISIBLE);
             showToast(this,"Ваше бронирование отменено");
         });
@@ -225,16 +228,51 @@ public class TripDetalActivity extends AppCompatActivity {
             finish();
         });
 
-        imageViewButtonDelete.setOnClickListener(view -> {
+        imageViewButtonDelete.setOnClickListener(view -> { // Кнопка удалить пост
             if(booksArrayList.size() > 0) {
                 showToast(this,"Нельзя удалить поезду пока есть активные заявки");
             } else  {
-                bookRef.collection("posts").document(postID).delete();
-                showToast(this,"Вы удалили свою заявку!");
-                gotoMainIntent();
-                finish();
+                showDialogDeletePost();
             }
         });
+
+    }
+
+    private void UpDatePostInfo() { // ОБНОВИТЬ СТАТУС ПОСТА ЕСЛИ ПОЛЬЗОВАТЕЛЬ НАЖАЛ НА КНОПКУ ОТМЕНИТЬ БРОНЬ
+        String postID = getIntent().getExtras().getString("postID");
+        String tripSeat = getIntent().getExtras().getString("seatTrip");
+        if(booksArrayList.size() + 1 > Integer.valueOf(tripSeat)) {
+            DocumentReference documentReference = postRef.collection("posts").document(postID);
+            Map<String, Object> posts = new HashMap<>();
+            posts.put("statusTrip", "show");
+            documentReference.update(posts).addOnCompleteListener(taskPost -> {
+                if(taskPost.isSuccessful()) {
+
+                } else {
+                    showToast(this, "Ошибка. Повторите попытку позже            ");
+                }
+            });
+        }
+    }
+
+    private void showDialogDeletePost() { // Диалог удаления поста
+        String postID = getIntent().getExtras().getString("postID");
+        AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
+        deleteDialog.setTitle("Подтвердить удаление...");
+        // Указываем текст сообщение
+        deleteDialog.setMessage("Вы уверены, что хотите удалить заявку?");
+
+        deleteDialog.setPositiveButton("Да", (dialog, which) -> {
+            bookRef.collection("posts").document(postID).delete();
+            showToast(this,"Вы удалили свою заявку!");
+            gotoMainIntent();
+            finish();
+        });
+        // Обработчик на нажатие НЕТ
+        deleteDialog.setNegativeButton("Отмена", (dialog, which) -> dialog.cancel());
+
+        // показываем Alert
+        deleteDialog.show();
 
     }
 
@@ -359,11 +397,17 @@ public class TripDetalActivity extends AppCompatActivity {
     }
 
     private void showDialogCreatPost() {
+        String isUserDriver = getIntent().getExtras().getString("isUserDriver");
         dialogCreatPost.setContentView(R.layout.creat_post_dialog);
         dialogCreatPost.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ImageView imageView = dialogCreatPost.findViewById(R.id.imageDialog);
         TextView textView = dialogCreatPost.findViewById(R.id.textDialog);
         Button buttonCancelD = dialogCreatPost.findViewById(R.id.buttonCancelDialog);
+        if(isUserDriver.equals("Ищу водителя")) {
+            textView.setText("");
+        } else {
+            textView.setText("");
+        }
         dialogCreatPost.show();
 
         buttonCancelD.setOnClickListener(view -> {
@@ -409,7 +453,7 @@ public class TripDetalActivity extends AppCompatActivity {
                         if(taskPost.isSuccessful()) {
 
                         } else {
-                            showToast(this, "Ошибка. Повторите попытку позже");
+                            showToast(this, "Ошибка. Повторите попытку позже            ");
                         }
                     });
                 }

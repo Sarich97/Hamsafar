@@ -1,9 +1,13 @@
 package hamsafar.tj.activity.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
+import hamsafar.tj.activity.TripDetalActivity;
 import hamsafar.tj.activity.models.books;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> {
@@ -27,6 +33,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     private FirebaseFirestore bookRef;
     private FirebaseAuth firebaseAuth;
     private String userKey;
+    private Dialog dialogBooks;
 
     public BooksAdapter(ArrayList<books> books, Context context) {
         this.booksArrayList = books;
@@ -51,16 +58,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
         firebaseAuth = FirebaseAuth.getInstance();
         userKey = firebaseAuth.getCurrentUser().getUid();
+        dialogBooks= new Dialog(context);
         books books = booksArrayList.get(position);
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
         holder.textViewUserNameBook.setText(books.getUserName());
 
         if(userKey.equals(books.getPostCreateID())) {
-            holder.buttonCallUser.setVisibility(View.VISIBLE);
-            holder.buttonDeleteUser.setVisibility(View.VISIBLE);
+            holder.imageDetalBooks.setVisibility(View.VISIBLE);
         } else {
-            holder.buttonCallUser.setVisibility(View.GONE);
-            holder.buttonDeleteUser.setVisibility(View.GONE);
+            holder.imageDetalBooks.setVisibility(View.GONE);
         }
 
         String userNameName = books.getUserName().substring(0,1);
@@ -76,11 +82,34 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
         final String postId = books.getPostID();
         final String booksId = booksArrayList.get(position).getUserID();
-        holder.buttonDeleteUser.setOnClickListener(view1 -> {
-            notifyDataSetChanged();
-            booksArrayList.remove(booksArrayList.get(position));
-            bookRef.collection("posts/" + postId + "/books").document(booksId).delete();
-            bookRef.collection("notificat/" + books.getPostCreateID() + "/books").document(booksId+postId).delete();
+//        holder.buttonDeleteUser.setOnClickListener(view1 -> {
+//            notifyDataSetChanged();
+//            booksArrayList.remove(booksArrayList.get(position));
+//            bookRef.collection("posts/" + postId + "/books").document(booksId).delete();
+//            bookRef.collection("notificat/" + books.getPostCreateID() + "/books").document(booksId+postId).delete();
+//        });
+        holder.imageDetalBooks.setOnClickListener(view -> { // ОКОШКО С ПОЛЬЗОВАТЕЛЕМ
+            dialogBooks.setContentView(R.layout.show_books_detal_sheet);
+            dialogBooks.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            String user_name = booksArrayList.get(position).getUserName().substring(0,1);
+            ImageView userImage = dialogBooks.findViewById(R.id.userImageBooks);
+            TextDrawable user_drawbleSheet = TextDrawable.builder()
+                    .beginConfig()
+                    .fontSize(26) /* size in px */
+                    .bold()
+                    .toUpperCase()
+                    .endConfig()
+                    .buildRoundRect(user_name, colorGenerator.getRandomColor(),4); // radius in
+            userImage.setImageDrawable(user_drawbleSheet);
+
+            TextView userName = dialogBooks.findViewById(R.id.userNameBook);
+            TextView startTrip = dialogBooks.findViewById(R.id.start_of_route);
+            TextView endTrip = dialogBooks.findViewById(R.id.end_of_route);
+            userName.setText(booksArrayList.get(position).getUserName());
+            startTrip.setText(booksArrayList.get(position).getLocationFrom());
+            endTrip.setText(booksArrayList.get(position).getLocationTo());
+            dialogBooks.show();
         });
     }
 
@@ -93,16 +122,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageViewUserBook;
+        ImageView imageViewUserBook, imageDetalBooks;
         TextView textViewUserNameBook;
-        Button buttonCallUser, buttonDeleteUser;
 
         public ViewHolder(View view) {
             super(view);
             imageViewUserBook = view.findViewById(R.id.userImageBooks);
             textViewUserNameBook = view.findViewById(R.id.userNameBook);
-            buttonCallUser = view.findViewById(R.id.buttonCall);
-            buttonDeleteUser  = view.findViewById(R.id.buttonDelete);
+            imageDetalBooks = view.findViewById(R.id.imageViewDetalBook);
+//            buttonDeleteUser  = view.findViewById(R.id.buttonDelete);
 
 
             //tv_date = view.findViewById(R.id.comment_date);
