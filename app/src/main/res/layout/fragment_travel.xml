@@ -27,15 +27,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <EditText
+            android:id="@+id/commentField"
+            style="@style/editText"
+            android:background="@drawable/edit_text_input"
+            android:drawableLeft="@drawable/baseline_manage_search_24"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/play"
+            android:hint="Поиск..."
+            android:inputType="textMultiLine"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarText" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:padding="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarText" />
+            app:layout_constraintTop_toBottomOf="@+id/commentField" />
 
 
         <androidx.recyclerview.widget.RecyclerView

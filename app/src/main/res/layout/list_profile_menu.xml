@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="11.5dp"
@@ -30,4 +30,15 @@
             app:layout_constraintStart_toEndOf="@+id/listImage"
             app:layout_constraintTop_toTopOf="@+id/listImage" />
 
-</LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageViewDetalBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewList"
+            app:srcCompat="@drawable/baseline_keyboard_arrow_right_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

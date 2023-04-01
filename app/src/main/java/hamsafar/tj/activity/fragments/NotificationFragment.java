@@ -64,8 +64,6 @@ public class NotificationFragment extends Fragment {
         notificAdapter = new NotificAdapter(booksArrayList, getContext());
         recyclerViewBookNotif.setAdapter(notificAdapter);
 
-
-
         showNotificationList();
 
         return view;

@@ -1,14 +1,15 @@
-package hamsafar.tj.activity;
+package hamsafar.tj.activity.fragments;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -21,8 +22,8 @@ import hamsafar.tj.R;
 import hamsafar.tj.activity.adapters.PostAdapter;
 import hamsafar.tj.activity.models.Post;
 
-public class MyPostActivity extends AppCompatActivity {
 
+public class MyPostFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth; // FireBase
     private FirebaseFirestore travelPostRef;
@@ -31,33 +32,28 @@ public class MyPostActivity extends AppCompatActivity {
     PostAdapter postAdapter;
     ArrayList<Post> posts = new ArrayList<>();
     private String userKey;
-    private TextView textViewBackPageBtn;
     private ImageView imageViewNotPost;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_post);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_my_post, container, false);
 
         travelPostRef = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         userKey = firebaseAuth.getCurrentUser().getUid();
 
-        textViewBackPageBtn = findViewById(R.id.toolbarText);
-        imageViewNotPost = findViewById(R.id.imageViewNotifiivat);
+        imageViewNotPost = view.findViewById(R.id.imageViewNotifiivat);
 
-        recyclerViewPost = findViewById(R.id.recyclerViewMyPosts);
-        recyclerViewPost.setLayoutManager(new LinearLayoutManager(MyPostActivity.this, LinearLayoutManager.VERTICAL, false));
-        postAdapter = new PostAdapter(posts, MyPostActivity.this);
+        recyclerViewPost = view.findViewById(R.id.recyclerViewMyPosts);
+        recyclerViewPost.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        postAdapter = new PostAdapter(posts, getContext());
         recyclerViewPost.setAdapter(postAdapter);
 
-
-        textViewBackPageBtn.setOnClickListener(view -> {
-            onBackPressed();
-            finish();
-        });
-
         showPostForUsers();
+
+        return view;
     }
 
     private void showPostForUsers() {

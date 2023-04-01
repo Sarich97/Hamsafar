@@ -1,24 +1,26 @@
 package hamsafar.tj.activity.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,9 +31,8 @@ import java.util.ArrayList;
 import hamsafar.tj.R;
 import hamsafar.tj.activity.AuthActivity;
 import hamsafar.tj.activity.adapters.CardViewAdapter;
-import hamsafar.tj.activity.adapters.ListAdapter;
+import hamsafar.tj.activity.adapters.ProfileFragmentAdapter;
 import hamsafar.tj.activity.models.CardViewModel;
-import hamsafar.tj.activity.models.listModel;
 
 
 public class ProfileFragment extends Fragment {
@@ -40,12 +41,20 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore,travelPostRef ;
     private String userID;
 
-    private TextView textViewUserName, textViewUserEmail, textViewSinhOutBtn;
-    private ImageView userImageP;
+    private TextView textViewUserName, textViewUserEmail;
+    private ImageView userImageP, imageViewLogOurBtn;
 
 
-    private RecyclerView listViewMenu;
-    private RecyclerView.Adapter adapter;
+    private RecyclerView recyclerViewCard;
+    private RecyclerView.Adapter cardViewAdapter;
+
+
+
+
+
+    private TabLayout tabLayoutAuth;
+    private ViewPager2 viewPager2Auth;
+    private ProfileFragmentAdapter profileFragmentAdapter;
 
 
     @Override
@@ -54,7 +63,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        listViewMenu = view.findViewById(R.id.recyclerViewList); //CARDVIEW
+
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -62,39 +71,99 @@ public class ProfileFragment extends Fragment {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         userID = firebaseAuth.getCurrentUser().getUid();
 
+       // recyclerViewCard = view.findViewById(R.id.recyclerViewCard); //CARDVIEW
+
 
         textViewUserName = view.findViewById(R.id.userNameProfile);
         textViewUserEmail = view.findViewById(R.id.userEmail);
         userImageP = view.findViewById(R.id.userImageProfile);
-        textViewSinhOutBtn = view.findViewById(R.id.logoutTextBtn);
+        imageViewLogOurBtn = view.findViewById(R.id.imageViewLogout);
 
 
         showProfileForUser();
-        showMenuForUser();
+               //cardViewRecycler();
 
-        textViewSinhOutBtn.setOnClickListener(view1 -> {
-            firebaseAuth.signOut();
-            Intent authIntent = new Intent(getContext(), AuthActivity.class);
-            startActivity(authIntent);
-            getActivity().finish();
+        imageViewLogOurBtn.setOnClickListener(view1 -> { // КНОПКА ВЫЙТИ ИЗ ПРОФИЛЯ!
+            showSingOutDialog();
+        });
+
+
+        tabLayoutAuth = view.findViewById(R.id.tabLayoutFragment);
+        viewPager2Auth = view.findViewById(R.id.viewPagerFragment);
+
+        tabLayoutAuth.addTab(tabLayoutAuth.newTab().setIcon(R.drawable.baseline_note_add_24));
+        tabLayoutAuth.addTab(tabLayoutAuth.newTab().setIcon(R.drawable.baseline_directions_car_24));
+
+        FragmentManager fragmentManager = getChildFragmentManager();
+        profileFragmentAdapter = new ProfileFragmentAdapter(fragmentManager , getLifecycle());
+        viewPager2Auth.setAdapter(profileFragmentAdapter);
+
+        tabLayoutAuth.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2Auth.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        viewPager2Auth.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                tabLayoutAuth.selectTab(tabLayoutAuth.getTabAt(position));
+            }
         });
 
 
         return view;
     }
 
-    private void showMenuForUser() {
-        listViewMenu.setHasFixedSize(true);
-        listViewMenu.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+    private void showSingOutDialog() {
+        AlertDialog.Builder logOutDialog = new AlertDialog.Builder(getContext());
+        // Указываем текст сообщение
+        logOutDialog.setMessage("Вы уверены, что хотите выйти из аккаунта?");
 
-        ArrayList<listModel> listModels = new ArrayList<>();
-        listModels.add(new listModel(R.drawable.baseline_note_add_24, "Мои заявки"));
-        listModels.add(new listModel(R.drawable.ic_baseline_directions_car_24, "Мои поездки"));
-        listModels.add(new listModel(R.drawable.baseline_person_24_green, "Редактировать профиль"));
-        listModels.add(new listModel(R.drawable.baseline_privacy_tip_24, "Политика конфиденциальности"));
+        logOutDialog.setPositiveButton("Да", (dialog, which) -> {
+            firebaseAuth.signOut();
+            Intent authIntent = new Intent(getContext(), AuthActivity.class);
+            startActivity(authIntent);
+            getActivity().finish();
+        });
+        // Обработчик на нажатие НЕТ
+        logOutDialog.setNegativeButton("Отмена", (dialog, which) -> dialog.cancel());
 
-        adapter = new ListAdapter(listModels, getContext());
-        listViewMenu.setAdapter(adapter);
+        // показываем Alert
+        logOutDialog.show();
+    }
+
+
+    private void cardViewRecycler() {
+        GradientDrawable gradient2 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xFF105dd0, 0xFF105dd0});
+        GradientDrawable gradient1 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xFF9937fc, 0xFF9937fc});
+        GradientDrawable gradient3 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xfffb7e36, 0xFFfb7e36});
+        GradientDrawable gradient4 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xff0fd59e, 0xff0fd59e});
+        GradientDrawable gradient5 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xffb8cee0, 0xffb8cee0});
+
+        recyclerViewCard.setHasFixedSize(true);
+        recyclerViewCard.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        ArrayList<CardViewModel> cardViewModels = new ArrayList<>();
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_road_24, "Состояние автодорог", gradient1));
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_control_point_24, "Как создать поездку?", gradient3));
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_moderator_24, "Безопасное вождение", gradient2));
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_article_24, "Полезные статьи", gradient4));
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_airplane_ticket_24, "Дешевые авиабилеты", gradient5));
+
+        cardViewAdapter = new CardViewAdapter(cardViewModels, getContext());
+        recyclerViewCard.setAdapter(cardViewAdapter);
     }
 
 
@@ -112,11 +181,11 @@ public class ProfileFragment extends Fragment {
 
                 TextDrawable user_drawble = TextDrawable.builder()
                         .beginConfig()
-                        .fontSize(26) /* size in px */
+                        .fontSize(32) /* size in px */
                         .bold()
                         .toUpperCase()
                         .endConfig()
-                        .buildRoundRect(userNameName, colorGenerator.getRandomColor(),4); // radius in
+                        .buildRoundRect(userNameName, colorGenerator.getRandomColor(),12); // radius in
                 userImageP.setImageDrawable(user_drawble);
 
             } else  {

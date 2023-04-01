@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -36,7 +37,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
 
     @Override
     public CardViewHold onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_main, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view2, parent, false);
         return new CardViewHold(view);
 
     }
@@ -59,7 +60,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
 
         ImageView imageViewCard;
         TextView textViewTitleCard;
-        RelativeLayout relativeLayoutCard;
+        ConstraintLayout relativeLayoutCard;
 
 
         public CardViewHold(@NonNull View itemView) {

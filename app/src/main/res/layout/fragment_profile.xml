@@ -19,88 +19,192 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/toolbarText"
-        style="@style/toolbarStyle"
-        android:includeFontPadding="false"
-        android:maxLines="1"
-        android:text="Профиль"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/toolbarText"
+            style="@style/toolbarStyle"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Профиль"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/userImageProfile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarText"
-        tools:srcCompat="@tools:sample/avatars" />
-
-
-    <TextView
-        android:id="@+id/userNameProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/play"
-        android:text=" "
-        android:textColor="@color/colorBlack"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/userImageProfile"
-        app:layout_constraintTop_toTopOf="@+id/userImageProfile" />
-
-    <TextView
-        android:id="@+id/userEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/play"
-        android:textColor="@color/colorSt"
-        android:text=" "
-        app:layout_constraintStart_toStartOf="@+id/userNameProfile"
-        app:layout_constraintTop_toBottomOf="@+id/userNameProfile" />
-
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1sp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/colorBG"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userImageProfile" />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:divider="@null"
-                android:focusable="true"
-                app:layout_constraintEnd_toEndOf="parent"
+            <ImageView
+                android:id="@+id/userImageProfile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="24dp"
+                android:textAlignment="center"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbarText"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                android:id="@+id/imageViewLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:padding="2dp"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbarText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/toolbarText"
+                app:srcCompat="@drawable/baseline_logout_24" />
+
 
             <TextView
-                android:id="@+id/logoutTextBtn"
+                android:id="@+id/userNameProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/play"
+                android:text=" "
+                android:textColor="@color/colorBlack"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/userImageProfile"
+                app:layout_constraintTop_toTopOf="@+id/userImageProfile" />
+
+            <TextView
+                android:id="@+id/userEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/play"
-                android:textColor="@color/colorRed"
-                android:drawableLeft="@drawable/baseline_logout_24"
-                android:drawablePadding="12dp"
-                android:clickable="true"
-                android:padding="12dp"
-                android:textSize="18dp"
-                android:text="Выйти"
+                android:text=" "
+                android:textColor="@color/colorSt"
+                app:layout_constraintStart_toStartOf="@+id/userNameProfile"
+                app:layout_constraintTop_toBottomOf="@+id/userNameProfile" />
+
+
+            <RelativeLayout
+                android:id="@+id/relactiveTrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/userImageProfile">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:fontFamily="@font/play"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="14dp"
+                    android:text="Рейтинг"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+                <TextView
+                    android:id="@+id/textViewReting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView6"
+                    android:layout_alignEnd="@+id/textView6"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="0dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="22dp"
+                    android:fontFamily="@font/play"
+                    android:text="100"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/play"
+                    android:layout_marginStart="28dp"
+                    android:layout_toEndOf="@+id/textView8"
+                    android:textSize="14dp"
+                    android:text="Стаж"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/textViewExperience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView7"
+                    android:layout_alignEnd="@+id/textView7"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="0dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="22dp"
+                    android:fontFamily="@font/play"
+                    android:text="1 год"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:fontFamily="@font/play"
+                    android:textSize="14dp"
+                    android:layout_toEndOf="@+id/textView6"
+                    android:text="Поездки"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/textViewTripCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView8"
+                    android:layout_alignEnd="@+id/textView8"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="0dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="22dp"
+                    android:fontFamily="@font/play"
+                    android:text="1000"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBG"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewList" />
+                app:layout_constraintTop_toBottomOf="@+id/relactiveTrip" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="@+id/view">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayoutFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="SpeakableTextPresentCheck">
+
+                </com.google.android.material.tabs.TabLayout>
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPagerFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/tabLayoutFragment"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tabLayoutFragment"  />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

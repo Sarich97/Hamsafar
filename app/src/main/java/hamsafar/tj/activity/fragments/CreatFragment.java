@@ -19,7 +19,6 @@ import hamsafar.tj.activity.adapters.CreatFragmentAdapter;
 public class CreatFragment extends Fragment {
 
 
-
     private TabLayout tabLayoutAuth;
     private ViewPager2 viewPager2Auth;
     private CreatFragmentAdapter creatFragmentAdapter;

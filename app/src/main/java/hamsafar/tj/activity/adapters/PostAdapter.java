@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,12 +52,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolder holder, int position) {
+
+
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
         Post posts = postsItems.get(position);
+        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), android.R.anim.slide_in_left);
+        holder.itemView.startAnimation(animation);
         holder.textViewStartTrip.setText(posts.getStartTrip());
         holder.textViewEndTrip.setText(posts.getEndTrip());
         holder.textViewDateTime.setText(posts.getTimeTrip() + " - " + posts.getDataTrip());
-        holder.textViewStatusTrip.setText(posts.getIsDriverUser());
+        holder.textViewStatusTrip.setText("  " + posts.getIsDriverUser() + "  " );
         holder.textViewDriverName.setText(posts.getUserName());
 
         if(posts.getPriceTrip() == null) {

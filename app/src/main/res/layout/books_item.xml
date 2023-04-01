@@ -38,11 +38,25 @@
         android:id="@+id/imageViewDetalBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="12dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/userImageBooks"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/userImageBooks"
         app:srcCompat="@drawable/baseline_keyboard_arrow_right_24" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonDeleteUser"
+        android:textAllCaps="false"
+        android:fontFamily="@font/play"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/colorRed"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Удалить"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewDetalBook"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewDetalBook"
+        app:layout_constraintTop_toTopOf="@+id/imageViewDetalBook" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

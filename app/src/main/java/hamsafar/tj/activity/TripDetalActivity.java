@@ -124,19 +124,20 @@ public class TripDetalActivity extends AppCompatActivity {
 
 
         textViewDriverName.setText(tripNameUser);
-        textViewTripStatus.setText(isUserDriver);
+        textViewTripStatus.setText(" " + isUserDriver + " ");
 
         textViewTripStart.setText(tripStart);
         textViewTripEnd.setText(tripEnd);
         textViewDateTime.setText(tripDate);
-        textViewSeat.setText(tripSeat + " чел.");
+        textViewSeat.setText(String.format("%s из %s чел.",booksArrayList.size(), tripSeat));
+
         textViewComment.setText("Коментарии: " + comments);
 
         showBookBtnStatus();
         showBooksList();
 
         if(tripBrandCar == null) {
-            textViewCarModel.setText("Марко автомобиля\n");
+            textViewCarModel.setText("Марка автомобиля: любая");
         } else {
             textViewCarModel.setText(tripBrandCar);
         }
@@ -187,13 +188,12 @@ public class TripDetalActivity extends AppCompatActivity {
                         String user_name = task.getResult().getString("userName");
                         String user_phone = task.getResult().getString("userPhone");
                         bookTrip(user_name, user_phone, postID);
-
                     }
                 });
             }
         });
 
-        buttonBookCancel.setOnClickListener(view -> {
+        buttonBookCancel.setOnClickListener(view -> { // Кнопка Отмена бронирование поездки
             bookRef.collection("posts/" + postID + "/books").document(userKey).delete();
             bookRef.collection("notificat/" + tripUserId + "/books").document(userKey+postID).delete();
             buttonBookCancel.setVisibility(View.GONE);
@@ -205,21 +205,7 @@ public class TripDetalActivity extends AppCompatActivity {
         });
 
         buttonBookFinish.setOnClickListener(view -> { // Завершить заявку а не удалить
-            DocumentReference documentReference = postRef.collection("posts").document(postID);
-            Map<String, Object> posts = new HashMap<>();
-            posts.put("isDriverUser", "Поездка завершена");
-            posts.put("statusTrip", "null");
-            documentReference.update(posts).addOnCompleteListener(task -> {
-                if(task.isSuccessful()) {
-                    Intent mainIntent = new Intent(TripDetalActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
-                    finish();
-                    showToast(this, "Вы успешно завершили заявку");
-                } else {
-                    showToast(this, "Ошибка. Заявка не завершена");
-                }
-            });
-
+            showBookFinishDialog();
         });
 
 
@@ -238,6 +224,35 @@ public class TripDetalActivity extends AppCompatActivity {
 
     }
 
+    private void showBookFinishDialog() {
+        String postID = getIntent().getExtras().getString("postID");
+        AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
+        // Указываем текст сообщение
+        deleteDialog.setMessage("Вы уверены, что хотите завершить поездку?");
+
+        deleteDialog.setPositiveButton("Да", (dialog, which) -> {
+            DocumentReference documentReference = postRef.collection("posts").document(postID);
+            Map<String, Object> posts = new HashMap<>();
+            posts.put("isDriverUser", "Поездка завершена");
+            posts.put("statusTrip", "null");
+            documentReference.update(posts).addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    Intent mainIntent = new Intent(TripDetalActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    finish();
+                    showToast(this, "Вы успешно завершили поездку");
+                } else {
+                    showToast(this, "Ошибка. Поездка не завершена");
+                }
+            });
+        });
+        // Обработчик на нажатие НЕТ
+        deleteDialog.setNegativeButton("Отмена", (dialog, which) -> dialog.cancel());
+
+        // показываем Alert
+        deleteDialog.show();
+    }
+
     private void UpDatePostInfo() { // ОБНОВИТЬ СТАТУС ПОСТА ЕСЛИ ПОЛЬЗОВАТЕЛЬ НАЖАЛ НА КНОПКУ ОТМЕНИТЬ БРОНЬ
         String postID = getIntent().getExtras().getString("postID");
         String tripSeat = getIntent().getExtras().getString("seatTrip");
@@ -249,7 +264,7 @@ public class TripDetalActivity extends AppCompatActivity {
                 if(taskPost.isSuccessful()) {
 
                 } else {
-                    showToast(this, "Ошибка. Повторите попытку позже            ");
+                    showToast(this, "Ошибка. Повторите попытку позже");
                 }
             });
         }
@@ -313,6 +328,7 @@ public class TripDetalActivity extends AppCompatActivity {
                             buttonBookTrip.setVisibility(View.INVISIBLE);
                             buttonBookCancel.setVisibility(View.INVISIBLE);
                             buttonBookFinish.setVisibility(View.INVISIBLE);
+                            recyclerViewBook.setClickable(false);
                         } else {
                             if(userKey.equals(tripUserId)) {
                                 buttonBookFinish.setVisibility(View.VISIBLE);
@@ -404,9 +420,9 @@ public class TripDetalActivity extends AppCompatActivity {
         TextView textView = dialogCreatPost.findViewById(R.id.textDialog);
         Button buttonCancelD = dialogCreatPost.findViewById(R.id.buttonCancelDialog);
         if(isUserDriver.equals("Ищу водителя")) {
-            textView.setText("");
+            textView.setText("Вы успешно приняли заявку\nЖелаем вам хорошей поездки!");
         } else {
-            textView.setText("");
+            textView.setText("Вы успешно забронировали поездку\nЖелаем вам хорошей поездки!");
         }
         dialogCreatPost.show();
 

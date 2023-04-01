@@ -1,13 +1,15 @@
-package hamsafar.tj.activity;
+package hamsafar.tj.activity.fragments;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -23,7 +25,8 @@ import hamsafar.tj.activity.adapters.PostAdapter;
 import hamsafar.tj.activity.models.Post;
 import hamsafar.tj.activity.models.books;
 
-public class MyTripActivity extends AppCompatActivity {
+
+public class MyTripFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth; // FireBase
     private FirebaseFirestore travelPostRef, bookRef;
@@ -33,13 +36,14 @@ public class MyTripActivity extends AppCompatActivity {
     PostAdapter postAdapter;
     ArrayList<Post> posts = new ArrayList<>();
     private String userKey;
-    private TextView textViewBackPageBtn;
     private ImageView imageViewNotPost;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_trip);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_my_trip, container, false);
+
 
         bookRef = FirebaseFirestore.getInstance();
         notificatRef = bookRef.collection("posts");
@@ -47,25 +51,23 @@ public class MyTripActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         userKey = firebaseAuth.getCurrentUser().getUid();
 
-        textViewBackPageBtn = findViewById(R.id.toolbarText);
-        imageViewNotPost = findViewById(R.id.imageViewNotifiivat);
+        imageViewNotPost = view.findViewById(R.id.imageViewNotifiivat);
 
-        recyclerViewPost = findViewById(R.id.recyclerViewMyTrips);
-        recyclerViewPost.setLayoutManager(new LinearLayoutManager(MyTripActivity.this, LinearLayoutManager.VERTICAL, false));
-        postAdapter = new PostAdapter(posts, MyTripActivity.this);
+        recyclerViewPost = view.findViewById(R.id.recyclerViewMyTrips);
+        recyclerViewPost.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        postAdapter = new PostAdapter(posts, getContext());
         recyclerViewPost.setAdapter(postAdapter);
 
 
 
-        textViewBackPageBtn.setOnClickListener(view -> {
-            onBackPressed();
-            finish();
-        });
 
         showTripsForUsers();
+
+        return view;
     }
 
     private void showTripsForUsers() {
+
         Query query = travelPostRef.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING);
 
 
