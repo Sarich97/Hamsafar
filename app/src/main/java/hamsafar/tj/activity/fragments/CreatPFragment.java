@@ -126,6 +126,7 @@ public class CreatPFragment extends Fragment {
                 String user_name = task.getResult().getString("userName");
                 String user_phone = task.getResult().getString("userPhone");
 
+
                 DocumentReference documentReference = firebaseFirestore.collection("posts").document();
                 Map<String, Object> post = new HashMap<>();
                 post.put("userUD", userID);

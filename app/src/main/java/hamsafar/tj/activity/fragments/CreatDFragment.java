@@ -51,7 +51,7 @@ import hamsafar.tj.activity.MainActivity;
 public class CreatDFragment extends Fragment {
 
     private Spinner spinnerStartTrip, spinnerEndTrip;
-    private EditText editTextPrice, editTextSeat, editTextCarModel, editTextComment;
+    private EditText editTextPrice, editTextSeat, editTextComment;
     private TextView textViewDateTrip, textViewTimeTrip;
     private Button buttonCreatTrip;
     private ProgressBar progressBarPost;
@@ -90,7 +90,6 @@ public class CreatDFragment extends Fragment {
         textViewTimeTrip = view.findViewById(R.id.editTextTimeD);
         editTextPrice = view.findViewById(R.id.editTextPriceD);
         editTextSeat = view.findViewById(R.id.editTextSeatD);
-        editTextCarModel = view.findViewById(R.id.editCarModelD);
         buttonCreatTrip = view.findViewById(R.id.creatTripD);
         editTextComment = view.findViewById(R.id.editTextCommentD);
         progressBarPost = view.findViewById(R.id.progressBarPostD);
@@ -110,7 +109,6 @@ public class CreatDFragment extends Fragment {
             String time_Trip = textViewTimeTrip.getText().toString();
             String price_Trip = editTextPrice.getText().toString();
             String seat_Trip = editTextSeat.getText().toString();
-            String car_model = editTextCarModel.getText().toString();
             String comments = editTextComment.getText().toString();
 
 
@@ -138,31 +136,28 @@ public class CreatDFragment extends Fragment {
                 editTextSeat.setError("Укажите количество мест");
                 buttonCreatTrip.setVisibility(View.VISIBLE);
                 progressBarPost.setVisibility(View.INVISIBLE);
-            } else if(TextUtils.isEmpty(car_model)) {
-                editTextCarModel.setError("Укажите марку вашего автомобиля");
-                buttonCreatTrip.setVisibility(View.VISIBLE);
-                progressBarPost.setVisibility(View.INVISIBLE);
             } else  {
-                creatPost(start_Trip, end_Trip, data_Trip, time_Trip, price_Trip, seat_Trip, car_model, comments);
+                creatPost(start_Trip, end_Trip, data_Trip, time_Trip, price_Trip, seat_Trip, comments);
             }
         });
 
         return view;
     }
 
-    private void creatPost(String start_trip, String end_trip, String data_trip, String time_trip, String price_trip, String seat_trip, String car_model, String comments) {
+    private void creatPost(String start_trip, String end_trip, String data_trip, String time_trip, String price_trip, String seat_trip, String comments) {
         userID = firebaseAuth.getCurrentUser().getUid();
         firebaseFirestore.collection("users").document(userID).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 String user_name = task.getResult().getString("userName");
                 String user_phone = task.getResult().getString("userPhone");
+                String user_car = task.getResult().getString("userCarModel");
 
                 DocumentReference documentReference = firebaseFirestore.collection("posts").document();
                 Map<String, Object> post = new HashMap<>();
                 post.put("userUD", userID);
                 post.put("userName", user_name);
                 post.put("userPhone", user_phone);
-                post.put("carModel", car_model);
+                post.put("carModel", user_car);
                 post.put("startTrip", start_trip);
                 post.put("endTrip", end_trip);
                 post.put("dataTrip", data_trip);

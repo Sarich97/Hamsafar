@@ -41,7 +41,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore,travelPostRef ;
     private String userID;
 
-    private TextView textViewUserName, textViewUserEmail;
+    private TextView textViewUserName, textViewUserEmail, textViewUserRating, textViewUserTripCount;
     private ImageView userImageP, imageViewLogOurBtn;
 
 
@@ -76,6 +76,8 @@ public class ProfileFragment extends Fragment {
 
         textViewUserName = view.findViewById(R.id.userNameProfile);
         textViewUserEmail = view.findViewById(R.id.userEmail);
+        textViewUserRating = view.findViewById(R.id.textViewRating);
+        textViewUserTripCount = view.findViewById(R.id.textViewTripCount);
         userImageP = view.findViewById(R.id.userImageProfile);
         imageViewLogOurBtn = view.findViewById(R.id.imageViewLogout);
 
@@ -173,9 +175,13 @@ public class ProfileFragment extends Fragment {
                 ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
                 String user_name = task.getResult().getString("userName");
                 String user_phone = task.getResult().getString("userEmail");
+                String user_rating = task.getResult().get("userRating").toString();
+                String user_trip_count = task.getResult().get("userTrip").toString();
 
                 textViewUserName.setText(user_name);
                 textViewUserEmail.setText(user_phone);
+                textViewUserRating.setText(user_rating);
+                textViewUserTripCount.setText(user_trip_count);
 
                 String userNameName = user_name.substring(0,1);
 

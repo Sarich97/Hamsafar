@@ -90,16 +90,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextTimeD" />
 
-            <EditText
-                android:id="@+id/editCarModelD"
-                style="@style/editText"
-                android:drawableLeft="@drawable/ic_baseline_directions_car_24"
-                android:ems="10"
-                android:hint="@string/editCarModel"
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
             <EditText
                 android:id="@+id/editTextPriceD"
@@ -110,7 +100,7 @@
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editCarModelD" />
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
             <EditText
                 android:id="@+id/editTextSeatD"

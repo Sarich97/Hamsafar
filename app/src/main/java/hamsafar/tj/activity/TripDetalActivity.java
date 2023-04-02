@@ -2,6 +2,7 @@ package hamsafar.tj.activity;
 
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -240,6 +243,16 @@ public class TripDetalActivity extends AppCompatActivity {
                     Intent mainIntent = new Intent(TripDetalActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     finish();
+                    UsersRef.collection("users").document(userKey).get().addOnCompleteListener(task1 -> {
+                        if(task1.isSuccessful()) {
+                            if(booksArrayList.size() !=0) {
+                                int user_rating = Integer.parseInt(String.valueOf(task1.getResult().get("userTrip")));
+                                user_rating++;
+                                UsersRef.collection("users").document(userKey).update("userTrip", user_rating);
+                            }
+
+                        }
+                    });
                     showToast(this, "Вы успешно завершили поездку");
                 } else {
                     showToast(this, "Ошибка. Поездка не завершена");

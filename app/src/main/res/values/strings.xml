@@ -27,7 +27,7 @@
     <string name="textEditRegister">Укажите ваше имя и номер телефона</string>
     <string name="textEditCreat">Укажите направление маршрута</string>
     <string name="textEditCreatTrip">Укажите дату и время маршрута</string>
-    <string name="textEditCreatAn">Укажите цену, кол-во мест и марки авто</string>
+    <string name="textEditCreatAn">Укажите цену, кол-во мест</string>
     <string name="buttonCreatTrip">Создать поездку</string>
     <string name="editDate">Дата</string>
     <string name="editTime">Время</string>

@@ -98,7 +98,7 @@
 
 
                 <TextView
-                    android:id="@+id/textViewReting"
+                    android:id="@+id/textViewRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/textView6"
@@ -108,7 +108,7 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="22dp"
                     android:fontFamily="@font/play"
-                    android:text="100"
+                    android:text=" "
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -160,7 +160,7 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="22dp"
                     android:fontFamily="@font/play"
-                    android:text="1000"
+                    android:text=" "
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </RelativeLayout>

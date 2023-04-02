@@ -36,7 +36,7 @@ import hamsafar.tj.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText editTextUserName, editTextUserPhone; // Поля ввод юзера
+    private EditText editTextUserName, editTextUserPhone, editTextUserCarModel; // Поля ввод юзера
     private Button buttonCreatNewUser; // Кнопка регистрации
     private Spinner spinnerUserCity;
     private ProgressBar progressRegister; // Прогрессбар страница(фрагмент) регистрации
@@ -62,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         buttonCreatNewUser = findViewById(R.id.registerUserBtn);
         progressRegister = findViewById(R.id.progressRegisterActivity);
         textViewTeamOfServis = findViewById(R.id.team_of_servis);
+        editTextUserCarModel = findViewById(R.id.userCarModelD);
 
 
 
@@ -73,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
             String phone = editTextUserPhone.getText().toString();
             String user_city = spinnerUserCity.getSelectedItem().toString();
             String password = getIntent().getExtras().getString("userPass");
+            String user_car_model = editTextUserCarModel.getText().toString();
 
             if(name.length() < 3)
             {
@@ -85,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                 showToast(this,getString(spinner_CityMessage));
             } else
             {
-                createNewUser(email, password,name, phone, user_city);
+                createNewUser(email, password,name, phone, user_city, user_car_model);
             }
         });
 
@@ -97,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void createNewUser(String email, String password, String name, String phone, String user_city) {
+    private void createNewUser(String email, String password, String name, String phone, String user_city, String user_car_model) {
         progressRegister.setVisibility(View.VISIBLE);
         buttonCreatNewUser.setVisibility(View.INVISIBLE);
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -114,6 +116,9 @@ public class RegisterActivity extends AppCompatActivity {
                 user.put("userName", name);
                 user.put("userPhone", phone);
                 user.put("userCity", user_city);
+                user.put("userCarModel", user_car_model);
+                user.put("userRating", 15);
+                user.put("userTrip", 0);
                 user.put("ipAdress", ipAddress);
                 user.put("regDate", FieldValue.serverTimestamp());
 
