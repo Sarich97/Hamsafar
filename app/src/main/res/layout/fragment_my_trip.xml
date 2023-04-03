@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recyclerViewMyTrips"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewMyTrips"
         app:srcCompat="@drawable/undraw_add_files_re_v09g" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -132,7 +132,7 @@ public class TripDetalActivity extends AppCompatActivity {
         textViewTripStart.setText(tripStart);
         textViewTripEnd.setText(tripEnd);
         textViewDateTime.setText(tripDate);
-        textViewSeat.setText(String.format("%s из %s чел.",booksArrayList.size(), tripSeat));
+        textViewSeat.setText(String.format("%s чел.", tripSeat));
 
         textViewComment.setText("Коментарии: " + comments);
 
@@ -140,7 +140,7 @@ public class TripDetalActivity extends AppCompatActivity {
         showBooksList();
 
         if(tripBrandCar == null) {
-            textViewCarModel.setText("Марка автомобиля: любая");
+            textViewCarModel.setText("Марка: любая");
         } else {
             textViewCarModel.setText(tripBrandCar);
         }
@@ -181,7 +181,7 @@ public class TripDetalActivity extends AppCompatActivity {
                 .buildRoundRect(firstName, colorGenerator.getRandomColor(),4); // radius in
         imageViewUserImage.setImageDrawable(user_drawble);
 
-        buttonBookTrip.setOnClickListener(view -> {
+        buttonBookTrip.setOnClickListener(view -> { // Кнопка забронировать.
             if(booksArrayList.size() + 1 > Integer.valueOf(tripSeat))
             {
                 showToast(this, "Количество мест ограничено");
