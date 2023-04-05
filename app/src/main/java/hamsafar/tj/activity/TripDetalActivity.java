@@ -6,12 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -44,6 +47,7 @@ import hamsafar.tj.R;
 import hamsafar.tj.activity.adapters.BooksAdapter;
 import hamsafar.tj.activity.models.Post;
 import hamsafar.tj.activity.models.books;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class TripDetalActivity extends AppCompatActivity {
 
@@ -57,6 +61,7 @@ public class TripDetalActivity extends AppCompatActivity {
     private String post_id;
     private String userKey;
     private Dialog dialogCreatPost;
+    private String deleteBookDate;
 
 
     private RecyclerView recyclerViewBook;
@@ -104,11 +109,6 @@ public class TripDetalActivity extends AppCompatActivity {
 
 
 
-        recyclerViewBook = findViewById(R.id.booksRecyclerView);
-        recyclerViewBook.setHasFixedSize(true);
-        recyclerViewBook.setLayoutManager(new LinearLayoutManager(TripDetalActivity.this, LinearLayoutManager.VERTICAL, false));
-        booksAdapter = new BooksAdapter(booksArrayList, TripDetalActivity.this);
-        recyclerViewBook.setAdapter(booksAdapter);
 
 
         String tripStart = getIntent().getExtras().getString("locationFrom");
@@ -124,6 +124,14 @@ public class TripDetalActivity extends AppCompatActivity {
         String isUserDriver = getIntent().getExtras().getString("isUserDriver");
         String postID = getIntent().getExtras().getString("postID");
 
+        recyclerViewBook = findViewById(R.id.booksRecyclerView);
+        recyclerViewBook.setHasFixedSize(true);
+        recyclerViewBook.setLayoutManager(new LinearLayoutManager(TripDetalActivity.this, LinearLayoutManager.VERTICAL, false));
+        booksAdapter = new BooksAdapter(booksArrayList, TripDetalActivity.this);
+        recyclerViewBook.setAdapter(booksAdapter);
+        if(tripUserId.equals(userKey)) {
+            new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewBook);
+        }
 
 
         textViewDriverName.setText(tripNameUser);
@@ -226,7 +234,54 @@ public class TripDetalActivity extends AppCompatActivity {
         });
 
     }
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
 
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            String tripUserId = getIntent().getExtras().getString("driverID");
+            String postID = getIntent().getExtras().getString("postID");
+            int position = viewHolder.getAdapterPosition();
+           if(tripUserId.equals(userKey)) {
+
+               bookRef.collection("posts/" + postID + "/books").document(booksArrayList.get(position).getUserID()).delete();
+               bookRef.collection("notificat/" + tripUserId + "/books").document(booksArrayList.get(position).getUserID()+postID).delete();
+               booksArrayList.remove(position);
+               if(booksArrayList.size() == 0) {
+                   DocumentReference documentReference = bookRef.collection("posts").document(postID);
+                   Map<String, Object> posts = new HashMap<>();
+                   posts.put("statusTrip", "show");
+                   documentReference.update(posts).addOnCompleteListener(taskPost -> {
+                       if(taskPost.isSuccessful()) {
+                           booksAdapter.notifyDataSetChanged();
+                       } else {
+                           showToast(TripDetalActivity.this, "Ошибка. Повторите попытку позже");
+                       }
+                   });
+               } else {
+
+               }
+           } else {
+
+           }
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(TripDetalActivity.this, R.color.colorRed))
+                    .addSwipeRightLabel("Удалить")
+                    .setSwipeRightLabelColor(ContextCompat.getColor(TripDetalActivity.this, R.color.colorWhite))
+                    .addActionIcon(R.drawable.baseline_delete_forever_24)
+                    .create()
+                    .decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
     private void showBookFinishDialog() {
         String postID = getIntent().getExtras().getString("postID");
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
@@ -469,7 +524,6 @@ public class TripDetalActivity extends AppCompatActivity {
                 book.put("date", tripDate);
                 book.put("timestamp", FieldValue.serverTimestamp());
                 buttonBookTrip.setVisibility(View.GONE);
-                buttonBookCancel.setVisibility(View.VISIBLE);
                 showDialogCreatPost();
                 //bookRef.collection("posts/" + postID + "/books").document(userKey).set(book);
                 noteRef.collection("notificat/" + tripUserId +  "/books").document(notifiID).set(book);
@@ -480,7 +534,7 @@ public class TripDetalActivity extends AppCompatActivity {
                     posts.put("statusTrip", "null");
                     documentReference.update(posts).addOnCompleteListener(taskPost -> {
                         if(taskPost.isSuccessful()) {
-
+                            buttonBookCancel.setVisibility(View.VISIBLE);
                         } else {
                             showToast(this, "Ошибка. Повторите попытку позже            ");
                         }

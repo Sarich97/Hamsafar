@@ -83,10 +83,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
         if(userKey.equals(books.getPostCreateID())) {
             holder.imageDetalBooks.setVisibility(View.VISIBLE);
-            holder.buttonDeleteUsers.setVisibility(View.VISIBLE);
         } else {
             holder.imageDetalBooks.setVisibility(View.GONE);
-            holder.buttonDeleteUsers.setVisibility(View.GONE);
         }
 
         String userNameName = books.getUserName().substring(0,1);
@@ -102,40 +100,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
         final String postId = books.getPostID();
         final String booksId = booksArrayList.get(position).getUserID();
-
-        holder.buttonDeleteUsers.setOnClickListener(view1 -> {  // Кнопка удалить пользователя из списка пассажиров/водитель
-            AlertDialog.Builder deleteDialog = new AlertDialog.Builder(context);
-            deleteDialog.setTitle("Подтвердить удаление...");
-            // Указываем текст сообщение
-            deleteDialog.setMessage("Вы уверены, что хотите удалить ?");
-
-            deleteDialog.setPositiveButton("Да", (dialog, which) -> {
-                notifyDataSetChanged();
-                booksArrayList.remove(booksArrayList.get(position));
-                bookRef.collection("posts/" + postId + "/books").document(booksId).delete();
-                bookRef.collection("notificat/" + books.getPostCreateID() + "/books").document(booksId+postId).delete();
-                if(booksArrayList.size() == 0) {
-                    DocumentReference documentReference = bookRef.collection("posts").document(postId);
-                    Map<String, Object> posts = new HashMap<>();
-                    posts.put("statusTrip", "show");
-                    documentReference.update(posts).addOnCompleteListener(taskPost -> {
-                        if(taskPost.isSuccessful()) {
-
-                        } else {
-                            showToast(context, "Ошибка. Повторите попытку позже");
-                        }
-                    });
-                } else {
-
-                }
-
-            });
-            // Обработчик на нажатие НЕТ
-            deleteDialog.setNegativeButton("Отмена", (dialog, which) -> dialog.cancel());
-
-            // показываем Alert
-            deleteDialog.show();
-        });
 
         holder.imageDetalBooks.setOnClickListener(view -> { // ОКОШКО С ПОЛЬЗОВАТЕЛЕМ ДЛЯ ЗВОНКА
             dialogBooks.setContentView(R.layout.show_books_detal_sheet);
@@ -188,14 +152,12 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
         ImageView imageViewUserBook, imageDetalBooks;
         TextView textViewUserNameBook;
-        Button buttonDeleteUsers;
 
         public ViewHolder(View view) {
             super(view);
             imageViewUserBook = view.findViewById(R.id.userImageBooks);
             textViewUserNameBook = view.findViewById(R.id.userNameBook);
             imageDetalBooks = view.findViewById(R.id.imageViewDetalBook);
-            buttonDeleteUsers = view.findViewById(R.id.buttonDeleteUser);
 //            buttonDeleteUser  = view.findViewById(R.id.buttonDelete);
 
 
