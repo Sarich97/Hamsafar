@@ -3,6 +3,7 @@ package hamsafar.tj.activity.fragments;
 import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.getMonthText;
 import static hamsafar.tj.activity.utility.Utility.minuteText;
+import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import android.app.DatePickerDialog;
@@ -113,11 +114,11 @@ public class CreatDFragment extends Fragment {
 
 
             if(start_Trip.equals("Откуда")) {
-                showToast(getContext(),"Укажите начальную точку маршрута");
+                showSnakbarTypeOne(getView(),"Укажите начальную точку маршрута");
                 buttonCreatTrip.setVisibility(View.VISIBLE);
                 progressBarPost.setVisibility(View.INVISIBLE);
             }  else if(end_Trip.equals("Куда")) {
-                showToast(getContext(), "Укажите конечную точку маршрута");
+                showSnakbarTypeOne(getView(),"Укажите конечную точку маршрута");
                 buttonCreatTrip.setVisibility(View.VISIBLE);
                 progressBarPost.setVisibility(View.INVISIBLE);
             } else if(TextUtils.isEmpty(data_Trip)) {
@@ -179,7 +180,8 @@ public class CreatDFragment extends Fragment {
                     } else {
                         buttonCreatTrip.setVisibility(View.VISIBLE);
                         progressBarPost.setVisibility(View.INVISIBLE);
-                        showToast(getContext(), "Ошибка публикации поста. Повторите попытку через несколько минут");
+                        showSnakbarTypeOne(getView(),"Ошибка публикации поста. Повторите попытку через несколько минут");
+
                     }
                 });
             }

@@ -1,8 +1,13 @@
 package hamsafar.tj.activity.utility;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.view.View;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 public class Utility {
 
@@ -10,6 +15,12 @@ public class Utility {
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
+
+    public static void showSnakbarTypeOne(View view, String mMessage) {
+        Snackbar.make(view, mMessage, Snackbar.LENGTH_LONG)
+                .show();
+    }
+
 
     public static String dayMonthText(int day) {
         String monthName;
@@ -99,40 +110,40 @@ public class Utility {
         String monthName;
         switch (monthOfYear) {
             case 0:
-                monthName = "Янв";
+                monthName = "янв";
                 break;
             case 1:
-                monthName = "Фев";
+                monthName = "фев";
                 break;
             case 2:
-                monthName = "Март";
+                monthName = "март";
                 break;
             case 3:
-                monthName = "Апр";
+                monthName = "апр";
                 break;
             case 4:
-                monthName = "Мая";
+                monthName = "мая";
                 break;
             case 5:
-                monthName = "Июня";
+                monthName = "июня";
                 break;
             case 6:
-                monthName = "Июля";
+                monthName = "июля";
                 break;
             case 7:
-                monthName = "Авг";
+                monthName = "авг";
                 break;
             case 8:
-                monthName = "Сен";
+                monthName = "сен";
                 break;
             case 9:
-                monthName = "Окт";
+                monthName = "окт";
                 break;
             case 10:
-                monthName = "Ноя";
+                monthName = "ноя";
                 break;
             case 11:
-                monthName = "Дек";
+                monthName = "дек";
                 break;
             default:
                 monthName = "Invalid month";

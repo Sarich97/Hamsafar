@@ -3,6 +3,7 @@ package hamsafar.tj.activity.fragments;
 import static hamsafar.tj.R.string.field_emailMessage;
 import static hamsafar.tj.R.string.field_passMessage;
 import static hamsafar.tj.R.string.notFoundUserMessage;
+import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import android.content.Intent;
@@ -83,7 +84,7 @@ public class LoginFragment extends Fragment {
             } else {
                 progressBarLogin.setVisibility(View.INVISIBLE);
                 buttonLogin.setVisibility(View.VISIBLE);
-                showToast(getContext(), getString(notFoundUserMessage));
+                showSnakbarTypeOne(getView(),getString(notFoundUserMessage));
             }
         });
     }

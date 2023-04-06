@@ -5,6 +5,7 @@ import static hamsafar.tj.R.string.erro_registerMessageS;
 import static hamsafar.tj.R.string.field_nameRegister;
 import static hamsafar.tj.R.string.field_phoneRegister;
 import static hamsafar.tj.R.string.spinner_CityMessage;
+import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import androidx.appcompat.app.AppCompatActivity;

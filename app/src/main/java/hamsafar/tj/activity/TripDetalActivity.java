@@ -6,17 +6,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -53,7 +58,7 @@ public class TripDetalActivity extends AppCompatActivity {
 
     private TextView textViewDriverName, textViewTripStatus, textViewTripPrice, textViewTripStart,textViewTripEnd;
     private TextView textViewComment, textViewDateTime, textViewCarModel, textViewSeat, textViewBookStatus;
-    private ImageView imageViewUserImage, buttonBackActivity, imageViewButtonDelete;
+    private ImageView imageViewUserImage, buttonBackActivity, imageViewButtonDelete, imageViewCallButton;
     private Button buttonBookTrip, buttonBookCancel, buttonBookFinish;
 
     private FirebaseAuth firebaseAuth;
@@ -61,7 +66,7 @@ public class TripDetalActivity extends AppCompatActivity {
     private String post_id;
     private String userKey;
     private Dialog dialogCreatPost;
-    private String deleteBookDate;
+    private static final int REQUEST_CALL = 1;
 
 
     private RecyclerView recyclerViewBook;
@@ -96,6 +101,7 @@ public class TripDetalActivity extends AppCompatActivity {
         buttonBackActivity = findViewById(R.id.imageViewBackButton);
         textViewComment = findViewById(R.id.textCommentView);
         imageViewButtonDelete =  findViewById(R.id.imageViewDeletePost);
+        imageViewCallButton = findViewById(R.id.imageViewCallToCreatorPost);
 
         firebaseAuth = FirebaseAuth.getInstance();
         UsersRef = FirebaseFirestore.getInstance();
@@ -129,8 +135,13 @@ public class TripDetalActivity extends AppCompatActivity {
         recyclerViewBook.setLayoutManager(new LinearLayoutManager(TripDetalActivity.this, LinearLayoutManager.VERTICAL, false));
         booksAdapter = new BooksAdapter(booksArrayList, TripDetalActivity.this);
         recyclerViewBook.setAdapter(booksAdapter);
-        if(tripUserId.equals(userKey)) {
-            new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewBook);
+
+        if(tripUserId.equals(userKey) ) {
+            if(isUserDriver.equals("Поездка завершена")) {
+
+            } else {
+                new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewBook);
+            }
         }
 
 
@@ -175,6 +186,8 @@ public class TripDetalActivity extends AppCompatActivity {
 
         if(tripUserId.equals(userKey)){
             imageViewButtonDelete.setVisibility(View.VISIBLE);
+        } else {
+            imageViewCallButton.setVisibility(View.VISIBLE);
         }
 
 
@@ -230,6 +243,18 @@ public class TripDetalActivity extends AppCompatActivity {
                 showToast(this,"Нельзя удалить поезду пока есть активные заявки");
             } else  {
                 showDialogDeletePost();
+            }
+        });
+
+        imageViewCallButton.setOnClickListener(view -> { // Кнопка ПОЗВОНИТЬ ВОДИТЕЛЮ/ПАСАЖИРУ
+            String number = getIntent().getExtras().getString("phone");
+            if (ContextCompat.checkSelfPermission(TripDetalActivity.this,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity) TripDetalActivity.this,
+                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+            } else {
+                String dial = "tel:" + number;
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
             }
         });
 
