@@ -1,11 +1,11 @@
 package hamsafar.tj.activity.models;
 
 public class books {
-    private String notifiID, notifiStatus, postID, userID, userName, userPhone, postCreateID, date, locationFrom, locationTo;
+    private String notifiID, notifiStatus, postID, userID, userName, userPhone, postCreateID, date, locationFrom, locationTo, rating;
 
     public books () {}
 
-    public books(String notifiID, String notifiStatus, String postID, String userID, String userName, String userPhone, String postCreateID, String date, String locationFrom, String locationTo) {
+    public books(String notifiID, String notifiStatus, String postID, String userID, String userName, String userPhone, String postCreateID, String date, String locationFrom, String locationTo, String rating) {
         this.notifiID = notifiID;
         this.notifiStatus = notifiStatus;
         this.postID = postID;
@@ -16,6 +16,7 @@ public class books {
         this.date = date;
         this.locationFrom = locationFrom;
         this.locationTo = locationTo;
+        this.rating = rating;
     }
 
     public String getNotifiID() {
@@ -96,5 +97,13 @@ public class books {
 
     public void setLocationTo(String locationTo) {
         this.locationTo = locationTo;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 }

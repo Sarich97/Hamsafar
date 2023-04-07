@@ -3,8 +3,12 @@ package hamsafar.tj.activity.fragments;
 import static hamsafar.tj.R.color.colorRed;
 import static hamsafar.tj.R.drawable.baseline_add_box_24;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
+import static hamsafar.tj.activity.utility.Utility.showToast;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
@@ -20,16 +24,20 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -41,12 +49,14 @@ import hamsafar.tj.activity.adapters.CardViewAdapter;
 import hamsafar.tj.activity.adapters.PostAdapter;
 import hamsafar.tj.activity.models.CardViewModel;
 import hamsafar.tj.activity.models.Post;
+import hamsafar.tj.activity.models.books;
 
 
 public class TravelFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth; // FireBase
-    private FirebaseFirestore travelPostRef;
+    private FirebaseFirestore travelPostRef, bookRef, UserRef;
+    private CollectionReference notificatRef;
     private FirebaseFirestore userRef;
     ///   RecyclerView CARD VIEW ON MAIN PAGE
     private RecyclerView recyclerViewCard;
@@ -56,6 +66,7 @@ public class TravelFragment extends Fragment {
     private String user_city;
     private int currentPageIdPost = 2;
     private TextView textViewSearch;
+    private Dialog dialogRating; //
 
 
     private RecyclerView recyclerViewPost;
@@ -64,13 +75,13 @@ public class TravelFragment extends Fragment {
 
     @Override
     public void onStart() {
-        posts.removeAll(posts);
         super.onStart();
     }
 
     @Override
     public void onDestroy() {
         posts.removeAll(posts);
+        postAdapter.notifyDataSetChanged();
         super.onDestroy();
 
     }
@@ -80,6 +91,12 @@ public class TravelFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_travel, container, false);
+
+        bookRef = FirebaseFirestore.getInstance();
+        UserRef = FirebaseFirestore.getInstance();
+        notificatRef = bookRef.collection("posts");
+
+        dialogRating= new Dialog(getContext());
 
         imageViewMyCytyPosts = view.findViewById(R.id.imageViewPostSetting); // КНОПКА ПОКАЗАТЬ ПОСТЫ ИЗ МОЕГО ГОРОДА
         textViewSearch = view.findViewById(R.id.textViewStatusSearch); // Текст поиска постов если указан мой город
@@ -95,12 +112,14 @@ public class TravelFragment extends Fragment {
         imageViewMyCytyPosts.setOnClickListener(view1 -> {
             if(currentPageIdPost == 2) {
                 posts.removeAll(posts);
+                posts.clear();
                 showPostForUsers();
                 currentPageIdPost = 1;
                 textViewSearch.setText("Поездки из Вашего города");
                 imageViewMyCytyPosts.setColorFilter(getContext().getResources().getColor(R.color.colorPrimary));
             } else if(currentPageIdPost == 1) {
                 posts.removeAll(posts);
+                posts.clear();
                 showPostForUsers();
                 currentPageIdPost = 2;
                 textViewSearch.setText("Актуальные поездки");
@@ -116,9 +135,95 @@ public class TravelFragment extends Fragment {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         showPostForUsers();
+        showRatingDialog();
         cardViewRecycler();
 
         return view;
+    }
+
+    private void showRatingDialog() {
+        ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
+        Query query = travelPostRef.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING);
+
+        query.addSnapshotListener((documentSnapshots, e) -> {
+            if (e != null) {
+            } else {
+                for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                        Post post = doc.getDocument().toObject(Post.class);
+                        notificatRef.document(post.getPostId()).collection("books").get().addOnSuccessListener(queryDocumentSnapshots -> {
+                            for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
+                                books books = documentSnapshot.toObject(books.class);
+                                if (books.getUserID().equals(userKey) && post.getIsDriverUser().equals("Поездка завершена") && books.getRating().equals("no")) {
+                                    dialogRating.setContentView(R.layout.show_rating_dialog_sheet);
+                                    dialogRating.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                    String user_name = post.getUserName().substring(0,1);
+                                    ImageView userImage = dialogRating.findViewById(R.id.userImageBooks);
+                                    TextDrawable user_drawbleSheet = TextDrawable.builder()
+                                            .beginConfig()
+                                            .fontSize(26) /* size in px */
+                                            .bold()
+                                            .toUpperCase()
+                                            .endConfig()
+                                            .buildRoundRect(user_name, colorGenerator.getRandomColor(),4); // radius in
+                                    userImage.setImageDrawable(user_drawbleSheet);
+
+                                    TextView userName = dialogRating.findViewById(R.id.userNameBook);
+                                    TextView startTrip = dialogRating.findViewById(R.id.start_of_route);
+                                    TextView endTrip = dialogRating.findViewById(R.id.end_of_route);
+                                    TextView tripDate = dialogRating.findViewById(R.id.tripDate);
+                                    ImageView setPluse = dialogRating.findViewById(R.id.imageViewSetRatingPluse);
+                                    ImageView setMinuse = dialogRating.findViewById(R.id.imageViewSetRatingMinuse);
+
+
+                                    setPluse.setOnClickListener(view -> {
+                                        UserRef.collection("users").document(post.getUserUD()).get().addOnCompleteListener(task1 -> {
+                                            showToast(getContext(),post.getUserUD());
+                                            if(task1.isSuccessful()) {
+                                                int user_rating = Integer.parseInt(String.valueOf(task1.getResult().get("userRating")));
+                                                user_rating ++;
+                                                UserRef.collection("users").document(post.getUserUD()).update("userRating", user_rating);
+                                                bookRef.collection("posts/" + post.getPostId() + "/books").document(books.getUserID()).update("rating", "set");
+                                                dialogRating.cancel();
+                                            }
+
+                                        });
+                                    });
+
+                                    setMinuse.setOnClickListener(view -> {
+                                        showToast(getContext(),post.getUserUD());
+                                        UserRef.collection("users").document(post.getUserUD()).get().addOnCompleteListener(task1 -> {
+                                            if(task1.isSuccessful()) {
+                                                int user_rating = Integer.parseInt(String.valueOf(task1.getResult().get("userRating")));
+                                                user_rating--;
+                                                UserRef.collection("users").document(post.getUserUD()).update("userRating", user_rating);
+                                                bookRef.collection("posts/" + post.getPostId() + "/books").document(books.getUserID()).update("rating", "set");
+                                                dialogRating.cancel();
+                                            }
+
+                                        });
+
+                                    });
+
+                                    userName.setText(post.getUserName());
+                                    startTrip.setText(books.getLocationFrom());
+                                    endTrip.setText(books.getLocationTo());
+                                    tripDate.setText(books.getDate());
+                                    dialogRating.show();
+                                } else {
+
+                                }
+                            }
+                        });
+
+                    } else {
+
+                    }
+                }
+            }
+
+        });
     }
 
     private void showPostForUsers() {
@@ -143,8 +248,14 @@ public class TravelFragment extends Fragment {
                                     if(task.isSuccessful()) {
                                         user_city = task.getResult().getString("userCity");
                                         if(post.getStartTrip().equals(user_city) && post.getStatusTrip().equals("show")) {
-                                            posts.add(post);
-                                            postAdapter.notifyDataSetChanged();
+                                            if(postAdapter.getItemCount() > 0) {
+                                                posts.add(post);
+                                                postAdapter.notifyDataSetChanged();
+                                            } else {
+                                                posts.add(post);
+                                                postAdapter.notifyDataSetChanged();
+                                            }
+
                                         } else {
 
                                         }

@@ -218,14 +218,25 @@ public class TripDetalActivity extends AppCompatActivity {
         });
 
         buttonBookCancel.setOnClickListener(view -> { // Кнопка Отмена бронирование поездки
-            bookRef.collection("posts/" + postID + "/books").document(userKey).delete();
-            bookRef.collection("notificat/" + tripUserId + "/books").document(userKey+postID).delete();
-            buttonBookCancel.setVisibility(View.GONE);
-            booksAdapter.notifyDataSetChanged();
-            gotoMainIntent();
-            UpDatePostInfo();
-            buttonBookTrip.setVisibility(View.VISIBLE);
-            showToast(this,"Ваше бронирование отменено");
+
+            AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
+            // Указываем текст сообщение
+            deleteDialog.setMessage("Вы уверены, что хотите отменить бронь?");
+
+            deleteDialog.setPositiveButton("Да", (dialog, which) -> {
+                bookRef.collection("posts/" + postID + "/books").document(userKey).delete();
+                bookRef.collection("notificat/" + tripUserId + "/books").document(userKey+postID).delete();
+                buttonBookCancel.setVisibility(View.GONE);
+                booksAdapter.notifyDataSetChanged();
+                gotoMainIntent();
+                UpDatePostInfo();
+                buttonBookTrip.setVisibility(View.VISIBLE);
+            });
+            // Обработчик на нажатие НЕТ
+            deleteDialog.setNegativeButton("Нет", (dialog, which) -> dialog.cancel());
+
+            // показываем Alert
+            deleteDialog.show();
         });
 
         buttonBookFinish.setOnClickListener(view -> { // Завершить заявку а не удалить
@@ -239,7 +250,7 @@ public class TripDetalActivity extends AppCompatActivity {
         });
 
         imageViewButtonDelete.setOnClickListener(view -> { // Кнопка удалить пост
-            if(booksArrayList.size() > 0) {
+            if(booksArrayList.size() > 0 ) {
                 showToast(this,"Нельзя удалить поезду пока есть активные заявки");
             } else  {
                 showDialogDeletePost();
@@ -547,6 +558,7 @@ public class TripDetalActivity extends AppCompatActivity {
                 book.put("locationFrom", tripStart);
                 book.put("locationTo", tripEnd);
                 book.put("date", tripDate);
+                book.put("rating", "no");
                 book.put("timestamp", FieldValue.serverTimestamp());
                 buttonBookTrip.setVisibility(View.GONE);
                 showDialogCreatPost();
