@@ -174,7 +174,7 @@ public class ProfileFragment extends Fragment {
             if(task.isSuccessful()) {
                 ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
                 String user_name = task.getResult().getString("userName");
-                String user_phone = task.getResult().getString("userEmail");
+                String user_phone = task.getResult().getString("userPhone");
                 String user_rating = task.getResult().get("userRating").toString();
                 String user_trip_count = task.getResult().get("userTrip").toString();
 

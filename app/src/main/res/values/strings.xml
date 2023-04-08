@@ -21,7 +21,7 @@
     <string name="buttonRegisterCoun">Продолжить</string>
     <string name="field_nameRegister">Обязательное поле и не менее 3 символов</string>
     <string name="field_phoneRegister">Обязательное поле и не менее 7 символов без +992</string>
-    <string name="erro_registerMessage">Ошибка регистрации нового пользователя, повторите попытку позже\nПользователь с таким email уже существует</string>
+    <string name="erro_registerMessage">Пользователь с таким email уже существует</string>
     <string name="erro_registerMessageS">Ошибка регистрации нового пользователя, повторите попытку позже</string>
     <string name="spinner_CityMessage">Укажите ваш город</string>
     <string name="textEditRegister">Укажите ваше имя и номер телефона</string>

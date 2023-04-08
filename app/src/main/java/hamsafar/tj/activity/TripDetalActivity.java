@@ -1,9 +1,8 @@
 package hamsafar.tj.activity;
 
-import static hamsafar.tj.activity.utility.Utility.showToast;
+import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
@@ -30,27 +28,20 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import hamsafar.tj.R;
 import hamsafar.tj.activity.adapters.BooksAdapter;
-import hamsafar.tj.activity.models.Post;
 import hamsafar.tj.activity.models.books;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -67,7 +58,7 @@ public class TripDetalActivity extends AppCompatActivity {
     private String userKey;
     private Dialog dialogCreatPost;
     private static final int REQUEST_CALL = 1;
-
+    private View viewSnackbar;
 
     private RecyclerView recyclerViewBook;
     BooksAdapter booksAdapter;
@@ -84,6 +75,9 @@ public class TripDetalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_detal);
+
+
+        viewSnackbar = findViewById(android.R.id.content);
 
         imageViewUserImage = findViewById(R.id.driverImage);
         textViewDriverName = findViewById(R.id.driverName);
@@ -153,7 +147,11 @@ public class TripDetalActivity extends AppCompatActivity {
         textViewDateTime.setText(tripDate);
         textViewSeat.setText(String.format("%s чел.", tripSeat));
 
-        textViewComment.setText("Коментарии: " + comments);
+        if(comments.equals("")) {
+            textViewComment.setVisibility(View.GONE);
+        } else  {
+            textViewComment.setText(comments);
+        }
 
         showBookBtnStatus();
         showBooksList();
@@ -205,7 +203,7 @@ public class TripDetalActivity extends AppCompatActivity {
         buttonBookTrip.setOnClickListener(view -> { // Кнопка забронировать.
             if(booksArrayList.size() + 1 > Integer.valueOf(tripSeat))
             {
-                showToast(this, "Количество мест ограничено");
+                showSnakbarTypeOne(viewSnackbar, "Количество мест ограничено");
             } else {
                 UsersRef.collection("users").document(userKey).get().addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
@@ -251,7 +249,7 @@ public class TripDetalActivity extends AppCompatActivity {
 
         imageViewButtonDelete.setOnClickListener(view -> { // Кнопка удалить пост
             if(booksArrayList.size() > 0 ) {
-                showToast(this,"Нельзя удалить поезду пока есть активные заявки");
+                showSnakbarTypeOne(viewSnackbar,"Нельзя удалить поезду пока есть активные заявки");
             } else  {
                 showDialogDeletePost();
             }
@@ -294,7 +292,7 @@ public class TripDetalActivity extends AppCompatActivity {
                        if(taskPost.isSuccessful()) {
                            booksAdapter.notifyDataSetChanged();
                        } else {
-                           showToast(TripDetalActivity.this, "Ошибка. Повторите попытку позже");
+                           showSnakbarTypeOne(viewSnackbar, "Ошибка. Повторите попытку позже");
                        }
                    });
                } else {
@@ -344,9 +342,9 @@ public class TripDetalActivity extends AppCompatActivity {
 
                         }
                     });
-                    showToast(this, "Вы успешно завершили поездку");
+                    showSnakbarTypeOne(viewSnackbar,  "Вы успешно завершили поездку");
                 } else {
-                    showToast(this, "Ошибка. Поездка не завершена");
+                    showSnakbarTypeOne(viewSnackbar, "Ошибка. Поездка не завершена");
                 }
             });
         });
@@ -368,7 +366,7 @@ public class TripDetalActivity extends AppCompatActivity {
                 if(taskPost.isSuccessful()) {
 
                 } else {
-                    showToast(this, "Ошибка. Повторите попытку позже");
+                    showSnakbarTypeOne(viewSnackbar,  "Ошибка. Повторите попытку позже");
                 }
             });
         }
@@ -377,13 +375,11 @@ public class TripDetalActivity extends AppCompatActivity {
     private void showDialogDeletePost() { // Диалог удаления поста
         String postID = getIntent().getExtras().getString("postID");
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
-        deleteDialog.setTitle("Подтвердить удаление...");
         // Указываем текст сообщение
         deleteDialog.setMessage("Вы уверены, что хотите удалить заявку?");
 
         deleteDialog.setPositiveButton("Да", (dialog, which) -> {
             bookRef.collection("posts").document(postID).delete();
-            showToast(this,"Вы удалили свою заявку!");
             gotoMainIntent();
             finish();
         });
@@ -573,7 +569,7 @@ public class TripDetalActivity extends AppCompatActivity {
                         if(taskPost.isSuccessful()) {
                             buttonBookCancel.setVisibility(View.VISIBLE);
                         } else {
-                            showToast(this, "Ошибка. Повторите попытку позже            ");
+                            showSnakbarTypeOne(viewSnackbar,  "Ошибка. Повторите попытку позже");
                         }
                     });
                 }

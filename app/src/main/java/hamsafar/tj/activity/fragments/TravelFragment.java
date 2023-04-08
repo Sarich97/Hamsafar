@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -155,11 +157,16 @@ public class TravelFragment extends Fragment {
                             for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                                 books books = documentSnapshot.toObject(books.class);
                                 if (books.getUserID().equals(userKey) && post.getIsDriverUser().equals("Поездка завершена") && books.getRating().equals("no")) {
-                                    dialogRating.setContentView(R.layout.show_rating_dialog_sheet);
-                                    dialogRating.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+                                    bottomSheetDialog.setContentView(R.layout.show_rating_dialog_sheet);
+                                    bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+
+//                                    dialogRating.setContentView(R.layout.show_rating_dialog_sheet);
+//                                    dialogRating.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                                     String user_name = post.getUserName().substring(0,1);
-                                    ImageView userImage = dialogRating.findViewById(R.id.userImageBooks);
+                                    ImageView userImage = bottomSheetDialog.findViewById(R.id.userImageBooks);
                                     TextDrawable user_drawbleSheet = TextDrawable.builder()
                                             .beginConfig()
                                             .fontSize(26) /* size in px */
@@ -169,37 +176,35 @@ public class TravelFragment extends Fragment {
                                             .buildRoundRect(user_name, colorGenerator.getRandomColor(),4); // radius in
                                     userImage.setImageDrawable(user_drawbleSheet);
 
-                                    TextView userName = dialogRating.findViewById(R.id.userNameBook);
-                                    TextView startTrip = dialogRating.findViewById(R.id.start_of_route);
-                                    TextView endTrip = dialogRating.findViewById(R.id.end_of_route);
-                                    TextView tripDate = dialogRating.findViewById(R.id.tripDate);
-                                    ImageView setPluse = dialogRating.findViewById(R.id.imageViewSetRatingPluse);
-                                    ImageView setMinuse = dialogRating.findViewById(R.id.imageViewSetRatingMinuse);
+                                    TextView userName = bottomSheetDialog.findViewById(R.id.userNameBook);
+                                    TextView startTrip = bottomSheetDialog.findViewById(R.id.start_of_route);
+                                    TextView endTrip = bottomSheetDialog.findViewById(R.id.end_of_route);
+                                    TextView tripDate = bottomSheetDialog.findViewById(R.id.tripDate);
+                                    ImageView setPluse = bottomSheetDialog.findViewById(R.id.imageViewSetRatingPluse);
+                                    ImageView setMinuse = bottomSheetDialog.findViewById(R.id.imageViewSetRatingMinuse);
 
 
                                     setPluse.setOnClickListener(view -> {
                                         UserRef.collection("users").document(post.getUserUD()).get().addOnCompleteListener(task1 -> {
-                                            showToast(getContext(),post.getUserUD());
                                             if(task1.isSuccessful()) {
                                                 int user_rating = Integer.parseInt(String.valueOf(task1.getResult().get("userRating")));
                                                 user_rating ++;
                                                 UserRef.collection("users").document(post.getUserUD()).update("userRating", user_rating);
                                                 bookRef.collection("posts/" + post.getPostId() + "/books").document(books.getUserID()).update("rating", "set");
-                                                dialogRating.cancel();
+                                                bottomSheetDialog.cancel();
                                             }
 
                                         });
                                     });
 
                                     setMinuse.setOnClickListener(view -> {
-                                        showToast(getContext(),post.getUserUD());
                                         UserRef.collection("users").document(post.getUserUD()).get().addOnCompleteListener(task1 -> {
                                             if(task1.isSuccessful()) {
                                                 int user_rating = Integer.parseInt(String.valueOf(task1.getResult().get("userRating")));
                                                 user_rating--;
                                                 UserRef.collection("users").document(post.getUserUD()).update("userRating", user_rating);
                                                 bookRef.collection("posts/" + post.getPostId() + "/books").document(books.getUserID()).update("rating", "set");
-                                                dialogRating.cancel();
+                                                bottomSheetDialog.cancel();
                                             }
 
                                         });
@@ -210,7 +215,7 @@ public class TravelFragment extends Fragment {
                                     startTrip.setText(books.getLocationFrom());
                                     endTrip.setText(books.getLocationTo());
                                     tripDate.setText(books.getDate());
-                                    dialogRating.show();
+                                    bottomSheetDialog.show();
                                 } else {
 
                                 }
@@ -283,10 +288,10 @@ public class TravelFragment extends Fragment {
 
         ArrayList<CardViewModel> cardViewModels = new ArrayList<>();
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_road_24, "Состояние автодорог", gradient1));
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_airplane_ticket_24, "Дешевые авиабилеты", gradient4));
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_control_point_24, "Как создать поездку?", gradient3));
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_moderator_24, "Безопасное вождение", gradient2));
-        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_article_24, "Полезные статьи", gradient4));
-        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_airplane_ticket_24, "Дешевые авиабилеты", gradient5));
+
 
         cardViewAdapter = new CardViewAdapter(cardViewModels, getContext());
         recyclerViewCard.setAdapter(cardViewAdapter);

@@ -43,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ProgressBar progressRegister; // Прогрессбар страница(фрагмент) регистрации
     private TextView textViewTeamOfServis;
     private String userID;
+    private View viewSnackbar;
 
 
     private FirebaseAuth firebaseAuth;
@@ -53,6 +54,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // Full Screen Page
+
+        viewSnackbar = findViewById(android.R.id.content);
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();  // DataBase variable
@@ -85,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
             } else if(phone.length() < 7) {
                 editTextUserPhone.setError(getString(field_phoneRegister));
             } else if(user_city.equals(getString(spinner_CityMessage))) {
-                showToast(this,getString(spinner_CityMessage));
+                showSnakbarTypeOne(viewSnackbar,getString(spinner_CityMessage));
             } else
             {
                 createNewUser(email, password,name, phone, user_city, user_car_model);
@@ -133,13 +136,13 @@ public class RegisterActivity extends AppCompatActivity {
                     } else  {
                         progressRegister.setVisibility(View.INVISIBLE);
                         buttonCreatNewUser.setVisibility(View.VISIBLE);
-                        showToast(this, getString(erro_registerMessage));
+                        showSnakbarTypeOne(viewSnackbar, getString(erro_registerMessage));
                     }
                 });
             } else  {
                 progressRegister.setVisibility(View.INVISIBLE);
                 buttonCreatNewUser.setVisibility(View.VISIBLE);
-                showToast(this, getString(erro_registerMessageS));
+                showSnakbarTypeOne(viewSnackbar, getString(erro_registerMessageS));
             }
         });
 

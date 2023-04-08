@@ -2,6 +2,7 @@ package hamsafar.tj.activity.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,12 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
                     bottomSheetDialog.setContentView(R.layout.roadstate_sheet);
                     bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                     bottomSheetDialog.show();
+                    break;
+                case 1:
+                    String url = "https://avia.havopajmo.ru/";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    context.startActivity(i);
                     break;
 
                 default:
