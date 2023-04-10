@@ -18,12 +18,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="194dp">
+            android:layout_height="185dp">
 
             <ImageView
                 android:id="@+id/driverImage"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
                 android:layout_marginTop="14dp"
                 app:layout_constraintBottom_toTopOf="@+id/view"
                 app:layout_constraintStart_toStartOf="@+id/view2"
@@ -38,7 +38,7 @@
                 android:fontFamily="@font/play"
                 android:text="Sarvar Sultonov"
                 android:textColor="@color/colorBlack"
-                android:textSize="16dp"
+                android:textSize="14dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/driverImage"
                 app:layout_constraintTop_toTopOf="@+id/driverImage" />
@@ -52,7 +52,7 @@
                 android:padding="1dp"
                 android:text="  "
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp"
+                android:textSize="11dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/driverImage"
                 app:layout_constraintStart_toStartOf="@+id/driverName"
@@ -67,7 +67,7 @@
                 android:fontFamily="@font/play"
                 android:text="договорная"
                 android:textColor="@color/colorBlack"
-                android:textSize="16dp"
+                android:textSize="14dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/view"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
                 android:fontFamily="@font/play"
                 android:text="Цена"
                 android:textColor="@color/colorText"
-                android:textSize="16dp"
+                android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="@+id/trip_Price"
                 app:layout_constraintTop_toTopOf="@+id/driverImage" />
 
@@ -135,7 +135,7 @@
                 android:fontFamily="@font/play"
                 android:text="Душанбе"
                 android:textColor="@color/colorBlack"
-                android:textSize="16dp"
+                android:textSize="14dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/view2"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
@@ -149,7 +149,7 @@
                 android:fontFamily="@font/play"
                 android:text="Истаравшан"
                 android:textColor="@color/colorBlack"
-                android:textSize="16dp"
+                android:textSize="14dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"
                 app:layout_constraintTop_toTopOf="@+id/imageView6" />
@@ -186,7 +186,7 @@
                 android:fontFamily="@font/play"
                 android:text="14:30 - 14 февраля"
                 android:textColor="@color/colorBlack"
-                android:textSize="15dp"
+                android:textSize="14dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/imageView6"
                 app:layout_constraintTop_toBottomOf="@+id/view" />

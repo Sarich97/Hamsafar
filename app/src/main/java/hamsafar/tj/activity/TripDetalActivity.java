@@ -35,6 +35,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -57,6 +59,7 @@ public class TripDetalActivity extends AppCompatActivity {
     private String post_id;
     private String userKey;
     private Dialog dialogCreatPost;
+    private Dialog dialogUserInfo;
     private static final int REQUEST_CALL = 1;
     private View viewSnackbar;
 
@@ -106,6 +109,7 @@ public class TripDetalActivity extends AppCompatActivity {
 
 
         dialogCreatPost= new Dialog(TripDetalActivity.this);
+        dialogUserInfo = new Dialog(TripDetalActivity.this);
 
 
 
@@ -177,7 +181,7 @@ public class TripDetalActivity extends AppCompatActivity {
 
         if(isUserDriver.equals("Ищу водителя"))
         {
-            textViewBookStatus.setText("Водитель");
+            textViewBookStatus.setText("Водитель" );
         } else {
             textViewBookStatus.setText("Пассажиры");
         }
@@ -267,6 +271,42 @@ public class TripDetalActivity extends AppCompatActivity {
             }
         });
 
+
+        textViewDriverName.setOnClickListener(view -> {
+
+            dialogUserInfo.setContentView(R.layout.show_user_mini_info);
+            dialogUserInfo.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            String user_name = tripNameUser.substring(0,1);
+
+            ImageView userImage = dialogUserInfo.findViewById(R.id.userImage);
+
+            TextDrawable user_drawbleSheet = TextDrawable.builder()
+                    .beginConfig()
+                    .fontSize(26) /* size in px */
+                    .bold()
+                    .toUpperCase()
+                    .endConfig()
+                    .buildRoundRect(user_name, colorGenerator.getRandomColor(),4); // radius in
+            userImage.setImageDrawable(user_drawbleSheet);
+
+            TextView userName = dialogUserInfo.findViewById(R.id.userName);
+            TextView userRating = dialogUserInfo.findViewById(R.id.textViewRating);
+            TextView userCount = dialogUserInfo.findViewById(R.id.textViewTripCount);
+
+            UsersRef.collection("users").document(tripUserId).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    String user_phone = task.getResult().getString("userPhone");
+                    String user_rating = task.getResult().get("userRating").toString();
+                    String user_trip_count = task.getResult().get("userTrip").toString();
+                    userName.setText(tripNameUser);
+                    userRating.setText(user_rating);
+                    userCount.setText(user_trip_count);
+                } else {
+
+                }
+            });
+            dialogUserInfo.show();
+        });
     }
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         @Override
@@ -539,6 +579,7 @@ public class TripDetalActivity extends AppCompatActivity {
         String tripEnd = getIntent().getExtras().getString("locationTo");
         String tripDate = getIntent().getExtras().getString("date");
         String tripSeat = getIntent().getExtras().getString("seatTrip");
+        String status = getIntent().getExtras().getString("isUserDriver");
         String notifiID = userKey + postID;
         bookRef.collection("posts/" + postID + "/books").document(userKey).get().addOnCompleteListener(task -> {
             buttonBookTrip.setVisibility(View.GONE);
@@ -553,6 +594,7 @@ public class TripDetalActivity extends AppCompatActivity {
                 book.put("postCreateID", tripUserId);
                 book.put("locationFrom", tripStart);
                 book.put("locationTo", tripEnd);
+                book.put("statusTrip", status);
                 book.put("date", tripDate);
                 book.put("rating", "no");
                 book.put("timestamp", FieldValue.serverTimestamp());

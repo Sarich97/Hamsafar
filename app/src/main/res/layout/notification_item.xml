@@ -19,8 +19,8 @@
 
             <ImageView
                 android:id="@+id/driverImage"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="24dp"
                 app:layout_constraintBottom_toTopOf="@+id/view"
@@ -31,32 +31,17 @@
 
             <TextView
                 android:id="@+id/driverName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sarvar Sultonov"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="75dp"
                 android:fontFamily="@font/play"
-                android:textStyle="bold"
+                android:text="fdsfdsfsdfsdf"
                 android:textColor="@color/colorBlack"
-                android:layout_marginStart="10dp"
-                android:textSize="18dp"
+                android:textSize="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/driverImage"
                 app:layout_constraintTop_toTopOf="@+id/driverImage" />
-
-
-            <TextView
-                android:id="@+id/textViewNoteBook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/play"
-                android:padding="1dp"
-                android:text="принял(а) вашу заявку"
-                android:textColor="@color/colorGrey"
-                android:textSize="14dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/driverImage"
-                app:layout_constraintStart_toStartOf="@+id/driverName"
-                app:layout_constraintTop_toBottomOf="@+id/driverName" />
-
 
             <View
                 android:id="@+id/view"

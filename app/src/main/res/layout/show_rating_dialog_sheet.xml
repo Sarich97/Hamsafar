@@ -24,9 +24,8 @@
                 android:layout_marginTop="14dp"
                 android:fontFamily="@font/play"
                 android:text="Оцените поездку"
-                android:textStyle="bold"
                 android:textColor="@color/colorBlack"
-                android:textSize="19dp"
+                android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -173,7 +172,7 @@
                     android:id="@+id/imageViewSetRatingPluse"
                     style="@style/editText"
                     android:layout_width="210dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
                     android:clickable="true"
                     app:srcCompat="@drawable/baseline_sentiment_very_satisfied_24" />
@@ -182,7 +181,7 @@
                     android:id="@+id/imageViewSetRatingMinuse"
                     style="@style/editText"
                     android:layout_width="210dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
                     android:clickable="true"
                     app:srcCompat="@drawable/baseline_sentiment_very_dissatisfied_24" />

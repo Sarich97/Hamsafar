@@ -81,7 +81,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 .bold()
                 .toUpperCase()
                 .endConfig()
-                .buildRoundRect(firstName, colorGenerator.getRandomColor(),4); // radius in
+                .buildRoundRect(firstName, colorGenerator.getRandomColor(),6); // radius in
         holder.imageViewDriverImage.setImageDrawable(user_drawble);
         //SetDate
 

@@ -73,7 +73,12 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
     public void onBindViewHolder(@NonNull NotificAdapter.ViewHolder holder, int position) {
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
         books books = booksItems.get(position);
-        holder.textViewDriverName.setText(books.getUserName());
+
+        if(books.getStatusTrip().equals("Ищу водителя")) {
+            holder.textViewDriverName.setText(books.getUserName() + " принял(а) вашу заявку");
+        } else {
+            holder.textViewDriverName.setText("Пассажир(ка) " + books.getUserName() + " забронировал(а) поездку");
+        }
         Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), android.R.anim.slide_in_left);
         holder.itemView.startAnimation(animation);
 
