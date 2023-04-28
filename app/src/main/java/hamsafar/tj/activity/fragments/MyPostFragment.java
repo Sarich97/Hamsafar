@@ -1,5 +1,10 @@
 package hamsafar.tj.activity.fragments;
 
+import static hamsafar.tj.activity.utility.Utility.isOnline;
+
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -33,12 +38,15 @@ public class MyPostFragment extends Fragment {
     ArrayList<Post> posts = new ArrayList<>();
     private String userKey;
     private ImageView imageViewNotPost;
+    private Dialog dialogInternetCon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_post, container, false);
+
+        dialogInternetCon = new Dialog(getContext());
 
         travelPostRef = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -51,7 +59,9 @@ public class MyPostFragment extends Fragment {
         postAdapter = new PostAdapter(posts, getContext());
         recyclerViewPost.setAdapter(postAdapter);
 
+
         showPostForUsers();
+
 
         return view;
     }

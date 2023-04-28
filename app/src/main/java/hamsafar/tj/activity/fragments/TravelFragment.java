@@ -1,18 +1,10 @@
 package hamsafar.tj.activity.fragments;
 
-import static hamsafar.tj.R.color.colorRed;
-import static hamsafar.tj.R.drawable.baseline_add_box_24;
-import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
-import static hamsafar.tj.activity.utility.Utility.showToast;
-
 import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,31 +14,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import hamsafar.tj.R;
-import hamsafar.tj.activity.AuthActivity;
-import hamsafar.tj.activity.TripDetalActivity;
 import hamsafar.tj.activity.adapters.CardViewAdapter;
 import hamsafar.tj.activity.adapters.PostAdapter;
 import hamsafar.tj.activity.models.CardViewModel;
@@ -68,7 +55,7 @@ public class TravelFragment extends Fragment {
     private String user_city;
     private int currentPageIdPost = 2;
     private TextView textViewSearch;
-    private Dialog dialogRating; //
+    private Dialog dialogRating, dialogInternetCon; //
 
 
     private RecyclerView recyclerViewPost;
@@ -99,6 +86,7 @@ public class TravelFragment extends Fragment {
         notificatRef = bookRef.collection("posts");
 
         dialogRating= new Dialog(getContext());
+        dialogInternetCon = new Dialog(getContext());
 
         imageViewMyCytyPosts = view.findViewById(R.id.imageViewPostSetting); // КНОПКА ПОКАЗАТЬ ПОСТЫ ИЗ МОЕГО ГОРОДА
         textViewSearch = view.findViewById(R.id.textViewStatusSearch); // Текст поиска постов если указан мой город
@@ -142,6 +130,8 @@ public class TravelFragment extends Fragment {
 
         return view;
     }
+
+
 
     private void showRatingDialog() {
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
@@ -230,7 +220,7 @@ public class TravelFragment extends Fragment {
 
         });
     }
-
+    
     private void showPostForUsers() {
         Query query = travelPostRef.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING);
 
@@ -239,35 +229,66 @@ public class TravelFragment extends Fragment {
             } else {
                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
-                            Post post = doc.getDocument().toObject(Post.class);
+                        Post post = doc.getDocument().toObject(Post.class);
+//                        String timestamp = null;
+//                        SimpleDateFormat formatter= null;
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                            formatter = new SimpleDateFormat("dd.MM.yyyy");
+//                        }
+//                        Date date = new Date(System.currentTimeMillis());
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                            System.out.println(formatter.format(date));
+//                        }
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                            timestamp = formatter.format(date);
+//                        }
 
-                            if(currentPageIdPost == 2) {
-                                if(post.getStatusTrip().equals("show")) {
-                                    posts.add(post);
-                                    postAdapter.notifyDataSetChanged();
-                                } else {
+                            Date date = new Date(System.currentTimeMillis());
+                            String pattern = "dd.MM.yyyy";
+                            java.text.SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 
-                                }
-                            } else if(currentPageIdPost == 1) {
-                                userRef.collection("users").document(userKey).get().addOnCompleteListener(task -> {
-                                    if(task.isSuccessful()) {
-                                        user_city = task.getResult().getString("userCity");
-                                        if(post.getStartTrip().equals(user_city) && post.getStatusTrip().equals("show")) {
-                                            if(postAdapter.getItemCount() > 0) {
-                                                posts.add(post);
-                                                postAdapter.notifyDataSetChanged();
-                                            } else {
-                                                posts.add(post);
-                                                postAdapter.notifyDataSetChanged();
-                                            }
-
-                                        } else {
-
-                                        }
-                                    }
-                                });
+                            Calendar cal1 = Calendar.getInstance();
+                            Calendar cal2 = Calendar.getInstance();
+                            try {
+                                cal1.setTime(sdf.parse(sdf.format(date)));
+                                cal2.setTime(sdf.parse(post.getDataTrip()));
+                            }
+                            catch (ParseException err) {
+                                err.printStackTrace();
                             }
 
+
+                            if(cal1.after(cal2)) { // Если дата больше то не показыааем посты
+                                // НЕ ПОКАЗАТЬ ПОСТЫ
+
+                            } else {
+                                if(currentPageIdPost == 2) {
+                                    if(post.getStatusTrip().equals("show")) {
+                                        posts.add(post);
+                                        postAdapter.notifyDataSetChanged();
+                                    } else {
+
+                                    }
+                                } else if(currentPageIdPost == 1) {
+                                    userRef.collection("users").document(userKey).get().addOnCompleteListener(task -> {
+                                        if(task.isSuccessful()) {
+                                            user_city = task.getResult().getString("userCity");
+                                            if(post.getStartTrip().equals(user_city) && post.getStatusTrip().equals("show")) {
+                                                if(postAdapter.getItemCount() > 0) {
+                                                    posts.add(post);
+                                                    postAdapter.notifyDataSetChanged();
+                                                } else {
+                                                    posts.add(post);
+                                                    postAdapter.notifyDataSetChanged();
+                                                }
+
+                                            } else {
+
+                                            }
+                                        }
+                                    });
+                                }
+                            }
                     }
                     else {
                     }
@@ -283,7 +304,7 @@ public class TravelFragment extends Fragment {
         GradientDrawable gradient4 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xff0fd59e, 0xff0fd59e});
         GradientDrawable gradient5 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xffb8cee0, 0xffb8cee0});
 
-        recyclerViewCard.setHasFixedSize(true);
+       // recyclerViewCard.setHasFixedSize(true);
         recyclerViewCard.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         ArrayList<CardViewModel> cardViewModels = new ArrayList<>();

@@ -22,7 +22,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/undraw_speed_test_re_pe1f" />
+                app:srcCompat="@drawable/undraw_signal_searching_re_yl8n" />
 
             <TextView
                 android:id="@+id/textDialog"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/play"
-                android:text=" fdfdfdd "
+                android:text="Проверьте, подключено ли устройство к Интернету"
                 android:textAlignment="center"
                 android:textColor="@color/colorGrey"
                 android:textSize="15dp"

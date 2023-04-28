@@ -1,6 +1,13 @@
 package hamsafar.tj.activity.fragments;
 
+import static hamsafar.tj.activity.utility.Utility.isOnline;
+import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
+import static hamsafar.tj.activity.utility.Utility.showToast;
+
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
@@ -45,11 +52,9 @@ public class ProfileFragment extends Fragment {
     private ImageView userImageP, imageViewLogOurBtn;
 
 
-    private RecyclerView recyclerViewCard;
-    private RecyclerView.Adapter cardViewAdapter;
 
 
-
+    private Dialog dialogInternetCon;
 
 
     private TabLayout tabLayoutAuth;
@@ -63,7 +68,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-
+        dialogInternetCon = new Dialog(getContext());
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -80,6 +85,11 @@ public class ProfileFragment extends Fragment {
         textViewUserTripCount = view.findViewById(R.id.textViewTripCount);
         userImageP = view.findViewById(R.id.userImageProfile);
         imageViewLogOurBtn = view.findViewById(R.id.imageViewLogout);
+
+
+        textViewUserRating.setOnClickListener(view12 -> {
+            showSnakbarTypeOne(getView(), getString(R.string.reating_descrip));
+        });
 
 
         showProfileForUser();
@@ -147,24 +157,7 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    private void cardViewRecycler() {
-        GradientDrawable gradient2 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xFF105dd0, 0xFF105dd0});
-        GradientDrawable gradient1 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xFF9937fc, 0xFF9937fc});
-        GradientDrawable gradient3 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xfffb7e36, 0xFFfb7e36});
-        GradientDrawable gradient4 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xff0fd59e, 0xff0fd59e});
-        GradientDrawable gradient5 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xffb8cee0, 0xffb8cee0});
 
-        recyclerViewCard.setHasFixedSize(true);
-        recyclerViewCard.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
-        ArrayList<CardViewModel> cardViewModels = new ArrayList<>();
-        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_road_24, "Состояние автодорог", gradient1));
-        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_moderator_24, "Безопасное вождение", gradient2));
-        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_airplane_ticket_24, "Дешевые авиабилеты", gradient5));
-
-        cardViewAdapter = new CardViewAdapter(cardViewModels, getContext());
-        recyclerViewCard.setAdapter(cardViewAdapter);
-    }
 
 
     private void showProfileForUser() {

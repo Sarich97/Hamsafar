@@ -2,9 +2,9 @@ package hamsafar.tj.activity.fragments;
 
 import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.getMonthText;
+import static hamsafar.tj.activity.utility.Utility.isOnline;
 import static hamsafar.tj.activity.utility.Utility.minuteText;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
-import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -15,7 +15,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -23,23 +22,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,6 +43,8 @@ import java.util.Map;
 
 import hamsafar.tj.R;
 import hamsafar.tj.activity.MainActivity;
+import hamsafar.tj.activity.adapters.PostAdapter;
+import hamsafar.tj.activity.models.Post;
 
 
 public class CreatDFragment extends Fragment {
@@ -63,9 +61,13 @@ public class CreatDFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
+    private FirebaseFirestore travelPostRef;
     private FirebaseUser currentUser;
     private String userID;
+    private Dialog dialogInternetCon;
 
+
+    private PostAdapter postAdapter;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
     private TimePickerDialog timePickerDialog;
@@ -76,12 +78,15 @@ public class CreatDFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_creat_d, container, false);
 
-
         firebaseFirestore = FirebaseFirestore.getInstance(); // DateBase settings
+        travelPostRef = FirebaseFirestore.getInstance(); // DateBase settings
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
         mediaPlayerSound = MediaPlayer.create(getActivity(), R.raw.sound);
+
+        dialogInternetCon = new Dialog(getContext());
+
 
 
 
@@ -101,49 +106,58 @@ public class CreatDFragment extends Fragment {
         textViewTimeTrip.setOnClickListener(clickTime -> showTimePickerDialog());
 
         buttonCreatTrip.setOnClickListener(view13 -> {
-            buttonCreatTrip.setVisibility(View.INVISIBLE);
-            progressBarPost.setVisibility(View.VISIBLE);
+            if(isOnline(getContext())) {
+                buttonCreatTrip.setVisibility(View.INVISIBLE);
+                progressBarPost.setVisibility(View.VISIBLE);
 
-            String start_Trip = spinnerStartTrip.getSelectedItem().toString();
-            String end_Trip = spinnerEndTrip.getSelectedItem().toString();
-            String data_Trip = textViewDateTrip.getText().toString();
-            String time_Trip = textViewTimeTrip.getText().toString();
-            String price_Trip = editTextPrice.getText().toString();
-            String seat_Trip = editTextSeat.getText().toString();
-            String comments = editTextComment.getText().toString();
+                String start_Trip = spinnerStartTrip.getSelectedItem().toString();
+                String end_Trip = spinnerEndTrip.getSelectedItem().toString();
+                String data_Trip = textViewDateTrip.getText().toString();
+                String time_Trip = textViewTimeTrip.getText().toString();
+                String price_Trip = editTextPrice.getText().toString();
+                String seat_Trip = editTextSeat.getText().toString();
+                String comments = editTextComment.getText().toString();
 
 
-            if(start_Trip.equals("Откуда")) {
-                showSnakbarTypeOne(getView(),"Укажите начальную точку маршрута");
-                buttonCreatTrip.setVisibility(View.VISIBLE);
-                progressBarPost.setVisibility(View.INVISIBLE);
-            }  else if(end_Trip.equals("Куда")) {
-                showSnakbarTypeOne(getView(),"Укажите конечную точку маршрута");
-                buttonCreatTrip.setVisibility(View.VISIBLE);
-                progressBarPost.setVisibility(View.INVISIBLE);
-            } else if(TextUtils.isEmpty(data_Trip)) {
-                textViewDateTrip.setError("Укажите дату");
-                buttonCreatTrip.setVisibility(View.VISIBLE);
-                progressBarPost.setVisibility(View.INVISIBLE);
-            } else if(TextUtils.isEmpty(time_Trip)) {
-                textViewTimeTrip.setError("Укажите время");
-                buttonCreatTrip.setVisibility(View.VISIBLE);
-                progressBarPost.setVisibility(View.INVISIBLE);
-            } else if(TextUtils.isEmpty(price_Trip)) {
-                editTextPrice.setError("Укажите цену");
-                buttonCreatTrip.setVisibility(View.VISIBLE);
-                progressBarPost.setVisibility(View.INVISIBLE);
-            } else if(TextUtils.isEmpty(seat_Trip)) {
-                editTextSeat.setError("Укажите количество мест");
-                buttonCreatTrip.setVisibility(View.VISIBLE);
-                progressBarPost.setVisibility(View.INVISIBLE);
-            } else  {
-                creatPost(start_Trip, end_Trip, data_Trip, time_Trip, price_Trip, seat_Trip, comments);
+                if(start_Trip.equals("Откуда")) {
+                    showSnakbarTypeOne(getView(),"Укажите начальную точку маршрута");
+                    buttonCreatTrip.setVisibility(View.VISIBLE);
+                    progressBarPost.setVisibility(View.INVISIBLE);
+                }  else if(end_Trip.equals("Куда")) {
+                    showSnakbarTypeOne(getView(),"Укажите конечную точку маршрута");
+                    buttonCreatTrip.setVisibility(View.VISIBLE);
+                    progressBarPost.setVisibility(View.INVISIBLE);
+                } else if(TextUtils.isEmpty(data_Trip)) {
+                    textViewDateTrip.setError("Укажите дату");
+                    buttonCreatTrip.setVisibility(View.VISIBLE);
+                    progressBarPost.setVisibility(View.INVISIBLE);
+                } else if(TextUtils.isEmpty(time_Trip)) {
+                    textViewTimeTrip.setError("Укажите время");
+                    buttonCreatTrip.setVisibility(View.VISIBLE);
+                    progressBarPost.setVisibility(View.INVISIBLE);
+                } else if(TextUtils.isEmpty(price_Trip)) {
+                    editTextPrice.setError("Укажите цену");
+                    buttonCreatTrip.setVisibility(View.VISIBLE);
+                    progressBarPost.setVisibility(View.INVISIBLE);
+                } else if(TextUtils.isEmpty(seat_Trip)) {
+                    editTextSeat.setError("Укажите количество мест");
+                    buttonCreatTrip.setVisibility(View.VISIBLE);
+                    progressBarPost.setVisibility(View.INVISIBLE);
+                } else  {
+                    creatPost(start_Trip, end_Trip, data_Trip, time_Trip, price_Trip, seat_Trip, comments);
+                }
+            } else {
+                dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
+                dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogInternetCon.show();
             }
+
+
         });
 
         return view;
     }
+
 
     private void creatPost(String start_trip, String end_trip, String data_trip, String time_trip, String price_trip, String seat_trip, String comments) {
         userID = firebaseAuth.getCurrentUser().getUid();
@@ -190,7 +204,7 @@ public class CreatDFragment extends Fragment {
 
     private void shwoDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, -1);
+        c.add(Calendar.DATE, 0);
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -198,7 +212,7 @@ public class CreatDFragment extends Fragment {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 (view, year, monthOfYear, dayOfMonth) -> {
-                    textViewDateTrip.setText(String.format("%s.%s", dayMonthText(dayOfMonth), getMonthText(monthOfYear)));
+                    textViewDateTrip.setText(String.format("%s.%s.%s", dayMonthText(dayOfMonth), getMonthText(monthOfYear), year));
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
         datePickerDialog.show();
@@ -214,4 +228,6 @@ public class CreatDFragment extends Fragment {
         },mHour,mMinute,is24HourView);
         timePickerDialog.show();
     }
+
+
 }

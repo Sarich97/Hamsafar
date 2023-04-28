@@ -2,13 +2,17 @@ package hamsafar.tj.activity.fragments;
 
 import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.getMonthText;
+import static hamsafar.tj.activity.utility.Utility.isOnline;
 import static hamsafar.tj.activity.utility.Utility.minuteText;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -54,6 +58,8 @@ public class CreatPFragment extends Fragment {
     private int mYear, mMonth, mDay, mHour, mMinute;
     final Calendar cal = Calendar.getInstance();
 
+    private Dialog dialogInternetCon;
+
 
     private TimePickerDialog timePickerDialog;
 
@@ -70,6 +76,7 @@ public class CreatPFragment extends Fragment {
         currentUser = firebaseAuth.getCurrentUser();
 
         mediaPlayerSound = MediaPlayer.create(getActivity(), R.raw.sound);
+        dialogInternetCon = new Dialog(getContext());
 
 
         spinnerStartTrip = view.findViewById(R.id.spinnerStartTripP);
@@ -86,34 +93,40 @@ public class CreatPFragment extends Fragment {
 
 
         buttonCreatTripPas.setOnClickListener(clickCreatBtn -> {
-            buttonCreatTripPas.setVisibility(View.INVISIBLE);
-            progressBarCreat.setVisibility(View.VISIBLE);
+           if(isOnline(getContext())) {
+               buttonCreatTripPas.setVisibility(View.INVISIBLE);
+               progressBarCreat.setVisibility(View.VISIBLE);
 
-            String start_Trip = spinnerStartTrip.getSelectedItem().toString();
-            String end_Trip = spinnerEndTrip.getSelectedItem().toString();
-            String data_Trip = textViewDate.getText().toString();
-            String time_Trip = textViewTime.getText().toString();
-            String commets_Trip = editTextComment.getText().toString();
+               String start_Trip = spinnerStartTrip.getSelectedItem().toString();
+               String end_Trip = spinnerEndTrip.getSelectedItem().toString();
+               String data_Trip = textViewDate.getText().toString();
+               String time_Trip = textViewTime.getText().toString();
+               String commets_Trip = editTextComment.getText().toString();
 
-            if(start_Trip.equals("Откуда")) {
-                showSnakbarTypeOne(getView(),"Укажите начальную точку маршрута");
-                buttonCreatTripPas.setVisibility(View.VISIBLE);
-                progressBarCreat.setVisibility(View.INVISIBLE);
-            }  else if(end_Trip.equals("Куда")) {
-                showSnakbarTypeOne(getView(),"Укажите конечную точку маршрута");
-                buttonCreatTripPas.setVisibility(View.VISIBLE);
-                progressBarCreat.setVisibility(View.INVISIBLE);
-            } else if(TextUtils.isEmpty(data_Trip)) {
-                textViewDate.setError("Укажите дату");
-                buttonCreatTripPas.setVisibility(View.VISIBLE);
-                progressBarCreat.setVisibility(View.INVISIBLE);
-            } else if(TextUtils.isEmpty(time_Trip)) {
-                textViewTime.setError("Укажите время");
-                buttonCreatTripPas.setVisibility(View.VISIBLE);
-                progressBarCreat.setVisibility(View.INVISIBLE);
-            } else {
-                creatPost(start_Trip, end_Trip, data_Trip, time_Trip, commets_Trip);
-            }
+               if(start_Trip.equals("Откуда")) {
+                   showSnakbarTypeOne(getView(),"Укажите начальную точку маршрута");
+                   buttonCreatTripPas.setVisibility(View.VISIBLE);
+                   progressBarCreat.setVisibility(View.INVISIBLE);
+               }  else if(end_Trip.equals("Куда")) {
+                   showSnakbarTypeOne(getView(),"Укажите конечную точку маршрута");
+                   buttonCreatTripPas.setVisibility(View.VISIBLE);
+                   progressBarCreat.setVisibility(View.INVISIBLE);
+               } else if(TextUtils.isEmpty(data_Trip)) {
+                   textViewDate.setError("Укажите дату");
+                   buttonCreatTripPas.setVisibility(View.VISIBLE);
+                   progressBarCreat.setVisibility(View.INVISIBLE);
+               } else if(TextUtils.isEmpty(time_Trip)) {
+                   textViewTime.setError("Укажите время");
+                   buttonCreatTripPas.setVisibility(View.VISIBLE);
+                   progressBarCreat.setVisibility(View.INVISIBLE);
+               } else {
+                   creatPost(start_Trip, end_Trip, data_Trip, time_Trip, commets_Trip);
+               }
+           } else  {
+               dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
+               dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+               dialogInternetCon.show();
+           }
 
         });
 

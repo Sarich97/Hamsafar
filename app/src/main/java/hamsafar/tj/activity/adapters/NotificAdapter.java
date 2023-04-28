@@ -77,7 +77,7 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
         if(books.getStatusTrip().equals("Ищу водителя")) {
             holder.textViewDriverName.setText(books.getUserName() + " принял(а) вашу заявку");
         } else {
-            holder.textViewDriverName.setText("Пассажир(ка) " + books.getUserName() + " забронировал(а) поездку");
+            holder.textViewDriverName.setText(books.getUserName() + " забронировал(а) поездку");
         }
         Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), android.R.anim.slide_in_left);
         holder.itemView.startAnimation(animation);
@@ -134,6 +134,7 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
             userImage.setImageDrawable(user_drawbleSheet);
 
             TextView userName = dialogBooks.findViewById(R.id.userNameBook);
+            TextView dateTrip = dialogBooks.findViewById(R.id.dateTrip);
             TextView startTrip = dialogBooks.findViewById(R.id.start_of_route);
             TextView endTrip = dialogBooks.findViewById(R.id.end_of_route);
             Button button = dialogBooks.findViewById(R.id.callButtonUser);
@@ -150,6 +151,7 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
                 }
             });
             userName.setText(books.getUserName());
+            dateTrip.setText(books.getDate());
             startTrip.setText(books.getLocationFrom());
             endTrip.setText(books.getLocationTo());
             dialogBooks.show();

@@ -129,7 +129,7 @@ public class TripDetalActivity extends AppCompatActivity {
         String postID = getIntent().getExtras().getString("postID");
 
         recyclerViewBook = findViewById(R.id.booksRecyclerView);
-        recyclerViewBook.setHasFixedSize(true);
+        //recyclerViewBook.setHasFixedSize(true);
         recyclerViewBook.setLayoutManager(new LinearLayoutManager(TripDetalActivity.this, LinearLayoutManager.VERTICAL, false));
         booksAdapter = new BooksAdapter(booksArrayList, TripDetalActivity.this);
         recyclerViewBook.setAdapter(booksAdapter);
@@ -558,17 +558,12 @@ public class TripDetalActivity extends AppCompatActivity {
         dialogCreatPost.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ImageView imageView = dialogCreatPost.findViewById(R.id.imageDialog);
         TextView textView = dialogCreatPost.findViewById(R.id.textDialog);
-        Button buttonCancelD = dialogCreatPost.findViewById(R.id.buttonCancelDialog);
         if(isUserDriver.equals("Ищу водителя")) {
-            textView.setText("Вы успешно приняли заявку\nЖелаем вам хорошей поездки!");
+            textView.setText("Вы успешно приняли заявку Желаем вам хорошей поездки!");
         } else {
-            textView.setText("Вы успешно забронировали поездку\nЖелаем вам хорошей поездки!");
+            textView.setText("Вы успешно забронировали поездку Желаем вам хорошей поездки!");
         }
         dialogCreatPost.show();
-
-        buttonCancelD.setOnClickListener(view -> {
-            dialogCreatPost.cancel();
-        });
 
     }
 

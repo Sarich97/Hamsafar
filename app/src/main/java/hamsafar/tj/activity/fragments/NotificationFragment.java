@@ -1,5 +1,10 @@
 package hamsafar.tj.activity.fragments;
 
+import static hamsafar.tj.activity.utility.Utility.isOnline;
+
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -42,6 +47,7 @@ public class NotificationFragment extends Fragment {
     private RecyclerView recyclerViewBookNotif;
     NotificAdapter notificAdapter;
     ArrayList<books> booksArrayList = new ArrayList<>();
+    private Dialog dialogInternetCon;
 
 
 
@@ -51,6 +57,9 @@ public class NotificationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_notification, container, false);
 
+
+        dialogInternetCon = new Dialog(getContext());
+
         firebaseAuth = FirebaseAuth.getInstance();
         bookRef = FirebaseFirestore.getInstance();
         notificatRef = bookRef.collection("notificat");
@@ -59,10 +68,11 @@ public class NotificationFragment extends Fragment {
         imageViewUNLoadData = view.findViewById(R.id.imageViewNotifiivat);
 
         recyclerViewBookNotif = view.findViewById(R.id.booksRecyclerViewNotif);
-        recyclerViewBookNotif.setHasFixedSize(true);
+        //recyclerViewBookNotif.setHasFixedSize(true);
         recyclerViewBookNotif.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         notificAdapter = new NotificAdapter(booksArrayList, getContext());
         recyclerViewBookNotif.setAdapter(notificAdapter);
+
 
         showNotificationList();
 

@@ -4,13 +4,44 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
+
+import hamsafar.tj.activity.TripDetalActivity;
+
 public class Utility {
+
+
+
+    public static boolean isOnline(Context context) {
+        try {
+            Process p1 = Runtime.getRuntime().exec(
+                    "ping -c 1 www.google.com");
+            int returnVal = p1.waitFor();
+            boolean reachable = (returnVal == 0);
+            if (reachable) {
+                System.out.println("Internet access");
+                return reachable;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 
     public static void showToast(Context context, String message) {
@@ -111,40 +142,40 @@ public class Utility {
         String monthName;
         switch (monthOfYear) {
             case 0:
-                monthName = "янв";
+                monthName = "01";
                 break;
             case 1:
-                monthName = "фев";
+                monthName = "02";
                 break;
             case 2:
-                monthName = "март";
+                monthName = "03";
                 break;
             case 3:
-                monthName = "апр";
+                monthName = "04";
                 break;
             case 4:
-                monthName = "мая";
+                monthName = "05";
                 break;
             case 5:
-                monthName = "июня";
+                monthName = "06";
                 break;
             case 6:
-                monthName = "июля";
+                monthName = "07";
                 break;
             case 7:
-                monthName = "авг";
+                monthName = "08";
                 break;
             case 8:
-                monthName = "сен";
+                monthName = "09";
                 break;
             case 9:
-                monthName = "окт";
+                monthName = "10";
                 break;
             case 10:
-                monthName = "ноя";
+                monthName = "11";
                 break;
             case 11:
-                monthName = "дек";
+                monthName = "12";
                 break;
             default:
                 monthName = "Invalid month";

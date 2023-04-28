@@ -83,10 +83,6 @@ public class RegisterActivity extends AppCompatActivity {
             if(name.length() < 3)
             {
                 editTextUserName.setError(getString(field_nameRegister));
-
-
-            } else if(phone.length() < 7) {
-                editTextUserPhone.setError(getString(field_phoneRegister));
             } else if(user_city.equals(getString(spinner_CityMessage))) {
                 showSnakbarTypeOne(viewSnackbar,getString(spinner_CityMessage));
             } else
