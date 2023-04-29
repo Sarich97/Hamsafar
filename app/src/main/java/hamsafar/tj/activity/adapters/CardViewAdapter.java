@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +19,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
-import hamsafar.tj.activity.RegisterActivity;
 import hamsafar.tj.activity.models.CardViewModel;
 
 public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardViewHold> {
@@ -80,7 +78,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
             switch (clickedPosition) {
                 case 0:
                     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(itemView.getContext(), R.style.BottomSheetDialogTheme);
-                    bottomSheetDialog.setContentView(R.layout.roadstate_sheet);
+                    bottomSheetDialog.setContentView(R.layout.description_sheet);
                     bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                     bottomSheetDialog.show();
                     break;

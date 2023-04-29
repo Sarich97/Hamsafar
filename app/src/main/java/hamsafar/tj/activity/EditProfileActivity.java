@@ -1,6 +1,7 @@
 package hamsafar.tj.activity;
 
 import static hamsafar.tj.R.string.erro_registerMessage;
+import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,16 +37,19 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore ;
     private String userID;
 
-    private EditText editTextUserName, editTextUserEmail, editTextUserPhone;
+    private EditText editTextUserName, editTextUserEmail, editTextUserPhone, editTextUserCarModel;
     private Button buttonEditProfileBtn;
     private TextView textViewOnBackBtn;
     private ProgressBar progressBarEdit;
+    private View viewSnackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+
+        viewSnackbar = findViewById(android.R.id.content);
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -54,6 +59,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextUserName = findViewById(R.id.userNameEdit);
         editTextUserEmail = findViewById(R.id.userEmaiEdit);
         editTextUserPhone = findViewById(R.id.userPhoneEdit);
+        editTextUserCarModel = findViewById(R.id.userCarModelD);
         textViewOnBackBtn = findViewById(R.id.toolbarTextBackBtn);
         progressBarEdit = findViewById(R.id.progressBar);
 
@@ -61,15 +67,17 @@ public class EditProfileActivity extends AppCompatActivity {
 
         buttonEditProfileBtn.setOnClickListener(view -> {
             String user_phone = editTextUserPhone.getText().toString();
+            String user_car = editTextUserCarModel.getText().toString();
 
-            if(user_phone.length() < 13) {
-                editTextUserPhone.setError("Укажите номер телефона в международном формате");
-                showToast(this, "Укажите номер телефона в международном формате");
-            } else  {
-                progressBarEdit.setVisibility(View.VISIBLE);
-                buttonEditProfileBtn.setVisibility(View.INVISIBLE);
-                editUserProofile(user_phone);
-            }
+           if(TextUtils.isEmpty(user_phone)) {
+               editTextUserPhone.setError("Укажите номер телефона");
+           } else if(TextUtils.isEmpty(user_car)) {
+               editTextUserCarModel.setError("Укажите марку автомобиля");
+           } else {
+               progressBarEdit.setVisibility(View.VISIBLE);
+               buttonEditProfileBtn.setVisibility(View.INVISIBLE);
+               editUserProofile(user_phone, user_car);
+           }
         });
 
 
@@ -83,10 +91,12 @@ public class EditProfileActivity extends AppCompatActivity {
                 String user_name = task.getResult().getString("userName");
                 String user_email = task.getResult().getString("userEmail");
                 String user_phone = task.getResult().getString("userPhone");
+                String user_car = task.getResult().getString("userCarModel");
 
                 editTextUserName.setHint(user_name);
                 editTextUserEmail.setHint(user_email);
                 editTextUserPhone.setHint(user_phone);
+                editTextUserCarModel.setHint(user_car);
 
             } else  {
 
@@ -94,14 +104,18 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void editUserProofile(String user_phone) {
+    private void editUserProofile(String user_phone, String user_car) {
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-        documentReference.update("userPhone", user_phone).addOnCompleteListener(task -> {
+        Map<String, Object> user = new HashMap<>();
+        user.put("userPhone", user_phone);
+        user.put("userCarModel", user_car);
+
+        documentReference.update(user).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 Intent mainIntent = new Intent(EditProfileActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();
-                showToast(this, "Вы успешно сменили номер телефона");
+                showSnakbarTypeOne(viewSnackbar, "Вы успешно изменили данных");
             } else {
                 progressBarEdit.setVisibility(View.INVISIBLE);
                 buttonEditProfileBtn.setVisibility(View.VISIBLE);

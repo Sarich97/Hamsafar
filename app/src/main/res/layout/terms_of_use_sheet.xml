@@ -5,6 +5,16 @@
     android:layout_height="480dp"
     android:background="@drawable/sheet_background">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="60dp"
+        android:layout_height="4sp"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorBG"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"

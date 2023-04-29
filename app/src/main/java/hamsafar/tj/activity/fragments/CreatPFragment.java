@@ -177,7 +177,7 @@ public class CreatPFragment extends Fragment {
 
     private void shwoDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, -1);
+        c.add(Calendar.DATE, 0);
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -185,7 +185,7 @@ public class CreatPFragment extends Fragment {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 (view, year, monthOfYear, dayOfMonth) -> {
-                    textViewDate.setText(String.format("%s.%s", dayMonthText(dayOfMonth), getMonthText(monthOfYear)));
+                    textViewDate.setText(String.format("%s.%s.%s", dayMonthText(dayOfMonth), getMonthText(monthOfYear), year));
 
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());

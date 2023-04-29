@@ -1,5 +1,6 @@
 package hamsafar.tj.activity;
 
+import static hamsafar.tj.activity.utility.Utility.isOnline;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 
 import androidx.annotation.NonNull;
@@ -67,6 +68,8 @@ public class TripDetalActivity extends AppCompatActivity {
     BooksAdapter booksAdapter;
     ArrayList<books> booksArrayList = new ArrayList<>();
 
+    private Dialog dialogInternetCon; //
+
 
     @Override
     protected void onStart() {
@@ -110,7 +113,7 @@ public class TripDetalActivity extends AppCompatActivity {
 
         dialogCreatPost= new Dialog(TripDetalActivity.this);
         dialogUserInfo = new Dialog(TripDetalActivity.this);
-
+        dialogInternetCon = new Dialog(TripDetalActivity.this); // ОКОШОКА ПОКАЗВАЕТ НЕТ ИНТЕРНЕТА
 
 
 
@@ -205,44 +208,66 @@ public class TripDetalActivity extends AppCompatActivity {
         imageViewUserImage.setImageDrawable(user_drawble);
 
         buttonBookTrip.setOnClickListener(view -> { // Кнопка забронировать.
-            if(booksArrayList.size() + 1 > Integer.valueOf(tripSeat))
-            {
-                showSnakbarTypeOne(viewSnackbar, "Количество мест ограничено");
-            } else {
-                UsersRef.collection("users").document(userKey).get().addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
-                        String user_name = task.getResult().getString("userName");
-                        String user_phone = task.getResult().getString("userPhone");
-                        bookTrip(user_name, user_phone, postID);
-                    }
-                });
+
+            if(isOnline(this)) {
+                if(booksArrayList.size() + 1 > Integer.valueOf(tripSeat))
+                {
+                    showSnakbarTypeOne(viewSnackbar, "Количество мест ограничено");
+                } else {
+                    UsersRef.collection("users").document(userKey).get().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
+                            String user_name = task.getResult().getString("userName");
+                            String user_phone = task.getResult().getString("userPhone");
+                            bookTrip(user_name, user_phone, postID);
+                        }
+                    });
+                }
+            } else  {
+                dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
+                dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogInternetCon.show();
             }
         });
 
         buttonBookCancel.setOnClickListener(view -> { // Кнопка Отмена бронирование поездки
 
-            AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
-            // Указываем текст сообщение
-            deleteDialog.setMessage("Вы уверены, что хотите отменить бронь?");
 
-            deleteDialog.setPositiveButton("Да", (dialog, which) -> {
-                bookRef.collection("posts/" + postID + "/books").document(userKey).delete();
-                bookRef.collection("notificat/" + tripUserId + "/books").document(userKey+postID).delete();
-                buttonBookCancel.setVisibility(View.GONE);
-                booksAdapter.notifyDataSetChanged();
-                gotoMainIntent();
-                UpDatePostInfo();
-                buttonBookTrip.setVisibility(View.VISIBLE);
-            });
-            // Обработчик на нажатие НЕТ
-            deleteDialog.setNegativeButton("Нет", (dialog, which) -> dialog.cancel());
+            if(isOnline(this)) {
+                AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
+                // Указываем текст сообщение
+                deleteDialog.setMessage("Вы уверены, что хотите отменить бронь?");
 
-            // показываем Alert
-            deleteDialog.show();
+                deleteDialog.setPositiveButton("Да", (dialog, which) -> {
+                    bookRef.collection("posts/" + postID + "/books").document(userKey).delete();
+                    bookRef.collection("notificat/" + tripUserId + "/books").document(userKey+postID).delete();
+                    buttonBookCancel.setVisibility(View.GONE);
+                    booksAdapter.notifyDataSetChanged();
+                    gotoMainIntent();
+                    UpDatePostInfo();
+                    buttonBookTrip.setVisibility(View.VISIBLE);
+                });
+                // Обработчик на нажатие НЕТ
+                deleteDialog.setNegativeButton("Нет", (dialog, which) -> dialog.cancel());
+
+                // показываем Alert
+                deleteDialog.show();
+            } else {
+                dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
+                dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogInternetCon.show();
+            }
+
         });
 
         buttonBookFinish.setOnClickListener(view -> { // Завершить заявку а не удалить
-            showBookFinishDialog();
+            if(isOnline(this)) {
+                showBookFinishDialog();
+            } else {
+                dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
+                dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogInternetCon.show();
+            }
+
         });
 
 
@@ -252,11 +277,18 @@ public class TripDetalActivity extends AppCompatActivity {
         });
 
         imageViewButtonDelete.setOnClickListener(view -> { // Кнопка удалить пост
-            if(booksArrayList.size() > 0 ) {
-                showSnakbarTypeOne(viewSnackbar,"Нельзя удалить поезду пока есть активные заявки");
+            if(isOnline(this)) {
+                if(booksArrayList.size() > 0 ) {
+                    showSnakbarTypeOne(viewSnackbar,"Нельзя удалить поезду пока есть активные заявки");
+                } else  {
+                    showDialogDeletePost();
+                }
             } else  {
-                showDialogDeletePost();
+                dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
+                dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogInternetCon.show();
             }
+
         });
 
         imageViewCallButton.setOnClickListener(view -> { // Кнопка ПОЗВОНИТЬ ВОДИТЕЛЮ/ПАСАЖИРУ
@@ -308,7 +340,8 @@ public class TripDetalActivity extends AppCompatActivity {
             dialogUserInfo.show();
         });
     }
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {  // CВАЙП ДЛЯ УДАЛЕНИЯ ПОЛЬЗОВАТЕЛ
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -335,6 +368,7 @@ public class TripDetalActivity extends AppCompatActivity {
                            showSnakbarTypeOne(viewSnackbar, "Ошибка. Повторите попытку позже");
                        }
                    });
+
                } else {
 
                }
@@ -356,11 +390,13 @@ public class TripDetalActivity extends AppCompatActivity {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+
+
     private void showBookFinishDialog() {
         String postID = getIntent().getExtras().getString("postID");
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
         // Указываем текст сообщение
-        deleteDialog.setMessage("Вы уверены, что хотите завершить поездку?");
+        deleteDialog.setMessage("Вы уверены, что хотите завершить поездку?\nВнимание! Если вы завершили поездку, но не совершили ее фактически, это может привести к получению бана.");
 
         deleteDialog.setPositiveButton("Да", (dialog, which) -> {
             DocumentReference documentReference = postRef.collection("posts").document(postID);

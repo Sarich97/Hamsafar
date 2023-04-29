@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:fontFamily="@font/play"
-                android:text="Оцените поездку"
+                android:text="Оцените Вашу поездку"
                 android:textColor="@color/colorBlack"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
-                android:textSize="12dp"
+                android:textSize="10dp"
                 android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/userImageBooks"
                 app:layout_constraintTop_toBottomOf="@+id/userNameBook" />

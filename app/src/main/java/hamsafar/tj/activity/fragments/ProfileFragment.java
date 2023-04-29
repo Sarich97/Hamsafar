@@ -1,45 +1,35 @@
 package hamsafar.tj.activity.fragments;
 
-import static hamsafar.tj.activity.utility.Utility.isOnline;
-import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
-import static hamsafar.tj.activity.utility.Utility.showToast;
-
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-import java.util.ArrayList;
-
 import hamsafar.tj.R;
 import hamsafar.tj.activity.AuthActivity;
-import hamsafar.tj.activity.adapters.CardViewAdapter;
+import hamsafar.tj.activity.EditProfileActivity;
 import hamsafar.tj.activity.adapters.ProfileFragmentAdapter;
-import hamsafar.tj.activity.models.CardViewModel;
 
 
 public class ProfileFragment extends Fragment {
@@ -49,7 +39,7 @@ public class ProfileFragment extends Fragment {
     private String userID;
 
     private TextView textViewUserName, textViewUserEmail, textViewUserRating, textViewUserTripCount;
-    private ImageView userImageP, imageViewLogOurBtn;
+    private ImageView userImageP, imageViewLogOurBtn, imageViewEditButton;
 
 
 
@@ -85,10 +75,30 @@ public class ProfileFragment extends Fragment {
         textViewUserTripCount = view.findViewById(R.id.textViewTripCount);
         userImageP = view.findViewById(R.id.userImageProfile);
         imageViewLogOurBtn = view.findViewById(R.id.imageViewLogout);
+        imageViewEditButton = view.findViewById(R.id.imageViewEditProfile);
 
 
         textViewUserRating.setOnClickListener(view12 -> {
-            showSnakbarTypeOne(getView(), getString(R.string.reating_descrip));
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+            bottomSheetDialog.setContentView(R.layout.description_sheet);
+
+            TextView textViewSheetReting = bottomSheetDialog.findViewById(R.id.textSheet);
+
+            textViewSheetReting.setText(R.string.reating_descrip);
+            bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            bottomSheetDialog.show();
+        });
+
+
+        textViewUserTripCount.setOnClickListener(view13 -> {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+            bottomSheetDialog.setContentView(R.layout.description_sheet);
+
+            TextView textViewSheetReting = bottomSheetDialog.findViewById(R.id.textSheet);
+
+            textViewSheetReting.setText(R.string.trip_count_descrip);
+            bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            bottomSheetDialog.show();
         });
 
 
@@ -97,6 +107,11 @@ public class ProfileFragment extends Fragment {
 
         imageViewLogOurBtn.setOnClickListener(view1 -> { // КНОПКА ВЫЙТИ ИЗ ПРОФИЛЯ!
             showSingOutDialog();
+        });
+
+        imageViewEditButton.setOnClickListener(view14 -> {
+            Intent editIntent = new Intent(getContext(), EditProfileActivity.class);
+            startActivity(editIntent);
         });
 
 

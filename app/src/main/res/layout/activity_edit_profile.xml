@@ -74,6 +74,18 @@
                 tools:ignore="MissingConstraints" />
 
 
+            <EditText
+                android:id="@+id/userCarModelD"
+                style="@style/editText"
+                android:drawableLeft="@drawable/ic_baseline_directions_car_24"
+                android:ems="10"
+                android:hint="@string/editCarModel"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userPhoneEdit" />
+
+
             <Button
                 android:id="@+id/editInfoButton"
                 style="@style/buttonThemesGreen"
@@ -81,7 +93,7 @@
                 android:text="Редактировать"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userPhoneEdit" />
+                app:layout_constraintTop_toBottomOf="@+id/userCarModelD" />
 
 
             <ProgressBar
