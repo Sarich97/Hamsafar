@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -37,16 +38,20 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore ;
     private String userID;
 
-    private EditText editTextUserName, editTextUserEmail, editTextUserPhone, editTextUserCarModel;
+    private EditText editTextUserPhone, editTextUserCarModel;
+    private TextView textViewUserName, textViewUserEmail;
     private Button buttonEditProfileBtn;
     private TextView textViewOnBackBtn;
     private ProgressBar progressBarEdit;
+    private ImageView userImageProfile;
     private View viewSnackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
 
 
         viewSnackbar = findViewById(android.R.id.content);
@@ -56,12 +61,13 @@ public class EditProfileActivity extends AppCompatActivity {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         userID = firebaseAuth.getCurrentUser().getUid();
 
-        editTextUserName = findViewById(R.id.userNameEdit);
-        editTextUserEmail = findViewById(R.id.userEmaiEdit);
+        textViewUserName = findViewById(R.id.userNameProfile);
+        textViewUserEmail = findViewById(R.id.userEmail);
         editTextUserPhone = findViewById(R.id.userPhoneEdit);
         editTextUserCarModel = findViewById(R.id.userCarModelD);
         textViewOnBackBtn = findViewById(R.id.toolbarTextBackBtn);
         progressBarEdit = findViewById(R.id.progressBar);
+        userImageProfile = findViewById(R.id.userImageProfile);
 
         buttonEditProfileBtn = findViewById(R.id.editInfoButton);
 
@@ -80,28 +86,33 @@ public class EditProfileActivity extends AppCompatActivity {
            }
         });
 
-
         textViewOnBackBtn.setOnClickListener(view -> {
             onBackPressed();
             finish();
         });
 
-        firebaseFirestore.collection("users").document(userID).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                String user_name = task.getResult().getString("userName");
-                String user_email = task.getResult().getString("userEmail");
-                String user_phone = task.getResult().getString("userPhone");
-                String user_car = task.getResult().getString("userCarModel");
+        String user_name = getIntent().getExtras().getString("userName");
+        String user_email = getIntent().getExtras().getString("userEmail");
+        String user_car = getIntent().getExtras().getString("userCar");
+        String user_phone = getIntent().getExtras().getString("userPhone");
 
-                editTextUserName.setHint(user_name);
-                editTextUserEmail.setHint(user_email);
-                editTextUserPhone.setHint(user_phone);
-                editTextUserCarModel.setHint(user_car);
 
-            } else  {
+        textViewUserName.setText(user_name);
+        textViewUserEmail.setText(user_email);
+        editTextUserPhone.setHint(user_phone);
+        editTextUserCarModel.setHint(user_car);
 
-            }
-        });
+
+        String userNameName = user_name.substring(0,1);
+
+        TextDrawable user_drawble = TextDrawable.builder()
+                .beginConfig()
+                .fontSize(48) /* size in px */
+                .bold()
+                .toUpperCase()
+                .endConfig()
+                .buildRoundRect(userNameName, colorGenerator.getRandomColor(),12); // radius in
+        userImageProfile.setImageDrawable(user_drawble);
     }
 
     private void editUserProofile(String user_phone, String user_car) {

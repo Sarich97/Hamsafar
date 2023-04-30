@@ -1,11 +1,13 @@
 package hamsafar.tj.activity.models;
 
 public class books {
-    private String notifiID, notifiStatus, postID, userID, userName, userPhone, postCreateID, date, locationFrom, locationTo, rating, statusTrip;
+    private String notifiID, notifiStatus, postID, userID, userName, userPhone,
+            postCreateID, date, locationFrom, locationTo, rating, statusTrip,
+            userRating, userTripCount;
 
     public books () {}
 
-    public books(String notifiID, String notifiStatus, String postID, String userID, String userName, String userPhone, String postCreateID, String date, String locationFrom, String locationTo, String rating, String statusTrip) {
+    public books(String notifiID, String notifiStatus, String postID, String userID, String userName, String userPhone, String postCreateID, String date, String locationFrom, String locationTo, String rating, String statusTrip, String userRating, String userTripCount) {
         this.notifiID = notifiID;
         this.notifiStatus = notifiStatus;
         this.postID = postID;
@@ -18,6 +20,8 @@ public class books {
         this.locationTo = locationTo;
         this.rating = rating;
         this.statusTrip = statusTrip;
+        this.userRating = userRating;
+        this.userTripCount = userTripCount;
     }
 
     public String getNotifiID() {
@@ -114,5 +118,21 @@ public class books {
 
     public void setStatusTrip(String statusTrip) {
         this.statusTrip = statusTrip;
+    }
+
+    public String getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(String userRating) {
+        this.userRating = userRating;
+    }
+
+    public String getUserTripCount() {
+        return userTripCount;
+    }
+
+    public void setUserTripCount(String userTripCount) {
+        this.userTripCount = userTripCount;
     }
 }

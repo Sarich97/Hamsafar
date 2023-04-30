@@ -81,11 +81,14 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
         holder.textViewUserNameBook.setText(books.getUserName());
 
+
         if(userKey.equals(books.getPostCreateID())) {
             holder.imageDetalBooks.setVisibility(View.VISIBLE);
         } else {
             holder.imageDetalBooks.setVisibility(View.GONE);
         }
+
+
 
         String userNameName = books.getUserName().substring(0,1);
 
@@ -120,6 +123,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
             TextView userName = dialogBooks.findViewById(R.id.userNameBook);
             TextView startTrip = dialogBooks.findViewById(R.id.start_of_route);
             TextView endTrip = dialogBooks.findViewById(R.id.end_of_route);
+            TextView ratingAndCount = dialogBooks.findViewById(R.id.dateTrip);
             Button buttonCall = dialogBooks.findViewById(R.id.callButtonUser);
             buttonCall.setOnClickListener(view12 -> { // Нажимаем на кнопку звонок
                 String number =  booksArrayList.get(position).getUserPhone();
@@ -135,6 +139,9 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
             userName.setText(booksArrayList.get(position).getUserName());
             startTrip.setText(booksArrayList.get(position).getLocationFrom());
             endTrip.setText(booksArrayList.get(position).getLocationTo());
+            ratingAndCount.setText("Рейтинг: " + books.getUserRating() + "  " + "Поездки: " +  books.getUserTripCount());
+
+
             dialogBooks.show();
         });
     }

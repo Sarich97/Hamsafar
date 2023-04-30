@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/userImageBooks"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,18 +20,17 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold"
         android:id="@+id/userNameBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
-        android:layout_marginLeft="14dp"
         android:fontFamily="@font/play"
-        android:textSize="18dp"
         android:text="TextView"
+        android:textColor="@color/colorBlack"
+        android:textSize="18dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/userImageBooks"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/userImageBooks" />
 
 
     <ImageView
@@ -44,5 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/userImageBooks"
         app:srcCompat="@drawable/baseline_keyboard_arrow_right_24" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

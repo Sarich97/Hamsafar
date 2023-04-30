@@ -2,6 +2,7 @@ package hamsafar.tj.activity;
 
 import static hamsafar.tj.activity.utility.Utility.isOnline;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
+import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -218,7 +219,9 @@ public class TripDetalActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             String user_name = task.getResult().getString("userName");
                             String user_phone = task.getResult().getString("userPhone");
-                            bookTrip(user_name, user_phone, postID);
+                            String user_rating = task.getResult().get("userRating").toString();
+                            String user_trip_count = task.getResult().get("userTrip").toString();
+                            bookTrip(user_name, user_phone, user_rating, user_trip_count, postID);
                         }
                     });
                 }
@@ -230,8 +233,6 @@ public class TripDetalActivity extends AppCompatActivity {
         });
 
         buttonBookCancel.setOnClickListener(view -> { // Кнопка Отмена бронирование поездки
-
-
             if(isOnline(this)) {
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
                 // Указываем текст сообщение
@@ -305,39 +306,43 @@ public class TripDetalActivity extends AppCompatActivity {
 
 
         textViewDriverName.setOnClickListener(view -> {
+            if(tripUserId.equals(userKey)) {
 
-            dialogUserInfo.setContentView(R.layout.show_user_mini_info);
-            dialogUserInfo.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            String user_name = tripNameUser.substring(0,1);
+            } else {
+                dialogUserInfo.setContentView(R.layout.show_user_mini_info);
+                dialogUserInfo.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                String user_name = tripNameUser.substring(0,1);
 
-            ImageView userImage = dialogUserInfo.findViewById(R.id.userImage);
+                ImageView userImage = dialogUserInfo.findViewById(R.id.userImage);
 
-            TextDrawable user_drawbleSheet = TextDrawable.builder()
-                    .beginConfig()
-                    .fontSize(26) /* size in px */
-                    .bold()
-                    .toUpperCase()
-                    .endConfig()
-                    .buildRoundRect(user_name, colorGenerator.getRandomColor(),4); // radius in
-            userImage.setImageDrawable(user_drawbleSheet);
+                TextDrawable user_drawbleSheet = TextDrawable.builder()
+                        .beginConfig()
+                        .fontSize(26) /* size in px */
+                        .bold()
+                        .toUpperCase()
+                        .endConfig()
+                        .buildRoundRect(user_name, colorGenerator.getRandomColor(),4); // radius in
+                userImage.setImageDrawable(user_drawbleSheet);
 
-            TextView userName = dialogUserInfo.findViewById(R.id.userName);
-            TextView userRating = dialogUserInfo.findViewById(R.id.textViewRating);
-            TextView userCount = dialogUserInfo.findViewById(R.id.textViewTripCount);
+                TextView userName = dialogUserInfo.findViewById(R.id.userName);
+                TextView userRating = dialogUserInfo.findViewById(R.id.textViewRating);
+                TextView userCount = dialogUserInfo.findViewById(R.id.textViewTripCount);
 
-            UsersRef.collection("users").document(tripUserId).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    String user_phone = task.getResult().getString("userPhone");
-                    String user_rating = task.getResult().get("userRating").toString();
-                    String user_trip_count = task.getResult().get("userTrip").toString();
-                    userName.setText(tripNameUser);
-                    userRating.setText(user_rating);
-                    userCount.setText(user_trip_count);
-                } else {
+                UsersRef.collection("users").document(tripUserId).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String user_phone = task.getResult().getString("userPhone");
+                        String user_rating = task.getResult().get("userRating").toString();
+                        String user_trip_count = task.getResult().get("userTrip").toString();
+                        userName.setText(tripNameUser);
+                        userRating.setText(user_rating);
+                        userCount.setText(user_trip_count);
+                    } else {
 
-                }
-            });
-            dialogUserInfo.show();
+                    }
+                });
+                dialogUserInfo.show();
+            }
+
         });
     }
 
@@ -604,7 +609,7 @@ public class TripDetalActivity extends AppCompatActivity {
     }
 
 
-    private void bookTrip(String user_name, String user_phone, String postID) {
+    private void bookTrip(String user_name, String user_phone, String rating, String count, String postID) {
         String tripUserId = getIntent().getExtras().getString("driverID");
         String tripStart = getIntent().getExtras().getString("locationFrom");
         String tripEnd = getIntent().getExtras().getString("locationTo");
@@ -613,8 +618,10 @@ public class TripDetalActivity extends AppCompatActivity {
         String status = getIntent().getExtras().getString("isUserDriver");
         String notifiID = userKey + postID;
         bookRef.collection("posts/" + postID + "/books").document(userKey).get().addOnCompleteListener(task -> {
+
             buttonBookTrip.setVisibility(View.GONE);
             if (!task.getResult().exists()) {
+
                 Map<String, Object> book = new HashMap<>();
                 book.put("notifiID",notifiID);
                 book.put("notifiStatus","show");
@@ -627,6 +634,8 @@ public class TripDetalActivity extends AppCompatActivity {
                 book.put("locationTo", tripEnd);
                 book.put("statusTrip", status);
                 book.put("date", tripDate);
+                book.put("userRating", rating);
+                book.put("userTripCount", count);
                 book.put("rating", "no");
                 book.put("timestamp", FieldValue.serverTimestamp());
                 buttonBookTrip.setVisibility(View.GONE);

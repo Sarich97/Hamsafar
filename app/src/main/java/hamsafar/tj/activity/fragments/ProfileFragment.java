@@ -2,6 +2,7 @@ package hamsafar.tj.activity.fragments;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 
@@ -14,7 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -25,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+
+import org.w3c.dom.Text;
 
 import hamsafar.tj.R;
 import hamsafar.tj.activity.AuthActivity;
@@ -37,14 +45,18 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth firebaseAuth; // FireBase
     private FirebaseFirestore firebaseFirestore,travelPostRef ;
     private String userID;
+    private String user_name, user_phone, user_email, user_car_model, user_rating, user_trip_count;
+
 
     private TextView textViewUserName, textViewUserEmail, textViewUserRating, textViewUserTripCount;
-    private ImageView userImageP, imageViewLogOurBtn, imageViewEditButton;
+    private ImageView userImageP, imageViewLogOurBtn;
 
-
+    private String setting_list[] = {"Редактировать профиль", "Как это работает", "Написать нам", "Выйти"};
 
 
     private Dialog dialogInternetCon;
+
+
 
 
     private TabLayout tabLayoutAuth;
@@ -75,7 +87,6 @@ public class ProfileFragment extends Fragment {
         textViewUserTripCount = view.findViewById(R.id.textViewTripCount);
         userImageP = view.findViewById(R.id.userImageProfile);
         imageViewLogOurBtn = view.findViewById(R.id.imageViewLogout);
-        imageViewEditButton = view.findViewById(R.id.imageViewEditProfile);
 
 
         textViewUserRating.setOnClickListener(view12 -> {
@@ -105,13 +116,51 @@ public class ProfileFragment extends Fragment {
         showProfileForUser();
                //cardViewRecycler();
 
-        imageViewLogOurBtn.setOnClickListener(view1 -> { // КНОПКА ВЫЙТИ ИЗ ПРОФИЛЯ!
-            showSingOutDialog();
-        });
+//        imageViewLogOurBtn.setOnClickListener(view1 -> { // КНОПКА ВЫЙТИ ИЗ ПРОФИЛЯ!
+//
+//        });
 
-        imageViewEditButton.setOnClickListener(view14 -> {
-            Intent editIntent = new Intent(getContext(), EditProfileActivity.class);
-            startActivity(editIntent);
+        imageViewLogOurBtn.setOnClickListener(view14 -> {
+
+
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+            bottomSheetDialog.setContentView(R.layout.listview_settings_menu);
+
+            ListView listViewMenu = bottomSheetDialog.findViewById(R.id.listMenu);
+            listViewMenu.setAdapter(new CustomAdapter());
+
+            listViewMenu.setOnItemClickListener((adapterView, view15, i, l) -> {
+                switch (i) {
+                    case 0:
+                        Intent editIntent = new Intent(getContext(), EditProfileActivity.class);
+                        editIntent.putExtra("userName", user_name);
+                        editIntent.putExtra("userPhone", user_phone);
+                        editIntent.putExtra("userEmail", user_email);
+                        editIntent.putExtra("userCar", user_car_model);
+                        startActivity(editIntent);
+                        break;
+
+                    case 1:
+
+                        break;
+
+                    case 2:
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/sarichh"));
+                        startActivity(intent);
+                        break;
+
+                    case 3:
+                        showSingOutDialog();
+                        break;
+
+                    default:
+                }
+
+            });
+            bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            bottomSheetDialog.show();
+
+
         });
 
 
@@ -179,13 +228,15 @@ public class ProfileFragment extends Fragment {
         firebaseFirestore.collection("users").document(userID).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
-                String user_name = task.getResult().getString("userName");
-                String user_phone = task.getResult().getString("userPhone");
-                String user_rating = task.getResult().get("userRating").toString();
-                String user_trip_count = task.getResult().get("userTrip").toString();
+                user_name = task.getResult().getString("userName");
+                user_phone = task.getResult().getString("userPhone");
+                user_email = task.getResult().getString("userEmail");
+                user_car_model = task.getResult().getString("userCarModel");
+                user_rating = task.getResult().get("userRating").toString();
+                user_trip_count = task.getResult().get("userTrip").toString();
 
                 textViewUserName.setText(user_name);
-                textViewUserEmail.setText(user_phone);
+                textViewUserEmail.setText("тел: " + user_phone);
                 textViewUserRating.setText(user_rating);
                 textViewUserTripCount.setText(user_trip_count);
 
@@ -193,17 +244,45 @@ public class ProfileFragment extends Fragment {
 
                 TextDrawable user_drawble = TextDrawable.builder()
                         .beginConfig()
-                        .fontSize(32) /* size in px */
+                        .fontSize(42) /* size in px */
                         .bold()
                         .toUpperCase()
                         .endConfig()
-                        .buildRoundRect(userNameName, colorGenerator.getRandomColor(),12); // radius in
+                        .buildRoundRect(userNameName, colorGenerator.getRandomColor(),8); // radius in
                 userImageP.setImageDrawable(user_drawble);
 
             } else  {
 
             }
         });
+    }
+
+    class CustomAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return setting_list.length;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            View v = getLayoutInflater().inflate(R.layout.listmenu_item, null);
+
+            TextView textViewList = v.findViewById(R.id.listViewText);
+
+            textViewList.setText(setting_list[i]);
+            return v;
+        }
     }
 
 //    private void showPostForUser() {
