@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/userImageBooks"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="6dp"
         app:layout_constraintBottom_toBottomOf="parent"

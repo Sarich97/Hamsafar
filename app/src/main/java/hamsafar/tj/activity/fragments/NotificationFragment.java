@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +44,7 @@ public class NotificationFragment extends Fragment {
     private CollectionReference notificatRef;
     private String userKey;
     private ImageView imageViewUNLoadData;
+    private TextView textViewDescpNot;
 
     private RecyclerView recyclerViewBookNotif;
     NotificAdapter notificAdapter;
@@ -66,6 +68,7 @@ public class NotificationFragment extends Fragment {
         userKey = firebaseAuth.getCurrentUser().getUid();
 
         imageViewUNLoadData = view.findViewById(R.id.imageViewNotifiivat);
+        textViewDescpNot = view.findViewById(R.id.textViewDescpN);
 
         recyclerViewBookNotif = view.findViewById(R.id.booksRecyclerViewNotif);
         //recyclerViewBookNotif.setHasFixedSize(true);
@@ -88,6 +91,7 @@ public class NotificationFragment extends Fragment {
                    booksArrayList.add(books);
                    notificAdapter.notifyDataSetChanged();
                    imageViewUNLoadData.setVisibility(View.INVISIBLE);
+                   textViewDescpNot.setVisibility(View.INVISIBLE);
                } else {
 
                }

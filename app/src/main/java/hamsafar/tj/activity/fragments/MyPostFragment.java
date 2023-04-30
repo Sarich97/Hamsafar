@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -39,6 +40,7 @@ public class MyPostFragment extends Fragment {
     private String userKey;
     private ImageView imageViewNotPost;
     private Dialog dialogInternetCon;
+    private TextView textViewDescpProfile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +55,7 @@ public class MyPostFragment extends Fragment {
         userKey = firebaseAuth.getCurrentUser().getUid();
 
         imageViewNotPost = view.findViewById(R.id.imageViewNotifiivat);
+        textViewDescpProfile = view.findViewById(R.id.textViewDescpP);
 
         recyclerViewPost = view.findViewById(R.id.recyclerViewMyPosts);
         recyclerViewPost.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -79,6 +82,7 @@ public class MyPostFragment extends Fragment {
                             posts.add(post);
                             postAdapter.notifyDataSetChanged();
                             imageViewNotPost.setVisibility(View.INVISIBLE);
+                            textViewDescpProfile.setVisibility(View.INVISIBLE);
                         } else  {
 
                         }

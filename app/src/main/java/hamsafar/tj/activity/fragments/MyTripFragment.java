@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,6 +23,8 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -42,6 +45,7 @@ public class MyTripFragment extends Fragment {
     ArrayList<Post> posts = new ArrayList<>();
     private String userKey;
     private ImageView imageViewNotPost;
+    private TextView textViewDescpTrip;
     private Dialog dialogInternetCon;
 
     @Override
@@ -59,6 +63,7 @@ public class MyTripFragment extends Fragment {
         userKey = firebaseAuth.getCurrentUser().getUid();
 
         imageViewNotPost = view.findViewById(R.id.imageViewNotifiivat);
+        textViewDescpTrip = view.findViewById(R.id.textViewDescpT);
 
         recyclerViewPost = view.findViewById(R.id.recyclerViewMyTrips);
         recyclerViewPost.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -91,6 +96,7 @@ public class MyTripFragment extends Fragment {
                                     posts.add(post);
                                     postAdapter.notifyDataSetChanged();
                                     imageViewNotPost.setVisibility(View.INVISIBLE);
+                                    textViewDescpTrip.setVisibility(View.INVISIBLE);
                                 } else {
 
                                 }

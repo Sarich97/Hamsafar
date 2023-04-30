@@ -18,6 +18,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/undraw_add_files_re_v09g" />
 
+    <TextView
+        android:id="@+id/textViewDescpT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Здесь вы найдете информацию о своих поездках."
+        android:textAlignment="center"
+        android:textSize="15dp"
+        android:textColor="@color/colorText"
+        android:fontFamily="@font/play"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewNotifiivat" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMyTrips"
         android:layout_width="match_parent"

@@ -17,6 +17,22 @@
         app:layout_constraintTop_toTopOf="@+id/scrollView2"
         app:srcCompat="@drawable/undraw_loading_re_5axr" />
 
+    <TextView
+        android:id="@+id/textViewDescpN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:fontFamily="@font/play"
+        android:text="Пока пусто. Создавайте заявки, чтобы получать уведомления."
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewNotifiivat" />
+
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
