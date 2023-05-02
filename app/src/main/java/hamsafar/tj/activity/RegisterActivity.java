@@ -1,16 +1,15 @@
 package hamsafar.tj.activity;
 
-import static hamsafar.tj.R.string.erro_registerMessage;
-import static hamsafar.tj.R.string.erro_registerMessageS;
-import static hamsafar.tj.R.string.field_nameRegister;
-import static hamsafar.tj.R.string.field_phoneRegister;
-import static hamsafar.tj.R.string.spinner_CityMessage;
+
+import static hamsafar.tj.activity.utility.Utility.isOnline;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
-import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,14 +35,13 @@ import hamsafar.tj.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText editTextUserName, editTextUserPhone, editTextUserCarModel; // Поля ввод юзера
-    private Button buttonCreatNewUser; // Кнопка регистрации
+    private EditText editTextUserName, editTextUserPhone, editTextUserCarModel;
+    private Button buttonCreateNewUser;
     private Spinner spinnerUserCity;
-    private ProgressBar progressRegister; // Прогрессбар страница(фрагмент) регистрации
+    private ProgressBar progressRegister;
     private TextView textViewTeamOfServis;
-    private String userID;
     private View viewSnackbar;
-
+    private Dialog dialogInternetCon;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -53,41 +50,37 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); // Full Screen Page
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        viewSnackbar = findViewById(android.R.id.content);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
-        firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
-        firebaseFirestore = FirebaseFirestore.getInstance();  // DataBase variable
+        dialogInternetCon = new Dialog(this);
 
-        editTextUserName = findViewById(R.id.user_Name);
-        editTextUserPhone = findViewById(R.id.user_Phone);
-        spinnerUserCity = findViewById(R.id.spinnerGetCityUser);
-        buttonCreatNewUser = findViewById(R.id.registerUserBtn);
-        progressRegister = findViewById(R.id.progressRegisterActivity);
-        textViewTeamOfServis = findViewById(R.id.team_of_servis);
-        editTextUserCarModel = findViewById(R.id.userCarModelD);
+        initViews();
 
+        buttonCreateNewUser.setOnClickListener(view -> {
+            if(isOnline(this)) {
+                String email = getIntent().getStringExtra("userEmail");
+                String name = editTextUserName.getText().toString();
+                String phone = editTextUserPhone.getText().toString();
+                String userCity = spinnerUserCity.getSelectedItem().toString();
+                String password = getIntent().getStringExtra("userPass");
+                String userCarModel = editTextUserCarModel.getText().toString();
 
-
-        // Нажатие на кнопки регистрации
-        buttonCreatNewUser.setOnClickListener(view -> {
-
-            String email = getIntent().getExtras().getString("userEmail");
-            String name = editTextUserName.getText().toString();
-            String phone = editTextUserPhone.getText().toString();
-            String user_city = spinnerUserCity.getSelectedItem().toString();
-            String password = getIntent().getExtras().getString("userPass");
-            String user_car_model = editTextUserCarModel.getText().toString();
-
-            if(name.length() < 3)
-            {
-                editTextUserName.setError(getString(field_nameRegister));
-            } else if(user_city.equals(getString(spinner_CityMessage))) {
-                showSnakbarTypeOne(viewSnackbar,getString(spinner_CityMessage));
-            } else
-            {
-                createNewUser(email, password,name, phone, user_city, user_car_model);
+                if (TextUtils.isEmpty(name)) {
+                    editTextUserName.setError(getString(R.string.field_nameRegister));
+                } else if (userCity.equals(getString(R.string.spinner_CityMessage))) {
+                    showSnakbarTypeOne(viewSnackbar, getString(R.string.spinner_CityMessage));
+                } else if(TextUtils.isEmpty(phone)) {
+                    editTextUserPhone.setError("Укажите номер телефона");
+                } else {
+                    createFirebaseAuthUser(email, password, name, phone, userCity, userCarModel);
+                }
+            } else  {
+                dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
+                dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogInternetCon.show();
             }
         });
 
@@ -99,48 +92,68 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void createNewUser(String email, String password, String name, String phone, String user_city, String user_car_model) {
+    // Инициализация полей класса
+    private void initViews() {
+        editTextUserName = findViewById(R.id.user_Name);
+        editTextUserPhone = findViewById(R.id.user_Phone);
+        spinnerUserCity = findViewById(R.id.spinnerGetCityUser);
+        buttonCreateNewUser = findViewById(R.id.registerUserBtn);
+        progressRegister = findViewById(R.id.progressRegisterActivity);
+        textViewTeamOfServis = findViewById(R.id.team_of_servis);
+        editTextUserCarModel = findViewById(R.id.userCarModelD);
+        viewSnackbar = findViewById(android.R.id.content);
+    }
+
+    // Создание нового пользователя в Firebase Authentication
+    private void createFirebaseAuthUser(String email, String password, String name, String phone, String userCity, String userCarModel) {
         progressRegister.setVisibility(View.VISIBLE);
-        buttonCreatNewUser.setVisibility(View.INVISIBLE);
+        buttonCreateNewUser.setVisibility(View.INVISIBLE);
+
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-                String ipAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
-
-                userID = firebaseAuth.getCurrentUser().getUid();
-                DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-                Map<String, Object> user = new HashMap<>();
-                user.put("userKey", userID);
-                user.put("userPass", password);
-                user.put("userEmail", email);
-                user.put("userName", name);
-                user.put("userPhone", phone);
-                user.put("userCity", user_city);
-                user.put("userCarModel", user_car_model);
-                user.put("userRating", 15);
-                user.put("userTrip", 0);
-                user.put("ipAdress", ipAddress);
-                user.put("regDate", FieldValue.serverTimestamp());
-
-                documentReference.set(user).addOnCompleteListener(task1 -> {
-                    if(task.isSuccessful()) {
-                        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                        startActivity(mainIntent);
-                        finish();
-                        progressRegister.setVisibility(View.INVISIBLE);
-                        buttonCreatNewUser.setVisibility(View.VISIBLE);
-                    } else  {
-                        progressRegister.setVisibility(View.INVISIBLE);
-                        buttonCreatNewUser.setVisibility(View.VISIBLE);
-                        showSnakbarTypeOne(viewSnackbar, getString(erro_registerMessage));
-                    }
-                });
-            } else  {
+            if (task.isSuccessful()) {
+                String userID = firebaseAuth.getCurrentUser().getUid();
+                saveUserDataToFirestore(userID, email, password, name, phone, userCity, userCarModel);
+            } else {
                 progressRegister.setVisibility(View.INVISIBLE);
-                buttonCreatNewUser.setVisibility(View.VISIBLE);
-                showSnakbarTypeOne(viewSnackbar, getString(erro_registerMessageS));
+                buttonCreateNewUser.setVisibility(View.VISIBLE);
+                showSnakbarTypeOne(viewSnackbar, getString(R.string.erro_registerMessage));
             }
         });
-
     }
+
+    // Сохранение данных нового пользователя в Firestore
+    private void saveUserDataToFirestore(String userID, String email, String password, String name, String phone, String userCity, String userCarModel) {
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        String ipAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+        Map<String, Object> user = new HashMap<>();
+        user.put("userKey", userID);
+        user.put("userPass", password);
+        user.put("userEmail", email);
+        user.put("userName", name);
+        user.put("userPhone", phone);
+        user.put("userCity", userCity);
+        user.put("userCarModel", userCarModel);
+        user.put("userRating", 15);
+        user.put("userTrip", 0);
+        user.put("ipAddress", ipAddress);
+        user.put("regDate", FieldValue.serverTimestamp());
+
+        documentReference.set(user).addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()) {
+                Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(mainIntent);
+                finish();
+                progressRegister.setVisibility(View.INVISIBLE);
+                buttonCreateNewUser.setVisibility(View.VISIBLE);
+            } else {
+                progressRegister.setVisibility(View.INVISIBLE);
+                buttonCreateNewUser.setVisibility(View.VISIBLE);
+                showSnakbarTypeOne(viewSnackbar, getString(R.string.erro_registerMessageS));
+            }
+        });
+    }
+
+    // Показать snackbar
 }

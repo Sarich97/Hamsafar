@@ -58,7 +58,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         firebaseFirestore = FirebaseFirestore.getInstance();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         userID = firebaseAuth.getCurrentUser().getUid();
 
         textViewUserName = findViewById(R.id.userNameProfile);
@@ -75,15 +74,15 @@ public class EditProfileActivity extends AppCompatActivity {
             String user_phone = editTextUserPhone.getText().toString();
             String user_car = editTextUserCarModel.getText().toString();
 
-           if(TextUtils.isEmpty(user_phone)) {
-               editTextUserPhone.setError("Укажите номер телефона");
-           } else if(TextUtils.isEmpty(user_car)) {
-               editTextUserCarModel.setError("Укажите марку автомобиля");
-           } else {
-               progressBarEdit.setVisibility(View.VISIBLE);
-               buttonEditProfileBtn.setVisibility(View.INVISIBLE);
-               editUserProofile(user_phone, user_car);
-           }
+            if (TextUtils.isEmpty(user_phone)) {
+                editTextUserPhone.setError("Укажите номер телефона");
+            } else if (TextUtils.isEmpty(user_car)) {
+                editTextUserCarModel.setError("Укажите марку автомобиля");
+            } else {
+                progressBarEdit.setVisibility(View.VISIBLE);
+                buttonEditProfileBtn.setVisibility(View.INVISIBLE);
+                editUserProfile(user_phone, user_car);
+            }
         });
 
         textViewOnBackBtn.setOnClickListener(view -> {
@@ -91,10 +90,10 @@ public class EditProfileActivity extends AppCompatActivity {
             finish();
         });
 
-        String user_name = getIntent().getExtras().getString("userName");
-        String user_email = getIntent().getExtras().getString("userEmail");
-        String user_car = getIntent().getExtras().getString("userCar");
-        String user_phone = getIntent().getExtras().getString("userPhone");
+        String user_name = getIntent().getStringExtra("userName");
+        String user_email = getIntent().getStringExtra("userEmail");
+        String user_car = getIntent().getStringExtra("userCar");
+        String user_phone = getIntent().getStringExtra("userPhone");
 
 
         textViewUserName.setText(user_name);
@@ -115,23 +114,29 @@ public class EditProfileActivity extends AppCompatActivity {
         userImageProfile.setImageDrawable(user_drawble);
     }
 
-    private void editUserProofile(String user_phone, String user_car) {
+    private void editUserProfile(String user_phone, String user_car) {
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+
+        // Создаем объект Map с новыми данными пользователя
         Map<String, Object> user = new HashMap<>();
         user.put("userPhone", user_phone);
         user.put("userCarModel", user_car);
 
-        documentReference.update(user).addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                Intent mainIntent = new Intent(EditProfileActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                finish();
-                showSnakbarTypeOne(viewSnackbar, "Вы успешно изменили данных");
-            } else {
-                progressBarEdit.setVisibility(View.INVISIBLE);
-                buttonEditProfileBtn.setVisibility(View.VISIBLE);
-                showToast(this, "Ошибка при редактировании профиля");
-            }
-        });
+        // Обновляем документ в Firestore с новыми данными
+        documentReference.update(user)
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    // При успешном обновлении данных переходим на главный экран
+                    Intent mainIntent = new Intent(EditProfileActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    finish();
+                    showSnakbarTypeOne(viewSnackbar, "Вы успешно изменили данные");
+                } else {
+                    // В случае ошибки выводим сообщение об ошибке и возвращаемся к редактированию профиля
+                    progressBarEdit.setVisibility(View.INVISIBLE);
+                    buttonEditProfileBtn.setVisibility(View.VISIBLE);
+                    showToast(this, "Ошибка при редактировании профиля");
+                }
+            });
     }
 }

@@ -51,13 +51,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userPassSingIn" />
 
-    <ProgressBar
-        android:id="@+id/progressLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/singInButton"
-        app:layout_constraintEnd_toEndOf="@+id/singInButton"
-        app:layout_constraintStart_toStartOf="@+id/singInButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

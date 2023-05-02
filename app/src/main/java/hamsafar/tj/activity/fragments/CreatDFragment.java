@@ -1,5 +1,6 @@
 package hamsafar.tj.activity.fragments;
 
+import static android.content.ContentValues.TAG;
 import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.getMonthText;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +56,6 @@ public class CreatDFragment extends Fragment {
     private TextView textViewDateTrip, textViewTimeTrip;
     private Button buttonCreatTrip;
     private ProgressBar progressBarPost;
-    private Dialog dialogCreatPost;
 
     private MediaPlayer mediaPlayerSound;
 
@@ -67,7 +68,6 @@ public class CreatDFragment extends Fragment {
     private Dialog dialogInternetCon;
 
 
-    private PostAdapter postAdapter;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
     private TimePickerDialog timePickerDialog;
@@ -82,12 +82,11 @@ public class CreatDFragment extends Fragment {
         travelPostRef = FirebaseFirestore.getInstance(); // DateBase settings
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
+        userID = firebaseAuth.getCurrentUser().getUid();
 
         mediaPlayerSound = MediaPlayer.create(getActivity(), R.raw.sound);
 
         dialogInternetCon = new Dialog(getContext());
-
-
 
 
         spinnerStartTrip = view.findViewById(R.id.spinnerStartTripD);
@@ -106,99 +105,123 @@ public class CreatDFragment extends Fragment {
         textViewTimeTrip.setOnClickListener(clickTime -> showTimePickerDialog());
 
         buttonCreatTrip.setOnClickListener(view13 -> {
-            if(isOnline(getContext())) {
-                buttonCreatTrip.setVisibility(View.INVISIBLE);
-                progressBarPost.setVisibility(View.VISIBLE);
+            buttonCreatTrip.setVisibility(View.INVISIBLE);
+            progressBarPost.setVisibility(View.VISIBLE);
+            firebaseFirestore.collection("posts")
+                .whereEqualTo("userUD", userID)
+                .whereEqualTo("statusTrip", "show") // Фильтруем только активные поездки
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        buttonCreatTrip.setVisibility(View.VISIBLE);
+                        progressBarPost.setVisibility(View.INVISIBLE);
+                        Log.e(TAG, "Error getting active posts count:", task.getException());
+                        return;
+                    }
 
-                String start_Trip = spinnerStartTrip.getSelectedItem().toString();
-                String end_Trip = spinnerEndTrip.getSelectedItem().toString();
-                String data_Trip = textViewDateTrip.getText().toString();
-                String time_Trip = textViewTimeTrip.getText().toString();
-                String price_Trip = editTextPrice.getText().toString();
-                String seat_Trip = editTextSeat.getText().toString();
-                String comments = editTextComment.getText().toString();
+                    int activePostsCount = task.getResult().size();
+                    if (activePostsCount >= 3) {
+                        buttonCreatTrip.setVisibility(View.VISIBLE);
+                        progressBarPost.setVisibility(View.INVISIBLE);
+                        // Если у пользователя уже есть 3 активные поездки, выводим сообщение и не даём создавать новую
+                        showSnakbarTypeOne(getView(), "Вы не можете создавать больше 3 активных поездок");
+                        return;
+                    }
 
+                    // Если есть меньше 3 активных поездок, позволяем пользователю создать новую
+                    if (!isOnline(getContext())) {
+                        dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
+                        dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        dialogInternetCon.show();
+                        return;
+                    }
 
-                if(start_Trip.equals("Откуда")) {
-                    showSnakbarTypeOne(getView(),"Укажите начальную точку маршрута");
-                    buttonCreatTrip.setVisibility(View.VISIBLE);
-                    progressBarPost.setVisibility(View.INVISIBLE);
-                }  else if(end_Trip.equals("Куда")) {
-                    showSnakbarTypeOne(getView(),"Укажите конечную точку маршрута");
-                    buttonCreatTrip.setVisibility(View.VISIBLE);
-                    progressBarPost.setVisibility(View.INVISIBLE);
-                } else if(TextUtils.isEmpty(data_Trip)) {
-                    textViewDateTrip.setError("Укажите дату");
-                    buttonCreatTrip.setVisibility(View.VISIBLE);
-                    progressBarPost.setVisibility(View.INVISIBLE);
-                } else if(TextUtils.isEmpty(time_Trip)) {
-                    textViewTimeTrip.setError("Укажите время");
-                    buttonCreatTrip.setVisibility(View.VISIBLE);
-                    progressBarPost.setVisibility(View.INVISIBLE);
-                } else if(TextUtils.isEmpty(price_Trip)) {
-                    editTextPrice.setError("Укажите цену");
-                    buttonCreatTrip.setVisibility(View.VISIBLE);
-                    progressBarPost.setVisibility(View.INVISIBLE);
-                } else if(TextUtils.isEmpty(seat_Trip)) {
-                    editTextSeat.setError("Укажите количество мест");
-                    buttonCreatTrip.setVisibility(View.VISIBLE);
-                    progressBarPost.setVisibility(View.INVISIBLE);
-                } else  {
-                    creatPost(start_Trip, end_Trip, data_Trip, time_Trip, price_Trip, seat_Trip, comments);
-                }
-            } else {
-                dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
-                dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialogInternetCon.show();
-            }
+                    String start_Trip = spinnerStartTrip.getSelectedItem().toString();
+                    String end_Trip = spinnerEndTrip.getSelectedItem().toString();
+                    String data_Trip = textViewDateTrip.getText().toString();
+                    String time_Trip = textViewTimeTrip.getText().toString();
+                    String price_Trip = editTextPrice.getText().toString();
+                    String seat_Trip = editTextSeat.getText().toString();
+                    String comments = editTextComment.getText().toString();
 
-
+                    if (start_Trip.equals("Откуда")) {
+                        showSnakbarTypeOne(getView(),"Укажите начальную точку маршрута");
+                        buttonCreatTrip.setVisibility(View.VISIBLE);
+                        progressBarPost.setVisibility(View.INVISIBLE);
+                    }  else if (end_Trip.equals("Куда")) {
+                        showSnakbarTypeOne(getView(),"Укажите конечную точку маршрута");
+                        buttonCreatTrip.setVisibility(View.VISIBLE);
+                        progressBarPost.setVisibility(View.INVISIBLE);
+                    } else if (TextUtils.isEmpty(data_Trip)) {
+                        textViewDateTrip.setError("Укажите дату");
+                        buttonCreatTrip.setVisibility(View.VISIBLE);
+                        progressBarPost.setVisibility(View.INVISIBLE);
+                    } else if (time_Trip.equals("Время")) {
+                        textViewTimeTrip.setError("Укажите время");
+                        buttonCreatTrip.setVisibility(View.VISIBLE);
+                        progressBarPost.setVisibility(View.INVISIBLE);
+                    } else if (TextUtils.isEmpty(price_Trip)) {
+                        editTextPrice.setError("Укажите цену");
+                        buttonCreatTrip.setVisibility(View.VISIBLE);
+                        progressBarPost.setVisibility(View.INVISIBLE);
+                    } else if (TextUtils.isEmpty(seat_Trip)) {
+                        editTextSeat.setError("Укажите количество мест");
+                        buttonCreatTrip.setVisibility(View.VISIBLE);
+                        progressBarPost.setVisibility(View.INVISIBLE);
+                    } else {
+                        createPost(start_Trip, end_Trip, data_Trip, time_Trip, price_Trip, seat_Trip, comments);
+                    }
+                });
         });
 
         return view;
     }
 
 
-    private void creatPost(String start_trip, String end_trip, String data_trip, String time_trip, String price_trip, String seat_trip, String comments) {
-        userID = firebaseAuth.getCurrentUser().getUid();
-        firebaseFirestore.collection("users").document(userID).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                String user_name = task.getResult().getString("userName");
-                String user_phone = task.getResult().getString("userPhone");
-                String user_car = task.getResult().getString("userCarModel");
+    private void createPost(String start_trip, String end_trip, String data_trip, String time_trip, String price_trip, String seat_trip, String comments) {
 
-                DocumentReference documentReference = firebaseFirestore.collection("posts").document();
-                Map<String, Object> post = new HashMap<>();
-                post.put("userUD", userID);
-                post.put("userName", user_name);
-                post.put("userPhone", user_phone);
-                post.put("carModel", user_car);
-                post.put("startTrip", start_trip);
-                post.put("endTrip", end_trip);
-                post.put("dataTrip", data_trip);
-                post.put("timeTrip", time_trip);
-                post.put("priceTrip", price_trip);
-                post.put("seatTrip", seat_trip);
-                post.put("commentTrip", comments);
-                post.put("isDriverUser", "Ищу пассажиров");
-                post.put("statusTrip", "show");
-                post.put("postId", documentReference.getId());
-                post.put("timestamp", FieldValue.serverTimestamp());
+        // Получаем требуемые данные из документа пользователя в базе данных
+        firebaseFirestore.collection("users").document(userID).get().addOnSuccessListener(documentSnapshot -> {
+            // Получаем имя пользователя, телефон и модель автомобиля из документа пользователя
+            String user_name = documentSnapshot.getString("userName");
+            String user_phone = documentSnapshot.getString("userPhone");
+            String user_car = documentSnapshot.getString("userCarModel");
+            String rating = documentSnapshot.get("userRating").toString();
 
-                documentReference.set(post).addOnCompleteListener(task1 -> {
-                    if(task1.isSuccessful()) {
-                        mediaPlayerSound.start();
-                        Intent mainIntent = new Intent(getContext(), MainActivity.class);
-                        startActivity(mainIntent);
-                        getActivity().finish();
-                    } else {
-                        buttonCreatTrip.setVisibility(View.VISIBLE);
-                        progressBarPost.setVisibility(View.INVISIBLE);
-                        showSnakbarTypeOne(getView(),"Ошибка публикации поста. Повторите попытку через несколько минут");
+            // Создаем новый документ поста в коллекции "posts"
+            DocumentReference postRef = firebaseFirestore.collection("posts").document();
+            // Создаем объект Map, содержащий данные поста
+            Map<String, Object> post = new HashMap<>();
+            post.put("userUD", userID);
+            post.put("userName", user_name);
+            post.put("userPhone", user_phone);
+            post.put("carModel", user_car);
+            post.put("startTrip", start_trip);
+            post.put("endTrip", end_trip);
+            post.put("dataTrip", data_trip);
+            post.put("timeTrip", time_trip);
+            post.put("priceTrip", price_trip);
+            post.put("seatTrip", seat_trip);
+            post.put("commentTrip", comments);
+            post.put("rating", Integer.parseInt(rating));
+            post.put("isDriverUser", "Ищу пассажиров");
+            post.put("statusTrip", "show");
+            post.put("postId", postRef.getId());
+            post.put("timestamp", FieldValue.serverTimestamp());
 
-                    }
-                });
-            }
+            // Записываем данные поста в базу данных
+            postRef.set(post).addOnSuccessListener(aVoid -> {
+                // Если запись прошла успешно, то запускаем звуковой эффект и переходим на главный экран
+                mediaPlayerSound.start();
+                Intent mainIntent = new Intent(getContext(), MainActivity.class);
+                startActivity(mainIntent);
+                getActivity().finish();
+            }).addOnFailureListener(e -> {
+                // Если запись не удалась, то отображаем сообщение об ошибке
+                buttonCreatTrip.setVisibility(View.VISIBLE);
+                progressBarPost.setVisibility(View.INVISIBLE);
+                showSnakbarTypeOne(getView(),"Ошибка публикации поста. Повторите попытку через несколько минут");
+            });
         });
     }
 
@@ -228,6 +251,5 @@ public class CreatDFragment extends Fragment {
         },mHour,mMinute,is24HourView);
         timePickerDialog.show();
     }
-
 
 }

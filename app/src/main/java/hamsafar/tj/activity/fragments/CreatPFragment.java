@@ -1,5 +1,6 @@
 package hamsafar.tj.activity.fragments;
 
+import static android.content.ContentValues.TAG;
 import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.getMonthText;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +76,7 @@ public class CreatPFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance(); // DateBase settings
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
+        userID = firebaseAuth.getCurrentUser().getUid();
 
         mediaPlayerSound = MediaPlayer.create(getActivity(), R.raw.sound);
         dialogInternetCon = new Dialog(getContext());
@@ -93,82 +96,111 @@ public class CreatPFragment extends Fragment {
 
 
         buttonCreatTripPas.setOnClickListener(clickCreatBtn -> {
-           if(isOnline(getContext())) {
-               buttonCreatTripPas.setVisibility(View.INVISIBLE);
-               progressBarCreat.setVisibility(View.VISIBLE);
+            buttonCreatTripPas.setVisibility(View.INVISIBLE);
+            progressBarCreat.setVisibility(View.VISIBLE);
+            firebaseFirestore.collection("posts")
+                .whereEqualTo("userUD", userID)
+                .whereEqualTo("statusTrip", "show") // Фильтруем только активные поездки
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        buttonCreatTripPas.setVisibility(View.VISIBLE);
+                        progressBarCreat.setVisibility(View.INVISIBLE);
+                        Log.e(TAG, "Error getting active posts count:", task.getException());
+                        return;
+                    }
 
-               String start_Trip = spinnerStartTrip.getSelectedItem().toString();
-               String end_Trip = spinnerEndTrip.getSelectedItem().toString();
-               String data_Trip = textViewDate.getText().toString();
-               String time_Trip = textViewTime.getText().toString();
-               String commets_Trip = editTextComment.getText().toString();
+                    int activePostsCount = task.getResult().size();
+                    if (activePostsCount >= 3) {
+                        buttonCreatTripPas.setVisibility(View.VISIBLE);
+                        progressBarCreat.setVisibility(View.INVISIBLE);
+                        // Если у пользователя уже есть 3 активные поездки, выводим сообщение и не даём создавать новую
+                        showSnakbarTypeOne(getView(), "Вы не можете создавать больше 3 активных поездок");
+                        return;
+                    }
 
-               if(start_Trip.equals("Откуда")) {
-                   showSnakbarTypeOne(getView(),"Укажите начальную точку маршрута");
-                   buttonCreatTripPas.setVisibility(View.VISIBLE);
-                   progressBarCreat.setVisibility(View.INVISIBLE);
-               }  else if(end_Trip.equals("Куда")) {
-                   showSnakbarTypeOne(getView(),"Укажите конечную точку маршрута");
-                   buttonCreatTripPas.setVisibility(View.VISIBLE);
-                   progressBarCreat.setVisibility(View.INVISIBLE);
-               } else if(TextUtils.isEmpty(data_Trip)) {
-                   textViewDate.setError("Укажите дату");
-                   buttonCreatTripPas.setVisibility(View.VISIBLE);
-                   progressBarCreat.setVisibility(View.INVISIBLE);
-               } else if(TextUtils.isEmpty(time_Trip)) {
-                   textViewTime.setError("Укажите время");
-                   buttonCreatTripPas.setVisibility(View.VISIBLE);
-                   progressBarCreat.setVisibility(View.INVISIBLE);
-               } else {
-                   creatPost(start_Trip, end_Trip, data_Trip, time_Trip, commets_Trip);
-               }
-           } else  {
-               dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
-               dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-               dialogInternetCon.show();
-           }
+                    // Если есть меньше 3 активных поездок, позволяем пользователю создать новую
+                    if (!isOnline(getContext())) {
+                        dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
+                        dialogInternetCon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        dialogInternetCon.show();
+                        return;
+                    }
+
+                   String startTrip = spinnerStartTrip.getSelectedItem().toString();
+                   String endTrip = spinnerEndTrip.getSelectedItem().toString();
+                   String dateTrip = textViewDate.getText().toString();
+                   String timeTrip = textViewTime.getText().toString();
+                   String commentsTrip = editTextComment.getText().toString();
+
+                    if (startTrip.equals("Откуда")) {
+                        showSnakbarTypeOne(getView(),"Укажите начальную точку маршрута");
+                        buttonCreatTripPas.setVisibility(View.VISIBLE);
+                        progressBarCreat.setVisibility(View.INVISIBLE);
+                    }  else if (endTrip.equals("Куда")) {
+                        showSnakbarTypeOne(getView(),"Укажите конечную точку маршрута");
+                        buttonCreatTripPas.setVisibility(View.VISIBLE);
+                        progressBarCreat.setVisibility(View.INVISIBLE);
+                    } else if (TextUtils.isEmpty(dateTrip)) {
+                        textViewDate.setError("Укажите дату");
+                        buttonCreatTripPas.setVisibility(View.VISIBLE);
+                        progressBarCreat.setVisibility(View.INVISIBLE);
+                    } else if (timeTrip.equals("Время")) {
+                        textViewTime.setError("Укажите время");
+                        buttonCreatTripPas.setVisibility(View.VISIBLE);
+                        progressBarCreat.setVisibility(View.INVISIBLE);
+                    } else {
+                        createPost(startTrip, endTrip, dateTrip, timeTrip, commentsTrip);
+                    }
+                });
 
         });
 
         return view;
     }
 
-    private void creatPost(String start_trip, String end_trip, String data_trip, String time_trip, String commets_Trip) {
-        userID = firebaseAuth.getCurrentUser().getUid();
+    private void createPost(String startTrip, String endTrip, String dateTrip, String timeTrip, String commentsTrip) {
         firebaseFirestore.collection("users").document(userID).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                String user_name = task.getResult().getString("userName");
-                String user_phone = task.getResult().getString("userPhone");
+            if (task.isSuccessful()) {
+                // Получаем имя и номер телефона пользователя
+                String userName = task.getResult().getString("userName");
+                String userPhone = task.getResult().getString("userPhone");
+                String rating = task.getResult().get("userRating").toString();
 
-
+                // Создаем новый документ поста с автоматически генерируемым ID
                 DocumentReference documentReference = firebaseFirestore.collection("posts").document();
+                // Заполняем подробности поста в объект Map
                 Map<String, Object> post = new HashMap<>();
                 post.put("userUD", userID);
-                post.put("userName", user_name);
-                post.put("userPhone", user_phone);
+                post.put("userName", userName);
+                post.put("userPhone", userPhone);
                 post.put("carModel", null);
-                post.put("startTrip", start_trip);
-                post.put("endTrip", end_trip);
-                post.put("dataTrip", data_trip);
-                post.put("timeTrip", time_trip);
+                post.put("startTrip", startTrip);
+                post.put("endTrip", endTrip);
+                post.put("dataTrip", dateTrip);
+                post.put("timeTrip", timeTrip);
                 post.put("priceTrip", null);
                 post.put("seatTrip", "1");
-                post.put("commentTrip", commets_Trip);
+                post.put("commentTrip", commentsTrip);
+                post.put("rating",  Integer.parseInt(rating));
                 post.put("isDriverUser", "Ищу водителя");
                 post.put("statusTrip", "show");
                 post.put("postId", documentReference.getId());
                 post.put("timestamp", FieldValue.serverTimestamp());
 
+                // Устанавливаем подробности поста в Firestore
                 documentReference.set(post).addOnCompleteListener(task1 -> {
-                    if(task1.isSuccessful()) {
+                    if (task1.isSuccessful()) {
+                        // Если создание поста успешно, проигрываем звуковой сигнал и перенаправляем на главный экран
                         mediaPlayerSound.start();
                         Intent mainIntent = new Intent(getContext(), MainActivity.class);
                         startActivity(mainIntent);
                         getActivity().finish();
                     } else {
+                        // Если создание поста не удалось, сообщаем об ошибке и сбрасываем прогресс-бар
                         textViewDate.setVisibility(View.VISIBLE);
                         progressBarCreat.setVisibility(View.INVISIBLE);
-                        showSnakbarTypeOne(getView(),"Ошибка публикации поста. Повторите попытку через несколько минут");
+                        showSnakbarTypeOne(getView(), "Ошибка публикации поста. Повторите попытку через несколько минут");
                     }
                 });
             }

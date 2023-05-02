@@ -48,6 +48,9 @@ public class MyTripFragment extends Fragment {
     private TextView textViewDescpTrip;
     private Dialog dialogInternetCon;
 
+    private static final String POSTS_COLLECTION = "posts";
+    private static final String BOOKS_COLLECTION = "books";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class MyTripFragment extends Fragment {
         dialogInternetCon = new Dialog(getContext());
 
         bookRef = FirebaseFirestore.getInstance();
-        notificatRef = bookRef.collection("posts");
+        notificatRef = bookRef.collection(POSTS_COLLECTION);
         travelPostRef = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         userKey = firebaseAuth.getCurrentUser().getUid();
@@ -80,7 +83,8 @@ public class MyTripFragment extends Fragment {
 
     private void showTripsForUsers() {
 
-        Query query = travelPostRef.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING);
+        Query query = travelPostRef.collection(POSTS_COLLECTION).orderBy("timestamp", Query.Direction.DESCENDING)
+                        .limit(20);
 
 
         query.addSnapshotListener((documentSnapshots, e) -> {
@@ -89,7 +93,7 @@ public class MyTripFragment extends Fragment {
                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
                         Post post = doc.getDocument().toObject(Post.class);
-                        notificatRef.document(post.getPostId()).collection("books").get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        notificatRef.document(post.getPostId()).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
                             for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                                 books books = documentSnapshot.toObject(books.class);
                                 if (books.getUserID().equals(userKey)) {

@@ -2,7 +2,6 @@ package hamsafar.tj.activity.fragments;
 
 import android.app.Dialog;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -32,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import hamsafar.tj.R;
 import hamsafar.tj.activity.adapters.CardViewAdapter;
@@ -50,10 +50,8 @@ public class TravelFragment extends Fragment {
     ///   RecyclerView CARD VIEW ON MAIN PAGE
     private RecyclerView recyclerViewCard;
     private RecyclerView.Adapter cardViewAdapter;
-    private ImageView imageViewMyCytyPosts;
     private String userKey;
     private String user_city;
-    private int currentPageIdPost = 2;
     private TextView textViewSearch;
     private Dialog dialogRating, dialogInternetCon; //
 
@@ -88,7 +86,6 @@ public class TravelFragment extends Fragment {
         dialogRating= new Dialog(getContext());
         dialogInternetCon = new Dialog(getContext());
 
-        imageViewMyCytyPosts = view.findViewById(R.id.imageViewPostSetting); // КНОПКА ПОКАЗАТЬ ПОСТЫ ИЗ МОЕГО ГОРОДА
         textViewSearch = view.findViewById(R.id.textViewStatusSearch); // Текст поиска постов если указан мой город
 
         recyclerViewCard = view.findViewById(R.id.recyclerViewCard); //CARDVIEW
@@ -98,25 +95,6 @@ public class TravelFragment extends Fragment {
         postAdapter = new PostAdapter(posts, getContext());
         recyclerViewPost.setAdapter(postAdapter);
 
-
-        imageViewMyCytyPosts.setOnClickListener(view1 -> {
-            if(currentPageIdPost == 2) {
-                posts.removeAll(posts);
-                posts.clear();
-                showPostForUsers();
-                currentPageIdPost = 1;
-                textViewSearch.setText("Поездки из Вашего города");
-                imageViewMyCytyPosts.setColorFilter(getContext().getResources().getColor(R.color.colorPrimary));
-            } else if(currentPageIdPost == 1) {
-                posts.removeAll(posts);
-                posts.clear();
-                showPostForUsers();
-                currentPageIdPost = 2;
-                textViewSearch.setText("Актуальные поездки");
-                imageViewMyCytyPosts.setColorFilter(getContext().getResources().getColor(R.color.colorIcons));
-            }
-
-        });
 
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         userKey = firebaseAuth.getCurrentUser().getUid();
@@ -151,9 +129,6 @@ public class TravelFragment extends Fragment {
                                     bottomSheetDialog.setContentView(R.layout.show_rating_dialog_sheet);
                                     bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-
-//                                    dialogRating.setContentView(R.layout.show_rating_dialog_sheet);
-//                                    dialogRating.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                                     String user_name = post.getUserName().substring(0,1);
                                     ImageView userImage = bottomSheetDialog.findViewById(R.id.userImageBooks);
@@ -200,7 +175,6 @@ public class TravelFragment extends Fragment {
                                         });
 
                                     });
-
                                     userName.setText(post.getUserName());
                                     startTrip.setText(books.getLocationFrom());
                                     endTrip.setText(books.getLocationTo());
@@ -220,83 +194,53 @@ public class TravelFragment extends Fragment {
 
         });
     }
-    
+
     private void showPostForUsers() {
-        Query query = travelPostRef.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING);
+        Query query = travelPostRef.collection("posts")
+                .whereEqualTo("statusTrip", "show")
+                .orderBy("rating", Query.Direction.DESCENDING)
+                .orderBy("timestamp", Query.Direction.DESCENDING);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        String currentDate = formatter.format(new Date());
+        List<Post> newPosts = new ArrayList<>();
 
         query.addSnapshotListener((documentSnapshots, e) -> {
             if (e != null) {
+                // Обработка ошибки
+                return;
             } else {
                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
                         Post post = doc.getDocument().toObject(Post.class);
-//                        String timestamp = null;
-//                        SimpleDateFormat formatter= null;
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                            formatter = new SimpleDateFormat("dd.MM.yyyy");
-//                        }
-//                        Date date = new Date(System.currentTimeMillis());
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                            System.out.println(formatter.format(date));
-//                        }
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                            timestamp = formatter.format(date);
-//                        }
 
-                            Date date = new Date(System.currentTimeMillis());
-                            String pattern = "dd.MM.yyyy";
-                            java.text.SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-
+                        try {
                             Calendar cal1 = Calendar.getInstance();
                             Calendar cal2 = Calendar.getInstance();
-                            try {
-                                cal1.setTime(sdf.parse(sdf.format(date)));
-                                cal2.setTime(sdf.parse(post.getDataTrip()));
+
+                            cal1.setTime(formatter.parse(currentDate));
+                            cal2.setTime(formatter.parse(post.getDataTrip()));
+
+                            if (cal1.after(cal2)) {
+                                continue;
                             }
-                            catch (ParseException err) {
-                                err.printStackTrace();
-                            }
+                        } catch (ParseException err) {
+                            err.printStackTrace();
+                        }
 
-
-                            if(cal1.after(cal2)) { // Если дата больше то не показыааем посты
-                                // НЕ ПОКАЗАТЬ ПОСТЫ
-
-                            } else {
-                                if(currentPageIdPost == 2) {
-                                    if(post.getStatusTrip().equals("show")) {
-                                        posts.add(post);
-                                        postAdapter.notifyDataSetChanged();
-                                    } else {
-
-                                    }
-                                } else if(currentPageIdPost == 1) {
-                                    userRef.collection("users").document(userKey).get().addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()) {
-                                            user_city = task.getResult().getString("userCity");
-                                            if(post.getStartTrip().equals(user_city) && post.getStatusTrip().equals("show")) {
-                                                if(postAdapter.getItemCount() > 0) {
-                                                    posts.add(post);
-                                                    postAdapter.notifyDataSetChanged();
-                                                } else {
-                                                    posts.add(post);
-                                                    postAdapter.notifyDataSetChanged();
-                                                }
-
-                                            } else {
-
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                    }
-                    else {
+                        newPosts.add(post);
                     }
                 }
-            }
 
+                posts.clear();
+                posts.addAll(newPosts);
+                newPosts.clear();
+
+                postAdapter.notifyDataSetChanged();
+            }
         });
     }
+
     private void cardViewRecycler() {
         GradientDrawable gradient2 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xFF105dd0, 0xFF105dd0});
         GradientDrawable gradient1 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xFF9937fc, 0xFF9937fc});
