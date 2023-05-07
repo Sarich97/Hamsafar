@@ -1,6 +1,7 @@
 package hamsafar.tj.activity.fragments;
 
 import static android.content.ContentValues.TAG;
+import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.getMonthText;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
@@ -31,22 +32,17 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
-import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import hamsafar.tj.R;
 import hamsafar.tj.activity.MainActivity;
-import hamsafar.tj.activity.adapters.PostAdapter;
-import hamsafar.tj.activity.models.Post;
+import hamsafar.tj.activity.utility.Utility;
 
 
 public class CreatDFragment extends Fragment {
@@ -107,7 +103,7 @@ public class CreatDFragment extends Fragment {
         buttonCreatTrip.setOnClickListener(view13 -> {
             buttonCreatTrip.setVisibility(View.INVISIBLE);
             progressBarPost.setVisibility(View.VISIBLE);
-            firebaseFirestore.collection("posts")
+            firebaseFirestore.collection(USERS_COLLECTION)
                 .whereEqualTo("userUD", userID)
                 .whereEqualTo("statusTrip", "show") // Фильтруем только активные поездки
                 .get()
@@ -181,7 +177,7 @@ public class CreatDFragment extends Fragment {
     private void createPost(String start_trip, String end_trip, String data_trip, String time_trip, String price_trip, String seat_trip, String comments) {
 
         // Получаем требуемые данные из документа пользователя в базе данных
-        firebaseFirestore.collection("users").document(userID).get().addOnSuccessListener(documentSnapshot -> {
+        firebaseFirestore.collection(Utility.USERS_COLLECTION).document(userID).get().addOnSuccessListener(documentSnapshot -> {
             // Получаем имя пользователя, телефон и модель автомобиля из документа пользователя
             String user_name = documentSnapshot.getString("userName");
             String user_phone = documentSnapshot.getString("userPhone");
@@ -189,7 +185,7 @@ public class CreatDFragment extends Fragment {
             String rating = documentSnapshot.get("userRating").toString();
 
             // Создаем новый документ поста в коллекции "posts"
-            DocumentReference postRef = firebaseFirestore.collection("posts").document();
+            DocumentReference postRef = firebaseFirestore.collection(Utility.POSTS_COLLECTION).document();
             // Создаем объект Map, содержащий данные поста
             Map<String, Object> post = new HashMap<>();
             post.put("userUD", userID);
@@ -211,6 +207,7 @@ public class CreatDFragment extends Fragment {
 
             // Записываем данные поста в базу данных
             postRef.set(post).addOnSuccessListener(aVoid -> {
+//                sendMessageToTelegram("Новый пост добавлен: "+start_trip+" - "+end_trip+" ("+data_trip+", "+time_trip+")", "@sarvar_sultan");
                 // Если запись прошла успешно, то запускаем звуковой эффект и переходим на главный экран
                 mediaPlayerSound.start();
                 Intent mainIntent = new Intent(getContext(), MainActivity.class);
@@ -251,5 +248,9 @@ public class CreatDFragment extends Fragment {
         },mHour,mMinute,is24HourView);
         timePickerDialog.show();
     }
+
+
+
+
 
 }

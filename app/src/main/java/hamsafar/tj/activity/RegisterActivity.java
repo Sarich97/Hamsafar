@@ -1,6 +1,7 @@
 package hamsafar.tj.activity;
 
 
+import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 
@@ -126,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         String ipAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+        DocumentReference documentReference = firebaseFirestore.collection(USERS_COLLECTION).document(userID);
         Map<String, Object> user = new HashMap<>();
         user.put("userKey", userID);
         user.put("userPass", password);

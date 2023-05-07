@@ -1,6 +1,7 @@
 package hamsafar.tj.activity.fragments;
 
 import static android.content.ContentValues.TAG;
+import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 
 import android.app.Dialog;
@@ -230,7 +231,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadUserData() {
-        firebaseFirestore.collection("users").document(userID).get()
+        firebaseFirestore.collection(USERS_COLLECTION).document(userID).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot userDocument = task.getResult();

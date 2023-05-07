@@ -1,30 +1,18 @@
 package hamsafar.tj.activity.utility;
 
-import android.app.Activity;
+
 import android.content.Context;
-import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.UnknownHostException;
-
-import hamsafar.tj.activity.TripDetalActivity;
 
 public class Utility {
 
 
+    public static final String POSTS_COLLECTION = "posts";
+    public static final String BOOKS_COLLECTION = "books";
+    public static final String USERS_COLLECTION = "users";
 
     public static boolean isOnline(Context context) {
         try {
