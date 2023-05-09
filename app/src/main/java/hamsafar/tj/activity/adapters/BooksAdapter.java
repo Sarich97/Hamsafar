@@ -155,7 +155,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView imageViewUserBook, imageDetalBooks;
         TextView textViewUserNameBook;
@@ -165,11 +165,14 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
             imageViewUserBook = view.findViewById(R.id.userImageBooks);
             textViewUserNameBook = view.findViewById(R.id.userNameBook);
             imageDetalBooks = view.findViewById(R.id.imageViewDetalBook);
-//            buttonDeleteUser  = view.findViewById(R.id.buttonDelete);
 
+            view.setOnClickListener(this);
 
-            //tv_date = view.findViewById(R.id.comment_date);
         }
 
+        @Override
+        public void onClick(View v) {
+
+        }
     }
 }

@@ -16,6 +16,7 @@
     <TextView
         android:id="@+id/textView2"
         style="@style/textViewDiv"
+
         android:text="@string/textLoginDiv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -30,6 +30,13 @@ public class AuthActivity extends AppCompatActivity {
             sendUserToMainActivity();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        authFragmentAdapter = null;
+        super.onDestroy();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

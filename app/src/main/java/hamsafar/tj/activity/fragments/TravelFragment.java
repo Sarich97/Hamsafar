@@ -253,8 +253,8 @@ public class TravelFragment extends Fragment {
 
         ArrayList<CardViewModel> cardViewModels = new ArrayList<>();
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_road_24, "Состояние автодорог", gradient1));
-        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_airplane_ticket_24, "Дешевые авиабилеты", gradient4));
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_moderator_24, "Безопасное вождение", gradient2));
+        cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_airplane_ticket_24, "Дешевые авиабилеты", gradient4));
 
 
         cardViewAdapter = new CardViewAdapter(cardViewModels, getContext());

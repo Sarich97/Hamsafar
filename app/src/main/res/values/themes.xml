@@ -58,13 +58,13 @@
         <item name="android:layout_marginEnd">24dp</item>
         <item name="android:fontFamily">@font/play</item>
         <item name="android:textColor">@color/colorText</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 
     <style name="buttonThemesGreen">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">44dp</item>
+        <item name="android:layout_height">48dp</item>
         <item name="android:layout_marginStart">22dp</item>
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:layout_marginEnd">22dp</item>

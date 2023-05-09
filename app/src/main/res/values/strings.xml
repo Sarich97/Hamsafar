@@ -11,7 +11,7 @@
     <string name="signing_in">Вход в аккаунт...</string>
     <string name="buttonRegister">Зарегистрироваться</string>
     <string name="textTeamOfServis">Нажимая <b>«Зарегистрироваться»,</b> Вы принимаете <b>настоящие условия</b> использования сервиса</string>
-    <string name="textRegisterTitle">Регистрация</string>
+    <string name="textRegisterTitle">Создание аккаунта</string>
     <string name="textRegisterDiv">Зарегистрируйтесь чтобы создавать поездки</string>
     <string name="textAuthTitle">Вход в аккаунт</string>
     <string name="textLoginDiv">Войдите в аккаунт чтобы воспользоваться всеми возможностями сервиса</string>

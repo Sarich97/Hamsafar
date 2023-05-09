@@ -51,9 +51,9 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class TripDetalActivity extends AppCompatActivity {
 
-    private TextView textViewDriverName, textViewTripStatus, textViewTripPrice, textViewTripStart,textViewTripEnd;
+    private TextView textViewDriverName, textViewTripStatus, textViewTripPrice, textViewTripStart,textViewTripEnd, textViewBooksView;
     private TextView textViewComment, textViewDateTime, textViewCarModel, textViewSeat, textViewBookStatus;
-    private ImageView imageViewUserImage, buttonBackActivity, imageViewButtonDelete, imageViewCallButton;
+    private ImageView imageViewUserImage, buttonBackActivity, imageViewButtonDelete, imageViewCallButton, imageViewBooksView;
     private Button buttonBookTrip, buttonBookCancel, buttonBookFinish;
 
     private FirebaseAuth firebaseAuth;
@@ -103,6 +103,8 @@ public class TripDetalActivity extends AppCompatActivity {
         textViewComment = findViewById(R.id.textCommentView);
         imageViewButtonDelete =  findViewById(R.id.imageViewDeletePost);
         imageViewCallButton = findViewById(R.id.imageViewCallToCreatorPost);
+        textViewBooksView = findViewById(R.id.textViewBookTest);
+        imageViewBooksView = findViewById(R.id.imageViewBook);
 
         firebaseAuth = FirebaseAuth.getInstance();
         UsersRef = FirebaseFirestore.getInstance();
@@ -225,7 +227,7 @@ public class TripDetalActivity extends AppCompatActivity {
             if(isOnline(this)) {
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(TripDetalActivity.this);
                 // Указываем текст сообщение
-                deleteDialog.setMessage("Вы уверены, что хотите отменить бронь?");
+                deleteDialog.setMessage("Вы уверены, что хотите отменить ?");
 
                 deleteDialog.setPositiveButton("Да", (dialog, which) -> {
                     bookRef.collection("posts/" + postID + "/books").document(userKey).delete();
@@ -475,6 +477,8 @@ public class TripDetalActivity extends AppCompatActivity {
             for (DocumentChange doc: value.getDocumentChanges()) {
                 books books = doc.getDocument().toObject(books.class);
                 if(doc.getType() == DocumentChange.Type.ADDED) {
+                    textViewBooksView.setVisibility(View.INVISIBLE);
+                    imageViewBooksView.setVisibility(View.INVISIBLE);
                     booksArrayList.add(books);
                     booksAdapter.notifyDataSetChanged();
                 }

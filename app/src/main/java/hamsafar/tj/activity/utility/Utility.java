@@ -13,6 +13,7 @@ public class Utility {
     public static final String POSTS_COLLECTION = "posts";
     public static final String BOOKS_COLLECTION = "books";
     public static final String USERS_COLLECTION = "users";
+    public static final String CONFIG_COLLECTION = "appconfig";
 
     public static boolean isOnline(Context context) {
         try {

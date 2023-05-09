@@ -139,6 +139,8 @@ public class MyPostFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
+        postAdapter = null;
+
         // Удаление слушателя при уничтожении фрагмента
         Query query = travelPostRef.collection(POSTS_COLLECTION)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
