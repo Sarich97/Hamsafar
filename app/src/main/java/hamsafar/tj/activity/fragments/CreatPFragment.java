@@ -182,6 +182,7 @@ public class CreatPFragment extends Fragment {
                 post.put("priceTrip", null);
                 post.put("seatTrip", "1");
                 post.put("commentTrip", commentsTrip);
+                post.put("isPackage", "no");
                 post.put("rating",  Integer.parseInt(rating));
                 post.put("isDriverUser", "Ищу водителя");
                 post.put("statusTrip", "show");

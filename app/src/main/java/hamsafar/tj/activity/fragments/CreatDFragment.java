@@ -17,6 +17,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -25,9 +26,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +54,7 @@ public class CreatDFragment extends Fragment {
     private EditText editTextPrice, editTextSeat, editTextComment;
     private TextView textViewDateTrip, textViewTimeTrip;
     private Button buttonCreatTrip;
+    private SwitchCompat aSwitchPackage;
     private ProgressBar progressBarPost;
 
     private MediaPlayer mediaPlayerSound;
@@ -93,8 +97,20 @@ public class CreatDFragment extends Fragment {
         editTextSeat = view.findViewById(R.id.editTextSeatD);
         buttonCreatTrip = view.findViewById(R.id.creatTripD);
         editTextComment = view.findViewById(R.id.editTextCommentD);
+
         progressBarPost = view.findViewById(R.id.progressBarPostD);
 
+        aSwitchPackage = view.findViewById(R.id.switchPackage);
+        if (aSwitchPackage != null) {
+            aSwitchPackage.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(isChecked == true) {
+                    aSwitchPackage.setText("Беру посылку: Да");
+                } else {
+                    aSwitchPackage.setText("Беру посылку: Нет");
+                }
+
+            });
+        }
 
         textViewDateTrip.setOnClickListener(clickDateTime -> shwoDatePickerDialog());
 
@@ -138,6 +154,7 @@ public class CreatDFragment extends Fragment {
                     String time_Trip = textViewTimeTrip.getText().toString();
                     String price_Trip = editTextPrice.getText().toString();
                     String seat_Trip = editTextSeat.getText().toString();
+                    String package_trip = aSwitchPackage.getText().toString();
                     String comments = editTextComment.getText().toString();
 
                     if (start_Trip.equals("Откуда")) {
@@ -164,8 +181,9 @@ public class CreatDFragment extends Fragment {
                         editTextSeat.setError("Укажите количество мест");
                         buttonCreatTrip.setVisibility(View.VISIBLE);
                         progressBarPost.setVisibility(View.INVISIBLE);
-                    } else {
-                        createPost(start_Trip, end_Trip, data_Trip, time_Trip, price_Trip, seat_Trip, comments);
+                    }
+                    else {
+                        createPost(start_Trip, end_Trip, data_Trip, time_Trip, price_Trip, seat_Trip, package_trip, comments);
                     }
                 });
         });
@@ -174,7 +192,8 @@ public class CreatDFragment extends Fragment {
     }
 
 
-    private void createPost(String start_trip, String end_trip, String data_trip, String time_trip, String price_trip, String seat_trip, String comments) {
+
+    private void createPost(String start_trip, String end_trip, String data_trip, String time_trip, String price_trip, String seat_trip, String package_trip, String comments) {
 
         // Получаем требуемые данные из документа пользователя в базе данных
         firebaseFirestore.collection(Utility.USERS_COLLECTION).document(userID).get().addOnSuccessListener(documentSnapshot -> {
@@ -202,6 +221,7 @@ public class CreatDFragment extends Fragment {
             post.put("rating", Integer.parseInt(rating));
             post.put("isDriverUser", "Ищу пассажиров");
             post.put("statusTrip", "show");
+            post.put("isPackage", package_trip);
             post.put("postId", postRef.getId());
             post.put("timestamp", FieldValue.serverTimestamp());
 
@@ -248,9 +268,5 @@ public class CreatDFragment extends Fragment {
         },mHour,mMinute,is24HourView);
         timePickerDialog.show();
     }
-
-
-
-
 
 }

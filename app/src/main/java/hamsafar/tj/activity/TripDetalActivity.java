@@ -52,7 +52,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class TripDetalActivity extends AppCompatActivity {
 
     private TextView textViewDriverName, textViewTripStatus, textViewTripPrice, textViewTripStart,textViewTripEnd, textViewBooksView;
-    private TextView textViewComment, textViewDateTime, textViewCarModel, textViewSeat, textViewBookStatus;
+    private TextView textViewComment, textViewDateTime, textViewCarModel, textViewSeat, textViewBookStatus, textViewStatusBox;
     private ImageView imageViewUserImage, buttonBackActivity, imageViewButtonDelete, imageViewCallButton, imageViewBooksView;
     private Button buttonBookTrip, buttonBookCancel, buttonBookFinish;
 
@@ -105,6 +105,7 @@ public class TripDetalActivity extends AppCompatActivity {
         imageViewCallButton = findViewById(R.id.imageViewCallToCreatorPost);
         textViewBooksView = findViewById(R.id.textViewBookTest);
         imageViewBooksView = findViewById(R.id.imageViewBook);
+        textViewStatusBox = findViewById(R.id.statusBox);
 
         firebaseAuth = FirebaseAuth.getInstance();
         UsersRef = FirebaseFirestore.getInstance();
@@ -132,6 +133,7 @@ public class TripDetalActivity extends AppCompatActivity {
         String tripUserPhone = getIntent().getExtras().getString("phone");
         String comments = getIntent().getExtras().getString("commentTrip");
         String isUserDriver = getIntent().getExtras().getString("isUserDriver");
+        String isPackBox = getIntent().getExtras().getString("isPackBox");
         String postID = getIntent().getExtras().getString("postID");
 
         recyclerViewBook = findViewById(R.id.booksRecyclerView);
@@ -143,7 +145,11 @@ public class TripDetalActivity extends AppCompatActivity {
         if (tripUserId.equals(userKey) && !isUserDriver.equals("Поездка завершена")) { //  Если поездка не завершена то можно удлаить пользователя!
             new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewBook);
         }
-
+        if(isPackBox.equals("Беру посылку: Да")) {
+            textViewStatusBox.setText("  Посылки  ");
+        } else {
+            textViewStatusBox.setVisibility(View.INVISIBLE);
+        }
 
         textViewDriverName.setText(tripNameUser);
         textViewTripStatus.setText(" " + isUserDriver + " ");
@@ -164,6 +170,7 @@ public class TripDetalActivity extends AppCompatActivity {
 
         if(isUserDriver.equals("Поездка завершена")) {
             textViewTripStatus.setBackgroundResource(R.drawable.tripstatuis_red);
+            textViewStatusBox.setVisibility(View.INVISIBLE);
             buttonBookTrip.setVisibility(View.INVISIBLE);
             buttonBookCancel.setVisibility(View.INVISIBLE);
             buttonBookFinish.setVisibility(View.INVISIBLE);

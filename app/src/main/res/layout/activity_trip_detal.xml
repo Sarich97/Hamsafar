@@ -79,6 +79,21 @@
             app:layout_constraintTop_toBottomOf="@+id/driverName" />
 
         <TextView
+            android:id="@+id/statusBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/boxstatus_color"
+            android:fontFamily="@font/play"
+            android:padding="1dp"
+            android:text="  "
+            android:textColor="@color/colorWhite"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/statusTravel"
+            app:layout_constraintTop_toBottomOf="@+id/driverName" />
+
+        <TextView
             android:id="@+id/trip_Price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

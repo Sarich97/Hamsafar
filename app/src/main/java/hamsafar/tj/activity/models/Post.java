@@ -13,6 +13,7 @@ public class Post {
     private String seatTrip;
     private String carModel;
     private String commentTrip;
+    private String isPackage;
     private String isDriverUser;
     private String statusTrip;
 
@@ -20,7 +21,9 @@ public class Post {
     public Post() {}
 
 
-    public Post(String postId, String userUD, String userName, String userPhone, String startTrip, String endTrip, String dataTrip, String timeTrip, String priceTrip, String seatTrip, String carModel, String commentTrip, String isDriverUser, String statusTrip) {
+
+
+    public Post(String postId, String userUD, String userName, String userPhone, String startTrip, String endTrip, String dataTrip, String timeTrip, String priceTrip, String seatTrip, String carModel, String commentTrip, String isPackage, String isDriverUser, String statusTrip) {
         this.postId = postId;
         this.userUD = userUD;
         this.userName = userName;
@@ -33,10 +36,10 @@ public class Post {
         this.seatTrip = seatTrip;
         this.carModel = carModel;
         this.commentTrip = commentTrip;
+        this.isPackage = isPackage;
         this.isDriverUser = isDriverUser;
         this.statusTrip = statusTrip;
     }
-
 
     public String getPostId() {
         return postId;
@@ -148,5 +151,13 @@ public class Post {
 
     public void setStatusTrip(String statusTrip) {
         this.statusTrip = statusTrip;
+    }
+
+    public String getIsPackage() {
+        return isPackage;
+    }
+
+    public void setIsPackage(String isPackage) {
+        this.isPackage = isPackage;
     }
 }

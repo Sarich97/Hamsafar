@@ -1,9 +1,14 @@
 package hamsafar.tj.activity.fragments;
 
+
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,12 +19,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,6 +59,7 @@ public class TravelFragment extends Fragment {
     private String user_city;
     private TextView textViewSearch;
     private Dialog dialogRating, dialogInternetCon; //
+    private CardView cardViewConTest;
 
 
     private RecyclerView recyclerViewPost;
@@ -89,6 +95,7 @@ public class TravelFragment extends Fragment {
         textViewSearch = view.findViewById(R.id.textViewStatusSearch); // Текст поиска постов если указан мой город
 
         recyclerViewCard = view.findViewById(R.id.recyclerViewCard); //CARDVIEW
+        cardViewConTest = view.findViewById(R.id.cardColorConTest);
 
         recyclerViewPost = view.findViewById(R.id.recyclerViewPosts);
         recyclerViewPost.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -100,7 +107,23 @@ public class TravelFragment extends Fragment {
         userKey = firebaseAuth.getCurrentUser().getUid();
         travelPostRef = FirebaseFirestore.getInstance();
         userRef = FirebaseFirestore.getInstance();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        cardViewConTest.setOnClickListener(v -> {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+            bottomSheetDialog.setContentView(R.layout.card_con_sheets);
+            bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+            TextView textViewCode = bottomSheetDialog.findViewById(R.id.textCodeUserID);
+            textViewCode.setText(userKey);
+
+            textViewCode.setOnClickListener(v1 -> {
+                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("label", textViewCode.getText().toString());
+                Toast.makeText(getContext(), "Код скопирован, теперь можете отправить друзьям", Toast.LENGTH_SHORT).show();
+                clipboard.setPrimaryClip(clip);
+            });
+            bottomSheetDialog.show();
+        });
 
         showPostForUsers();
         showRatingDialog();

@@ -126,13 +126,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/editTextSeatD" />
 
 
+
+
             <Button
                 android:id="@+id/creatTripD"
                 style="@style/buttonThemesGreen"
                 android:text="@string/buttonCreatTrip"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextCommentD"
+                app:layout_constraintTop_toBottomOf="@+id/switchPackage"
                 tools:ignore="DuplicateSpeakableTextCheck" />
 
 
@@ -146,6 +148,16 @@
                 app:layout_constraintStart_toStartOf="@+id/creatTripD"
                 app:layout_constraintTop_toBottomOf="@+id/creatTripD" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchPackage"
+                style="@style/editText"
+                android:drawableLeft="@drawable/outline_shopping_bag_24"
+                android:textSize="18dp"
+                android:textColor="@color/colorText"
+                android:text="Беру посылки"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextCommentD" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

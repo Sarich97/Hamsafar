@@ -18,9 +18,9 @@ public class SecurityStories extends AppCompatActivity {
 
     int counter = 0;
     int [] imageStoriesResource = new int[] {
-            R.drawable.iamge1,
-            R.drawable.car,
-            R.drawable.iamge1
+            R.drawable.azaaa,
+            R.drawable.image2,
+            R.drawable.undraw_add_files_re_v09g
         };
 
     @Override

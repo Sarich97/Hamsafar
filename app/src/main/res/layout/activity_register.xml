@@ -68,13 +68,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerGetCityUser" />
 
+
+    <EditText
+        android:id="@+id/userCode"
+        style="@style/editText"
+        android:drawableLeft="@drawable/baseline_qr_code_scanner_24"
+        android:ems="10"
+        android:hint="Реферальный код"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userCarModelD" />
+
     <Button
         android:id="@+id/registerUserBtn"
         style="@style/buttonThemesGreen"
         android:text="@string/buttonRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userCarModelD" />
+        app:layout_constraintTop_toBottomOf="@+id/userCode" />
 
 
     <TextView

@@ -70,8 +70,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             holder.textViewPrice.setText(posts.getPriceTrip() + " cомони");
         }
 
+        if(posts.getIsPackage().equals("Беру посылку: Да")) {
+            holder.textViewBox.setText("  Посылки  ");
+        } else {
+            holder.textViewBox.setVisibility(View.INVISIBLE);
+        }
+
         if(posts.getIsDriverUser().equals("Поездка завершена")) {
             holder.textViewStatusTrip.setBackgroundResource(R.drawable.tripstatuis_red);
+            holder.textViewBox.setVisibility(View.INVISIBLE);
         }
 
         String firstName = posts.getUserName().substring(0,1);
@@ -96,7 +103,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView textViewStartTrip, textViewEndTrip, textViewPrice,textViewDriverName, textViewDateTime, textViewStatusTrip;
+        TextView textViewStartTrip, textViewEndTrip, textViewPrice,textViewDriverName, textViewDateTime, textViewStatusTrip, textViewBox;
         ImageView imageViewDriverImage;
 
         public ViewHolder(@NonNull View view) {
@@ -108,6 +115,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             imageViewDriverImage = view.findViewById(R.id.driverImage);
             textViewDateTime = view.findViewById(R.id.dateTimeTrip);
             textViewStatusTrip = view.findViewById(R.id.statusTravel);
+            textViewBox = view.findViewById(R.id.statusBox);
             view.setOnClickListener(this);
         }
 
@@ -129,6 +137,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             postIntent.putExtra("isUserDriver",postAdapter.getIsDriverUser());
             postIntent.putExtra("commentTrip",postAdapter.getCommentTrip());
             postIntent.putExtra("postID",postAdapter.getPostId());
+            postIntent.putExtra("isPackBox",postAdapter.getIsPackage());
             context.startActivity(postIntent);
 
         }

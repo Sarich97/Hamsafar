@@ -20,23 +20,6 @@
 
 
     <TextView
-        android:id="@+id/textSheet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/play_bold"
-        android:gravity="center_vertical"
-        android:padding="1dp"
-        android:text="Состояние автодорог"
-        android:textColor="@color/colorText"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-
-    <TextView
         android:id="@+id/textSheetRoad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -85,10 +68,10 @@
         android:id="@+id/imageView2"
         android:layout_width="282dp"
         android:layout_height="87dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSheet"
+        app:layout_constraintTop_toBottomOf="@+id/view"
         app:srcCompat="@drawable/undraw_navigator_a479" />
 
 

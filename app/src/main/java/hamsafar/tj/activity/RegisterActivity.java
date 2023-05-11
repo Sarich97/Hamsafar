@@ -4,7 +4,9 @@ package hamsafar.tj.activity;
 import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
+import static hamsafar.tj.activity.utility.Utility.showToast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -23,9 +25,13 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -36,13 +42,14 @@ import hamsafar.tj.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText editTextUserName, editTextUserPhone, editTextUserCarModel;
+    private EditText editTextUserName, editTextUserPhone, editTextUserCarModel, editTextRefCode;
     private Button buttonCreateNewUser;
     private Spinner spinnerUserCity;
     private ProgressBar progressRegister;
     private TextView textViewTeamOfServis;
     private View viewSnackbar;
     private Dialog dialogInternetCon;
+    private String userID;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -56,6 +63,16 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
+
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            userID = currentUser.getUid();
+            // Do something with the uid
+        } else {
+            // User is not logged in
+        }
+
         dialogInternetCon = new Dialog(this);
 
         initViews();
@@ -68,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String userCity = spinnerUserCity.getSelectedItem().toString();
                 String password = getIntent().getStringExtra("userPass");
                 String userCarModel = editTextUserCarModel.getText().toString();
+                String user_ref_code = editTextRefCode.getText().toString();
 
                 if (TextUtils.isEmpty(name)) {
                     editTextUserName.setError(getString(R.string.field_nameRegister));
@@ -77,6 +95,9 @@ public class RegisterActivity extends AppCompatActivity {
                     editTextUserPhone.setError("Укажите номер телефона");
                 } else {
                     createFirebaseAuthUser(email, password, name, phone, userCity, userCarModel);
+                     if(!TextUtils.isEmpty(user_ref_code)) {
+                        saveRefCode(user_ref_code);
+                    }
                 }
             } else  {
                 dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
@@ -93,6 +114,16 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    private void saveRefCode(String user_ref_code) {
+        firebaseFirestore.collection("refcode/" + user_ref_code + "/").document(userID).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+
+            } else {
+                showSnakbarTypeOne(viewSnackbar, "Ошибка реферального кода");
+            }
+        });
+    }
+
     // Инициализация полей класса
     private void initViews() {
         editTextUserName = findViewById(R.id.user_Name);
@@ -103,6 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
         textViewTeamOfServis = findViewById(R.id.team_of_servis);
         editTextUserCarModel = findViewById(R.id.userCarModelD);
         viewSnackbar = findViewById(android.R.id.content);
+        editTextRefCode = findViewById(R.id.userCode);
     }
 
     // Создание нового пользователя в Firebase Authentication
