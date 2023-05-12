@@ -1,5 +1,6 @@
 package hamsafar.tj.activity.fragments;
 
+import static hamsafar.tj.activity.utility.Utility.BOOKS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
 
 import android.app.Dialog;
@@ -84,7 +85,7 @@ public class NotificationFragment extends Fragment {
 
 
     private void showNotificationList() {
-       notificatRef.document(userKey).collection("books").get().addOnSuccessListener(queryDocumentSnapshots -> {
+       notificatRef.document(userKey).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
            for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                books books = documentSnapshot.toObject(books.class);
                if (books.getPostCreateID().equals(userKey)) {

@@ -1,8 +1,9 @@
 package hamsafar.tj.activity;
 
+import static hamsafar.tj.activity.utility.Utility.POSTS_COLLECTION;
+import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
-import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -37,7 +39,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -58,7 +59,6 @@ public class TripDetalActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore UsersRef,bookRef, noteRef, postRef;
-    private String post_id;
     private String userKey;
     private Dialog dialogCreatPost;
     private Dialog dialogUserInfo;
@@ -72,6 +72,7 @@ public class TripDetalActivity extends AppCompatActivity {
     private Dialog dialogInternetCon; //
 
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onStart() {
         super.onStart();
@@ -213,7 +214,7 @@ public class TripDetalActivity extends AppCompatActivity {
                 {
                     showSnakbarTypeOne(viewSnackbar, "Количество мест ограничено");
                 } else {
-                    UsersRef.collection("users").document(userKey).get().addOnCompleteListener(task -> {
+                    UsersRef.collection(USERS_COLLECTION).document(userKey).get().addOnCompleteListener(task -> {
                         if(task.isSuccessful()) {
                             String user_name = task.getResult().getString("userName");
                             String user_phone = task.getResult().getString("userPhone");
@@ -326,7 +327,7 @@ public class TripDetalActivity extends AppCompatActivity {
                 TextView userRating = dialogUserInfo.findViewById(R.id.textViewRating);
                 TextView userCount = dialogUserInfo.findViewById(R.id.textViewTripCount);
 
-                UsersRef.collection("users").document(tripUserId).get().addOnCompleteListener(task -> {
+                UsersRef.collection(USERS_COLLECTION).document(tripUserId).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         String user_phone = task.getResult().getString("userPhone");
                         String user_rating = task.getResult().get("userRating").toString();
@@ -361,7 +362,7 @@ public class TripDetalActivity extends AppCompatActivity {
                bookRef.collection("notificat/" + tripUserId + "/books").document(booksArrayList.get(position).getUserID()+postID).delete();
                booksArrayList.remove(position);
                if(booksArrayList.size() == 0) {
-                   DocumentReference documentReference = bookRef.collection("posts").document(postID);
+                   DocumentReference documentReference = bookRef.collection(POSTS_COLLECTION).document(postID);
                    Map<String, Object> posts = new HashMap<>();
                    posts.put("statusTrip", "show");
                    documentReference.update(posts).addOnCompleteListener(taskPost -> {
@@ -402,7 +403,7 @@ public class TripDetalActivity extends AppCompatActivity {
         deleteDialog.setMessage("Вы уверены, что хотите завершить поездку?\nВнимание! Если вы завершили поездку, но не совершили ее фактически, это может привести к получению бана.");
 
         deleteDialog.setPositiveButton("Да", (dialog, which) -> {
-            DocumentReference documentReference = postRef.collection("posts").document(postID);
+            DocumentReference documentReference = postRef.collection(POSTS_COLLECTION).document(postID);
             Map<String, Object> posts = new HashMap<>();
             posts.put("isDriverUser", "Поездка завершена");
             posts.put("statusTrip", "null");
@@ -411,12 +412,12 @@ public class TripDetalActivity extends AppCompatActivity {
                     Intent mainIntent = new Intent(TripDetalActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     finish();
-                    UsersRef.collection("users").document(userKey).get().addOnCompleteListener(task1 -> {
+                    UsersRef.collection(USERS_COLLECTION).document(userKey).get().addOnCompleteListener(task1 -> {
                         if(task1.isSuccessful()) {
                             if(booksArrayList.size() !=0) {
                                 int user_rating = Integer.parseInt(String.valueOf(task1.getResult().get("userTrip")));
                                 user_rating++;
-                                UsersRef.collection("users").document(userKey).update("userTrip", user_rating);
+                                UsersRef.collection(USERS_COLLECTION).document(userKey).update("userTrip", user_rating);
                             }
 
                         }
@@ -438,7 +439,7 @@ public class TripDetalActivity extends AppCompatActivity {
         String postID = getIntent().getExtras().getString("postID");
         String tripSeat = getIntent().getExtras().getString("seatTrip");
         if(booksArrayList.size() + 1 > Integer.valueOf(tripSeat)) {
-            DocumentReference documentReference = postRef.collection("posts").document(postID);
+            DocumentReference documentReference = postRef.collection(POSTS_COLLECTION).document(postID);
             Map<String, Object> posts = new HashMap<>();
             posts.put("statusTrip", "show");
             documentReference.update(posts).addOnCompleteListener(taskPost -> {
@@ -641,7 +642,7 @@ public class TripDetalActivity extends AppCompatActivity {
                 noteRef.collection("notificat/" + tripUserId +  "/books").document(notifiID).set(book);
                 bookRef.collection("posts/" + postID +  "/books").document(userKey).set(book);
                 if(booksArrayList.size() + 1 == Integer.valueOf(tripSeat)) {
-                    DocumentReference documentReference = postRef.collection("posts").document(postID);
+                    DocumentReference documentReference = postRef.collection(POSTS_COLLECTION).document(postID);
                     Map<String, Object> posts = new HashMap<>();
                     posts.put("statusTrip", "null");
                     documentReference.update(posts).addOnCompleteListener(taskPost -> {

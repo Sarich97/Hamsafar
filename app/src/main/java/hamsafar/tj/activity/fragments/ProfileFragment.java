@@ -2,11 +2,10 @@ package hamsafar.tj.activity.fragments;
 
 import static android.content.ContentValues.TAG;
 import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
-import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.preference.PreferenceManager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +44,7 @@ import org.w3c.dom.Text;
 import hamsafar.tj.R;
 import hamsafar.tj.activity.AuthActivity;
 import hamsafar.tj.activity.EditProfileActivity;
+import hamsafar.tj.activity.HelpActivity;
 import hamsafar.tj.activity.adapters.ProfileFragmentAdapter;
 
 
@@ -146,8 +146,8 @@ public class ProfileFragment extends Fragment {
                         break;
 
                     case 1:
-
-
+                        Intent helpIntent = new Intent(getContext(), HelpActivity.class);
+                        startActivity(helpIntent);
                         break;
 
                     case 2:

@@ -1,10 +1,9 @@
 package hamsafar.tj.activity;
 
-import static hamsafar.tj.R.string.erro_registerMessage;
+import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
 import static hamsafar.tj.activity.utility.Utility.showToast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -115,7 +114,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void editUserProfile(String user_phone, String user_car) {
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+        DocumentReference documentReference = firebaseFirestore.collection(USERS_COLLECTION).document(userID);
 
         // Создаем объект Map с новыми данными пользователя
         Map<String, Object> user = new HashMap<>();

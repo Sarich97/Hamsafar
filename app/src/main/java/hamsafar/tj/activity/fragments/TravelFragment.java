@@ -1,6 +1,9 @@
 package hamsafar.tj.activity.fragments;
 
 
+import static hamsafar.tj.activity.utility.Utility.BOOKS_COLLECTION;
+import static hamsafar.tj.activity.utility.Utility.POSTS_COLLECTION;
+import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -87,7 +90,7 @@ public class TravelFragment extends Fragment {
 
         bookRef = FirebaseFirestore.getInstance();
         UserRef = FirebaseFirestore.getInstance();
-        notificatRef = bookRef.collection("posts");
+        notificatRef = bookRef.collection(POSTS_COLLECTION);
 
         dialogRating= new Dialog(getContext());
         dialogInternetCon = new Dialog(getContext());
@@ -136,7 +139,7 @@ public class TravelFragment extends Fragment {
 
     private void showRatingDialog() {
         ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
-        Query query = travelPostRef.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING);
+        Query query = travelPostRef.collection(POSTS_COLLECTION).orderBy("timestamp", Query.Direction.DESCENDING);
 
         query.addSnapshotListener((documentSnapshots, e) -> {
             if (e != null) {
@@ -144,7 +147,7 @@ public class TravelFragment extends Fragment {
                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
                         Post post = doc.getDocument().toObject(Post.class);
-                        notificatRef.document(post.getPostId()).collection("books").get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        notificatRef.document(post.getPostId()).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
                             for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                                 books books = documentSnapshot.toObject(books.class);
                                 if (books.getUserID().equals(userKey) && post.getIsDriverUser().equals("Поездка завершена") && books.getRating().equals("no")) {
@@ -173,11 +176,11 @@ public class TravelFragment extends Fragment {
 
 
                                     setPluse.setOnClickListener(view -> {
-                                        UserRef.collection("users").document(post.getUserUD()).get().addOnCompleteListener(task1 -> {
+                                        UserRef.collection(USERS_COLLECTION).document(post.getUserUD()).get().addOnCompleteListener(task1 -> {
                                             if(task1.isSuccessful()) {
                                                 int user_rating = Integer.parseInt(String.valueOf(task1.getResult().get("userRating")));
                                                 user_rating ++;
-                                                UserRef.collection("users").document(post.getUserUD()).update("userRating", user_rating);
+                                                UserRef.collection(USERS_COLLECTION).document(post.getUserUD()).update("userRating", user_rating);
                                                 bookRef.collection("posts/" + post.getPostId() + "/books").document(books.getUserID()).update("rating", "set");
                                                 bottomSheetDialog.cancel();
                                             }
@@ -186,11 +189,11 @@ public class TravelFragment extends Fragment {
                                     });
 
                                     setMinuse.setOnClickListener(view -> {
-                                        UserRef.collection("users").document(post.getUserUD()).get().addOnCompleteListener(task1 -> {
+                                        UserRef.collection(USERS_COLLECTION).document(post.getUserUD()).get().addOnCompleteListener(task1 -> {
                                             if(task1.isSuccessful()) {
                                                 int user_rating = Integer.parseInt(String.valueOf(task1.getResult().get("userRating")));
                                                 user_rating--;
-                                                UserRef.collection("users").document(post.getUserUD()).update("userRating", user_rating);
+                                                UserRef.collection(USERS_COLLECTION).document(post.getUserUD()).update("userRating", user_rating);
                                                 bookRef.collection("posts/" + post.getPostId() + "/books").document(books.getUserID()).update("rating", "set");
                                                 bottomSheetDialog.cancel();
                                             }
@@ -219,7 +222,7 @@ public class TravelFragment extends Fragment {
     }
 
     private void showPostForUsers() {
-        Query query = travelPostRef.collection("posts")
+        Query query = travelPostRef.collection(POSTS_COLLECTION)
                 .whereEqualTo("statusTrip", "show")
                 .orderBy("rating", Query.Direction.DESCENDING)
                 .orderBy("timestamp", Query.Direction.DESCENDING);

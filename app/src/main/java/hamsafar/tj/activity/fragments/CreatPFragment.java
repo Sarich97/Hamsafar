@@ -1,6 +1,8 @@
 package hamsafar.tj.activity.fragments;
 
 import static android.content.ContentValues.TAG;
+import static hamsafar.tj.activity.utility.Utility.POSTS_COLLECTION;
+import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.getMonthText;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
@@ -98,7 +100,7 @@ public class CreatPFragment extends Fragment {
         buttonCreatTripPas.setOnClickListener(clickCreatBtn -> {
             buttonCreatTripPas.setVisibility(View.INVISIBLE);
             progressBarCreat.setVisibility(View.VISIBLE);
-            firebaseFirestore.collection("posts")
+            firebaseFirestore.collection(POSTS_COLLECTION)
                 .whereEqualTo("userUD", userID)
                 .whereEqualTo("statusTrip", "show") // Фильтруем только активные поездки
                 .get()
@@ -160,7 +162,7 @@ public class CreatPFragment extends Fragment {
     }
 
     private void createPost(String startTrip, String endTrip, String dateTrip, String timeTrip, String commentsTrip) {
-        firebaseFirestore.collection("users").document(userID).get().addOnCompleteListener(task -> {
+        firebaseFirestore.collection(USERS_COLLECTION).document(userID).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 // Получаем имя и номер телефона пользователя
                 String userName = task.getResult().getString("userName");
@@ -168,7 +170,7 @@ public class CreatPFragment extends Fragment {
                 String rating = task.getResult().get("userRating").toString();
 
                 // Создаем новый документ поста с автоматически генерируемым ID
-                DocumentReference documentReference = firebaseFirestore.collection("posts").document();
+                DocumentReference documentReference = firebaseFirestore.collection(POSTS_COLLECTION).document();
                 // Заполняем подробности поста в объект Map
                 Map<String, Object> post = new HashMap<>();
                 post.put("userUD", userID);

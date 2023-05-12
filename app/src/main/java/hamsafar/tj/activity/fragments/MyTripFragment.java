@@ -1,5 +1,7 @@
 package hamsafar.tj.activity.fragments;
 
+import static hamsafar.tj.activity.utility.Utility.BOOKS_COLLECTION;
+import static hamsafar.tj.activity.utility.Utility.POSTS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
 
 import android.app.Dialog;
@@ -48,8 +50,6 @@ public class MyTripFragment extends Fragment {
     private TextView textViewDescpTrip;
     private Dialog dialogInternetCon;
 
-    private static final String POSTS_COLLECTION = "posts";
-    private static final String BOOKS_COLLECTION = "books";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

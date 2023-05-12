@@ -49,7 +49,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/toolbarText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/toolbarText"
-                app:srcCompat="@drawable/baseline_menu_24" />
+                app:srcCompat="@drawable/baseline_tune_24" />
 
 
 

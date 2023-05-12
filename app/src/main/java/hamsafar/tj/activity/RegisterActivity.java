@@ -115,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void saveRefCode(String user_ref_code) {
-        firebaseFirestore.collection("refcode/" + user_ref_code + "/").document(userID).get().addOnCompleteListener(task -> {
+        firebaseFirestore.collection("refcode/" + user_ref_code + "/refs"). document(userID).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
 
             } else {

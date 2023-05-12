@@ -10,7 +10,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,14 +35,14 @@
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/play"
                 android:layout_marginTop="6dp"
-                android:text="Оцените Вашу поездку"
+                android:fontFamily="@font/play"
+                android:text="Как Вам поездка?"
                 android:textColor="@color/colorBlack"
-                android:textSize="18dp"
-                app:layout_constraintTop_toBottomOf="@+id/view1"
+                android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view1" />
 
 
             <ImageView
@@ -48,7 +52,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/textView16"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
@@ -70,8 +74,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
-                android:textSize="10dp"
                 android:text="TextView"
+                android:textSize="10dp"
                 app:layout_constraintStart_toEndOf="@+id/userImageBooks"
                 app:layout_constraintTop_toBottomOf="@+id/userNameBook" />
 
@@ -171,9 +175,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="50dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:layout_marginBottom="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -198,6 +202,20 @@
                     app:srcCompat="@drawable/baseline_sentiment_very_dissatisfied_24" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/play"
+                android:text="Выберите смайлик: 😔 - если есть негативные впечатления, или 😊 - если все прошло хорошо."
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/textView9"
+                app:layout_constraintStart_toStartOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

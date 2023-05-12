@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import static hamsafar.tj.activity.utility.Utility.BOOKS_COLLECTION;
+import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
+
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -89,12 +92,12 @@ public class MainActivity extends  AppCompatActivity {
                     } else {
                         if(badgeDrawable !=null) {
                             badgeDrawable.setVisible(false);
-                            notificatRef.document(userKey).collection("books").get().addOnSuccessListener(queryDocumentSnapshots -> {
+                            notificatRef.document(userKey).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
                                 for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                                     books books = documentSnapshot.toObject(books.class);
                                     if (books.getPostCreateID().equals(userKey)) {
                                         if(books.getNotifiStatus().equals("show")) {
-                                            notificatRef.document(userKey).collection("books").document(books.getUserID()+books.getPostID()).update("notifiStatus", "null");
+                                            notificatRef.document(userKey).collection(BOOKS_COLLECTION).document(books.getUserID()+books.getPostID()).update("notifiStatus", "null");
                                         } else {
 
                                         }
@@ -124,7 +127,7 @@ public class MainActivity extends  AppCompatActivity {
     }
 
     private void showNotificationForUser() {
-        notificatRef.document(userKey).collection("books").get().addOnSuccessListener(queryDocumentSnapshots -> {
+        notificatRef.document(userKey).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                 books books = documentSnapshot.toObject(books.class);
                 if (books.getPostCreateID().equals(userKey)) {
