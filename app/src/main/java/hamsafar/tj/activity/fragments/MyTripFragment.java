@@ -2,11 +2,8 @@ package hamsafar.tj.activity.fragments;
 
 import static hamsafar.tj.activity.utility.Utility.BOOKS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.POSTS_COLLECTION;
-import static hamsafar.tj.activity.utility.Utility.isOnline;
 
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -26,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

@@ -2,6 +2,7 @@ package hamsafar.tj.activity.fragments;
 
 
 import static hamsafar.tj.activity.utility.Utility.BOOKS_COLLECTION;
+import static hamsafar.tj.activity.utility.Utility.CONFIG_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.POSTS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import android.app.Dialog;
@@ -52,7 +53,7 @@ import hamsafar.tj.activity.models.books;
 public class TravelFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth; // FireBase
-    private FirebaseFirestore travelPostRef, bookRef, UserRef;
+    private FirebaseFirestore travelPostRef, bookRef, UserRef, ConfigReg;
     private CollectionReference notificatRef;
     private FirebaseFirestore userRef;
     ///   RecyclerView CARD VIEW ON MAIN PAGE
@@ -109,7 +110,19 @@ public class TravelFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();  // User Table variable
         userKey = firebaseAuth.getCurrentUser().getUid();
         travelPostRef = FirebaseFirestore.getInstance();
+        ConfigReg = FirebaseFirestore.getInstance();
         userRef = FirebaseFirestore.getInstance();
+
+
+        ConfigReg.collection("appconfig").document("codeRef").get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                String textStatus = task.getResult().getString("status");
+                if(textStatus.equals("show")) {
+                    cardViewConTest.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
 
         cardViewConTest.setOnClickListener(v -> {
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);

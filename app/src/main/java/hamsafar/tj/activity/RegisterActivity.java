@@ -1,15 +1,14 @@
 package hamsafar.tj.activity;
 
 
+import static hamsafar.tj.R.string.signing_in;
 import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.isOnline;
 import static hamsafar.tj.activity.utility.Utility.showSnakbarTypeOne;
-import static hamsafar.tj.activity.utility.Utility.showToast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -25,13 +24,10 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -45,14 +41,14 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editTextUserName, editTextUserPhone, editTextUserCarModel, editTextRefCode;
     private Button buttonCreateNewUser;
     private Spinner spinnerUserCity;
-    private ProgressBar progressRegister;
+    private ProgressDialog progressDialog;
     private TextView textViewTeamOfServis;
     private View viewSnackbar;
     private Dialog dialogInternetCon;
     private String userID;
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
+    private FirebaseFirestore firebaseFirestore,userRefCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        userRefCode = FirebaseFirestore.getInstance();
 
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -94,10 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                 } else if(TextUtils.isEmpty(phone)) {
                     editTextUserPhone.setError("Укажите номер телефона");
                 } else {
-                    createFirebaseAuthUser(email, password, name, phone, userCity, userCarModel);
-                     if(!TextUtils.isEmpty(user_ref_code)) {
-                        saveRefCode(user_ref_code);
-                    }
+                    createFirebaseAuthUser(email, password, name, phone, userCity, userCarModel, user_ref_code);
                 }
             } else  {
                 dialogInternetCon.setContentView(R.layout.internet_connecting_dialog);
@@ -114,23 +108,12 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void saveRefCode(String user_ref_code) {
-        firebaseFirestore.collection("refcode/" + user_ref_code + "/refs"). document(userID).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-
-            } else {
-                showSnakbarTypeOne(viewSnackbar, "Ошибка реферального кода");
-            }
-        });
-    }
-
     // Инициализация полей класса
     private void initViews() {
         editTextUserName = findViewById(R.id.user_Name);
         editTextUserPhone = findViewById(R.id.user_Phone);
         spinnerUserCity = findViewById(R.id.spinnerGetCityUser);
         buttonCreateNewUser = findViewById(R.id.registerUserBtn);
-        progressRegister = findViewById(R.id.progressRegisterActivity);
         textViewTeamOfServis = findViewById(R.id.team_of_servis);
         editTextUserCarModel = findViewById(R.id.userCarModelD);
         viewSnackbar = findViewById(android.R.id.content);
@@ -138,16 +121,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // Создание нового пользователя в Firebase Authentication
-    private void createFirebaseAuthUser(String email, String password, String name, String phone, String userCity, String userCarModel) {
-        progressRegister.setVisibility(View.VISIBLE);
+    private void createFirebaseAuthUser(String email, String password, String name, String phone, String userCity, String userCarModel, String user_ref_code) {
+        progressDialog = new ProgressDialog(RegisterActivity.this);
+        progressDialog.setMessage("Регистрация нового пользователя");
+        progressDialog.show();
         buttonCreateNewUser.setVisibility(View.INVISIBLE);
 
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String userID = firebaseAuth.getCurrentUser().getUid();
-                saveUserDataToFirestore(userID, email, password, name, phone, userCity, userCarModel);
+                saveUserDataToFirestore(userID, email, password, name, phone, userCity, userCarModel, user_ref_code);
             } else {
-                progressRegister.setVisibility(View.INVISIBLE);
+                progressDialog.dismiss();
                 buttonCreateNewUser.setVisibility(View.VISIBLE);
                 showSnakbarTypeOne(viewSnackbar, getString(R.string.erro_registerMessage));
             }
@@ -155,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // Сохранение данных нового пользователя в Firestore
-    private void saveUserDataToFirestore(String userID, String email, String password, String name, String phone, String userCity, String userCarModel) {
+    private void saveUserDataToFirestore(String userID, String email, String password, String name, String phone, String userCity, String userCarModel, String user_ref_code) {
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         String ipAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 
@@ -173,15 +158,33 @@ public class RegisterActivity extends AppCompatActivity {
         user.put("ipAddress", ipAddress);
         user.put("regDate", FieldValue.serverTimestamp());
 
+        DocumentReference documentReference1 = userRefCode.collection("refcode/" + user_ref_code + "/refs"). document(userID);
+
+        Map<String, Object> reCode = new HashMap<>();
+        reCode.put("userKey", userID);
+        reCode.put("user_ref_code", userID);
+        reCode.put("ipAddress", ipAddress);
+        reCode.put("userName", name);
+
+        documentReference1.set(reCode).addOnCompleteListener(task2 -> {
+            if(task2.isSuccessful()) {
+                showSnakbarTypeOne(viewSnackbar, "Реферальный код добавлен");
+            } else {
+                showSnakbarTypeOne(viewSnackbar, "Ошибка реферального кода");
+            }
+        });
+
+
         documentReference.set(user).addOnCompleteListener(task1 -> {
             if (task1.isSuccessful()) {
+
                 Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();
-                progressRegister.setVisibility(View.INVISIBLE);
+                progressDialog.dismiss();
                 buttonCreateNewUser.setVisibility(View.VISIBLE);
             } else {
-                progressRegister.setVisibility(View.INVISIBLE);
+                progressDialog.dismiss();
                 buttonCreateNewUser.setVisibility(View.VISIBLE);
                 showSnakbarTypeOne(viewSnackbar, getString(R.string.erro_registerMessageS));
             }

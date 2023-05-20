@@ -1,6 +1,5 @@
 package hamsafar.tj.activity.adapters;
 
-import static hamsafar.tj.activity.utility.Utility.showToast;
 
 import android.Manifest;
 import android.app.Activity;
@@ -27,18 +26,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import hamsafar.tj.R;
-import hamsafar.tj.activity.models.Post;
 import hamsafar.tj.activity.models.books;
 
 public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHolder> {

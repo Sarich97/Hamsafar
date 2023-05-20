@@ -76,6 +76,7 @@
                 android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
+                android:visibility="gone"
                 android:layout_margin="7.8dp"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"

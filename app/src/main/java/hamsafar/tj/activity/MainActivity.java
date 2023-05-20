@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import static hamsafar.tj.activity.utility.Utility.BOOKS_COLLECTION;
-import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 

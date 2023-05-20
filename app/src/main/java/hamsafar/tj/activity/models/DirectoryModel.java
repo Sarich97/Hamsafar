@@ -1,16 +1,19 @@
 package hamsafar.tj.activity.models;
 
+import android.graphics.drawable.GradientDrawable;
+
 public class DirectoryModel {
     private String titelDirectooryText;
     private String descpDirectoryText;
-    private boolean expandedDirectory;
+    GradientDrawable expandedDirectory;
 
-    public DirectoryModel () {}
 
-    public DirectoryModel(String titelDirectooryText, String descpDirectoryText) {
+    public DirectoryModel() {}
+
+    public DirectoryModel(String titelDirectooryText, String descpDirectoryText, GradientDrawable expandedDirectory) {
         this.titelDirectooryText = titelDirectooryText;
-        this.descpDirectoryText = String.valueOf(descpDirectoryText);
-        this.expandedDirectory = false;
+        this.descpDirectoryText = descpDirectoryText;
+        this.expandedDirectory = expandedDirectory;
     }
 
     public String getTitelDirectooryText() {
@@ -29,12 +32,11 @@ public class DirectoryModel {
         this.descpDirectoryText = descpDirectoryText;
     }
 
-    public boolean isExpandedDirectory() {
+    public GradientDrawable getExpandedDirectory() {
         return expandedDirectory;
     }
 
-    public void setExpandedDirectory(boolean expandedDirectory) {
+    public void setExpandedDirectory(GradientDrawable expandedDirectory) {
         this.expandedDirectory = expandedDirectory;
     }
-
 }

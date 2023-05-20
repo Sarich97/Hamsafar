@@ -25,7 +25,7 @@
         android:layout_marginStart="18dp"
         android:layout_marginEnd="18dp"
         android:fontFamily="@font/play"
-        android:text="Пока пусто. Создавайте заявки, чтобы получать уведомления."
+        android:text="Создавайте заявки, чтобы получать уведомления."
         android:textAlignment="center"
         android:textColor="@color/colorText"
         android:textSize="15dp"

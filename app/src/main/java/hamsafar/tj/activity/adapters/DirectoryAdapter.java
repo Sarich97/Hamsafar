@@ -1,18 +1,27 @@
 package hamsafar.tj.activity.adapters;
 
+import static hamsafar.tj.activity.utility.Utility.CONFIG_COLLECTION;
+
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
+import hamsafar.tj.activity.HelpDetalActivity;
+import hamsafar.tj.activity.SecurityStories;
 import hamsafar.tj.activity.models.DirectoryModel;
 
 public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.DirectoryVH> {
@@ -37,9 +46,8 @@ public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.Dire
         DirectoryModel movie = directoryModels.get(position);
         holder.titleTextDirect.setText(movie.getTitelDirectooryText());
         holder.descpTextDirect.setText(movie.getDescpDirectoryText());
+        holder.expandableLayout.setBackground(movie.getExpandedDirectory());
 
-        boolean isExpanded = directoryModels.get(position).isExpandedDirectory();
-        holder.expandableLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -47,7 +55,7 @@ public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.Dire
         return directoryModels.size();
     }
 
-    public class DirectoryVH extends RecyclerView.ViewHolder {
+    public class DirectoryVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private static final String TAG = "MovieVH";
 
@@ -56,18 +64,21 @@ public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.Dire
 
         public DirectoryVH(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
+            titleTextDirect = itemView.findViewById(R.id.titleCard);
+            descpTextDirect = itemView.findViewById(R.id.textDescpCard);
+            expandableLayout = itemView.findViewById(R.id.cardColor);
 
-            titleTextDirect = itemView.findViewById(R.id.titleTextDirectory);
-            descpTextDirect = itemView.findViewById(R.id.descpTextDirectory);
-            expandableLayout = itemView.findViewById(R.id.expandableLayout);
 
-            titleTextDirect.setOnClickListener(view -> {
-                DirectoryModel directoryModel = directoryModels.get(getAdapterPosition());
-                directoryModel.setExpandedDirectory(!directoryModel.isExpandedDirectory());
-                notifyItemChanged(getAdapterPosition());
+        }
 
-            });
-
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            Intent postDetailActivity = new Intent(mContext, HelpDetalActivity.class);
+            postDetailActivity.putExtra("dirTitle",directoryModels.get(clickedPosition).getTitelDirectooryText());
+            postDetailActivity.putExtra("dirDesc",directoryModels.get(clickedPosition).getDescpDirectoryText());
+            mContext.startActivity(postDetailActivity);
         }
     }
 }

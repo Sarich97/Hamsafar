@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
+import hamsafar.tj.activity.HelpActivity;
 import hamsafar.tj.activity.SecurityStories;
 import hamsafar.tj.activity.models.CardViewModel;
 
