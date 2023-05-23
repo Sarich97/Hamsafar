@@ -286,6 +286,7 @@ public class TravelFragment extends Fragment {
         GradientDrawable gradient3 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xfffb7e36, 0xFFfb7e36});
         GradientDrawable gradient4 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xff0fd59e, 0xff0fd59e});
         GradientDrawable gradient5 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xffb8cee0, 0xffb8cee0});
+        GradientDrawable gradient6 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xFF62A9D3, 0xFF9091FB});
 
        // recyclerViewCard.setHasFixedSize(true);
         recyclerViewCard.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -294,6 +295,7 @@ public class TravelFragment extends Fragment {
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_road_24, "Состояние автодорог", gradient1));
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_add_moderator_24, "Безопасное вождение", gradient2));
         cardViewModels.add(new CardViewModel(R.drawable.ic_baseline_airplane_ticket_24, "Дешевые авиабилеты", gradient4));
+        cardViewModels.add(new CardViewModel(R.drawable.baseline_send_24, "Наш Telegram", gradient6));
 
 
         cardViewAdapter = new CardViewAdapter(cardViewModels, getContext());

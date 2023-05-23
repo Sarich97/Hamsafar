@@ -52,7 +52,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView16"
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
@@ -202,20 +202,6 @@
                     app:srcCompat="@drawable/baseline_sentiment_very_dissatisfied_24" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/play"
-                android:text="Выберите смайлик: 😔 - если есть негативные впечатления, или 😊 - если все прошло хорошо."
-                android:textAlignment="center"
-                android:textColor="@color/colorText"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/textView9"
-                app:layout_constraintStart_toStartOf="@+id/textView9"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

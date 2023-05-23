@@ -116,6 +116,11 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
                     context.startActivity(i);
                     break;
 
+                case 3:
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/hamsafar_t"));
+                    context.startActivity(intent);
+                    break;
+
                 default:
             }
         }

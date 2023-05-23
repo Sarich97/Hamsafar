@@ -24,6 +24,8 @@
         <item>Аэропорт (Бохтар)</item>
         <item>Аэропорт (Куляб)</item>
         <item>Аэропорт (Худжанд)</item>
+        <item>Ташкент</item>
+        <item>Ойбек</item>
     </string-array>
 
     <string-array name="townListEnd">
@@ -50,6 +52,8 @@
         <item>Аэропорт (Бохтар)</item>
         <item>Аэропорт (Куляб)</item>
         <item>Аэропорт (Худжанд)</item>
+        <item>Ташкент</item>
+        <item>Ойбек</item>
     </string-array>
 
     <string-array name="townListReg">

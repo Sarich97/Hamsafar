@@ -39,7 +39,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/play"
         android:textSize="16dp"
-        android:text="Пригласите как можно больше друзей зарегистрироваться в нашем приложении, используя ваш уникальный код-приглашение. Чем больше друзей присоединятся, тем выше ваши шансы на победу. Когда конкурс закончится, мы выберем одного счастливчика, который получит свой приз - 100 литров бензина"
+        android:text="@string/b_100"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"

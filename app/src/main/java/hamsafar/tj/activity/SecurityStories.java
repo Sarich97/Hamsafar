@@ -53,7 +53,7 @@ public class SecurityStories extends AppCompatActivity {
         directoryModelList.add(new DirectoryModel("Скоростной режим",getString(R.string.traffic_rules1), gradient6));
         directoryModelList.add(new DirectoryModel("Ремень безопасности",getString(R.string.traffic_rules2), gradient7));
         directoryModelList.add(new DirectoryModel("ТО автомобиля",getString(R.string.traffic_rules3), gradient5));
-        directoryModelList.add(new DirectoryModel("Телефон и руль: опасное сочетание",getString(R.string.traffic_rules4), gradient2));
+        directoryModelList.add(new DirectoryModel("Телефон и руль\nопасное сочетание",getString(R.string.traffic_rules4), gradient2));
         directoryModelList.add(new DirectoryModel("Защита маленьких пассажиров",getString(R.string.traffic_rules5), gradient4));
     }
 }
