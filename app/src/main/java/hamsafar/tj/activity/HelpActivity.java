@@ -54,6 +54,8 @@ public class HelpActivity extends AppCompatActivity {
         directoryModelList.add(new DirectoryModel("Зачем нужен рейтинг?",getString(R.string.reating_descrip), gradient4));
         directoryModelList.add(new DirectoryModel("Счетчик поездок",getString(R.string.trip_count_descrip), gradient5));
         directoryModelList.add(new DirectoryModel("Почему только по 3 поездок?",getString(R.string.trip_count_descrip3), gradient6));
+        directoryModelList.add(new DirectoryModel("Исключить пассажира из заявки",getString(R.string.how_delete), gradient7));
+        directoryModelList.add(new DirectoryModel("Как повышается рейтинг ?",getString(R.string.how_to_set_rating), gradient8));
 
 
     }

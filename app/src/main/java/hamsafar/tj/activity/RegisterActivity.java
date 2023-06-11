@@ -38,7 +38,7 @@ import hamsafar.tj.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText editTextUserName, editTextUserPhone, editTextUserCarModel, editTextRefCode;
+    private EditText editTextUserName, editTextUserCarModel, editTextRefCode;
     private Button buttonCreateNewUser;
     private Spinner spinnerUserCity;
     private ProgressDialog progressDialog;
@@ -76,9 +76,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         buttonCreateNewUser.setOnClickListener(view -> {
             if(isOnline(this)) {
-                String email = getIntent().getStringExtra("userEmail");
+                String email = getIntent().getStringExtra("userPhone");
                 String name = editTextUserName.getText().toString();
-                String phone = editTextUserPhone.getText().toString();
+                String phone = getIntent().getStringExtra("userPhone");
                 String userCity = spinnerUserCity.getSelectedItem().toString();
                 String password = getIntent().getStringExtra("userPass");
                 String userCarModel = editTextUserCarModel.getText().toString();
@@ -88,8 +88,6 @@ public class RegisterActivity extends AppCompatActivity {
                     editTextUserName.setError(getString(R.string.field_nameRegister));
                 } else if (userCity.equals(getString(R.string.spinner_CityMessage))) {
                     showSnakbarTypeOne(viewSnackbar, getString(R.string.spinner_CityMessage));
-                } else if(TextUtils.isEmpty(phone)) {
-                    editTextUserPhone.setError("Укажите номер телефона");
                 } else {
                     createFirebaseAuthUser(email, password, name, phone, userCity, userCarModel, user_ref_code);
                 }
@@ -111,7 +109,6 @@ public class RegisterActivity extends AppCompatActivity {
     // Инициализация полей класса
     private void initViews() {
         editTextUserName = findViewById(R.id.user_Name);
-        editTextUserPhone = findViewById(R.id.user_Phone);
         spinnerUserCity = findViewById(R.id.spinnerGetCityUser);
         buttonCreateNewUser = findViewById(R.id.registerUserBtn);
         textViewTeamOfServis = findViewById(R.id.team_of_servis);
@@ -127,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.show();
         buttonCreateNewUser.setVisibility(View.INVISIBLE);
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+        firebaseAuth.createUserWithEmailAndPassword(email + "@gmail.com", password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String userID = firebaseAuth.getCurrentUser().getUid();
                 saveUserDataToFirestore(userID, email, password, name, phone, userCity, userCarModel, user_ref_code);
@@ -158,22 +155,25 @@ public class RegisterActivity extends AppCompatActivity {
         user.put("ipAddress", ipAddress);
         user.put("regDate", FieldValue.serverTimestamp());
 
-        DocumentReference documentReference1 = userRefCode.collection("refcode/" + user_ref_code + "/refs"). document(userID);
+       if(user_ref_code.isEmpty()) {
 
-        Map<String, Object> reCode = new HashMap<>();
-        reCode.put("userKey", userID);
-        reCode.put("user_ref_code", userID);
-        reCode.put("ipAddress", ipAddress);
-        reCode.put("userName", name);
+       } else {
+           DocumentReference documentReference1 = userRefCode.collection("refcode/" + user_ref_code + "/refs"). document(userID);
 
-        documentReference1.set(reCode).addOnCompleteListener(task2 -> {
-            if(task2.isSuccessful()) {
-                showSnakbarTypeOne(viewSnackbar, "Реферальный код добавлен");
-            } else {
-                showSnakbarTypeOne(viewSnackbar, "Ошибка реферального кода");
-            }
-        });
+           Map<String, Object> reCode = new HashMap<>();
+           reCode.put("userKey", userID);
+           reCode.put("user_ref_code", userID);
+           reCode.put("ipAddress", ipAddress);
+           reCode.put("userName", name);
 
+           documentReference1.set(reCode).addOnCompleteListener(task2 -> {
+               if(task2.isSuccessful()) {
+                   showSnakbarTypeOne(viewSnackbar, "Реферальный код добавлен");
+               } else {
+                   showSnakbarTypeOne(viewSnackbar, "Ошибка реферального кода");
+               }
+           });
+       }
 
         documentReference.set(user).addOnCompleteListener(task1 -> {
             if (task1.isSuccessful()) {

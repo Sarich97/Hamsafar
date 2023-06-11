@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment {
     private ImageView userImageP, imageViewLogOurBtn;
 
     // Массив для хранения списка настроек
-    private String setting_list[] = {"Редактировать профиль", "Как это работает", "Написать нам", "Выйти"};
+    private String setting_list[] = {"Редактировать профиль", "Помощь", "Написать нам", "Выйти"};
 
     private Dialog dialogInternetCon;
 

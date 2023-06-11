@@ -32,6 +32,8 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -407,8 +409,12 @@ public class TripDetalActivity extends AppCompatActivity {
             Map<String, Object> posts = new HashMap<>();
             posts.put("isDriverUser", "Поездка завершена");
             posts.put("statusTrip", "null");
+
+            changeTripStatusNote();
+
             documentReference.update(posts).addOnCompleteListener(task -> {
                 if(task.isSuccessful()) {
+
                     Intent mainIntent = new Intent(TripDetalActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     finish();
@@ -433,6 +439,23 @@ public class TripDetalActivity extends AppCompatActivity {
 
         // показываем Alert
         deleteDialog.show();
+    }
+
+    private void changeTripStatusNote() {
+        String tripUserId = getIntent().getExtras().getString("driverID");
+        String postID = getIntent().getExtras().getString("postID");
+        DocumentReference documentReference = bookRef.collection("notificat/" + tripUserId + "/books").document();
+        Map<String, Object> notificat = new HashMap<>();
+        notificat.put("statusTrip", "Поездка завершена");
+
+        documentReference.update(notificat).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+
+            } else {
+
+            }
+
+        });
     }
 
     private void UpDatePostInfo() { // ОБНОВИТЬ СТАТУС ПОСТА ЕСЛИ ПОЛЬЗОВАТЕЛЬ НАЖАЛ НА КНОПКУ ОТМЕНИТЬ БРОНЬ
@@ -614,6 +637,13 @@ public class TripDetalActivity extends AppCompatActivity {
         String tripSeat = extras.getString("seatTrip");
         String status = extras.getString("isUserDriver");
 
+        String tripPrice = getIntent().getExtras().getString("price");
+        String tripBrandCar = getIntent().getExtras().getString("brandCar");
+        String dirverName = getIntent().getExtras().getString("driverName");
+        String comments = getIntent().getExtras().getString("commentTrip");
+        String isPackBox = getIntent().getExtras().getString("isPackBox");
+        String driverPhone = getIntent().getExtras().getString("phone");
+
         String notifiID = userKey + postID;
 
         bookRef.collection("posts/" + postID + "/books").document(userKey).get().addOnCompleteListener(task -> {
@@ -631,8 +661,15 @@ public class TripDetalActivity extends AppCompatActivity {
                 book.put("postCreateID", tripUserId);
                 book.put("locationFrom", tripStart);
                 book.put("locationTo", tripEnd);
-                book.put("statusTrip", status);
+                book.put("seatTrip", tripSeat);
                 book.put("date", tripDate);
+                book.put("statusTrip", status);
+                book.put("tripPrice", tripPrice);
+                book.put("tripBrandCar", tripBrandCar);
+                book.put("dirverName", dirverName);
+                book.put("comments", comments);
+                book.put("isPackBox", isPackBox);
+                book.put("driverPhone", driverPhone);
                 book.put("userRating", rating);
                 book.put("userTripCount", count);
                 book.put("rating", "no");

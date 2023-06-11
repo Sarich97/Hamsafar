@@ -37,17 +37,6 @@
         tools:layout_editor_absoluteX="20dp"
         android:autofillHints="" />
 
-    <EditText
-        android:id="@+id/user_Phone"
-        style="@style/editText"
-        android:drawableStart="@drawable/ic_baseline_phone_24"
-        android:hint="@string/editPhoneUser"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_Name"
-        tools:ignore="MissingConstraints" />
 
     <Spinner
         android:id="@+id/spinnerGetCityUser"
@@ -55,7 +44,7 @@
         android:entries="@array/townListReg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_Phone" />
+        app:layout_constraintTop_toBottomOf="@+id/user_Name" />
 
     <EditText
         android:id="@+id/userCarModelD"

@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
             progressDialog.show();
 
             // Выполняем попытку входа пользователя с указанным email и паролем
-            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            firebaseAuth.signInWithEmailAndPassword(email +"@gmail.com", password).addOnCompleteListener(task -> {
 
                 // Скрываем диалоговое окно
                 progressDialog.dismiss();

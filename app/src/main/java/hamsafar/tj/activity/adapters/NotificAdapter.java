@@ -1,43 +1,45 @@
 package hamsafar.tj.activity.adapters;
 
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.Dialog;
+
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
+
+
+import android.graphics.Typeface;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+
+import com.google.firebase.firestore.DocumentReference;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 import hamsafar.tj.R;
+import hamsafar.tj.activity.TripDetalActivity;
+
 import hamsafar.tj.activity.models.books;
 
 public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHolder> {
     private ArrayList<books> booksItems;
     private Context context;
-    private Dialog dialogBooks;
-    private static final int REQUEST_CALL = 1;
+
 
     private FirebaseFirestore firebaseFirestore, bookRef;
 
@@ -55,8 +57,6 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         bookRef = FirebaseFirestore.getInstance();
-        dialogBooks= new Dialog(context);
-
 
         return new ViewHolder(view);
     }
@@ -67,9 +67,20 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
         books books = booksItems.get(position);
 
         if(books.getStatusTrip().equals("Ищу водителя")) {
-            holder.textViewDriverName.setText(books.getUserName() + " принял(а) вашу заявку");
-        } else {
-            holder.textViewDriverName.setText(books.getUserName() + " забронировал(а) поездку");
+            if(books.getNotifiStatus().equals("show")) {
+                holder.textViewDriverName.setText(books.getUserName() + " принял(а) вашу заявку");
+                holder.textViewDriverName.setTypeface(Typeface.DEFAULT_BOLD);
+            } else {
+                holder.textViewDriverName.setText(books.getUserName() + " принял(а) вашу заявку");
+            }
+        } else if(books.getStatusTrip().equals("Ищу пассажиров")) {
+            if(books.getNotifiStatus().equals("show")) {
+                holder.textViewDriverName.setText(books.getUserName() + " забронировал(а) поездку");
+                holder.textViewDriverName.setTypeface(Typeface.DEFAULT_BOLD);
+
+            } else {
+                holder.textViewDriverName.setText(books.getUserName() + " забронировал(а) поездку");
+            }
         }
         Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), android.R.anim.slide_in_left);
         holder.itemView.startAnimation(animation);
@@ -108,45 +119,47 @@ public class NotificAdapter extends RecyclerView.Adapter<NotificAdapter.ViewHold
         public void onClick(View view) {
             int position = getAdapterPosition();
             books books = booksItems.get(position);
+            String postId = books.getPostID();
 
-            ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
+            DocumentReference postRef = bookRef.collection("posts").document(postId);
 
-            dialogBooks.setContentView(R.layout.show_books_detal_sheet);
-            dialogBooks.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            postRef.get().addOnSuccessListener(documentSnapshot -> {
 
-            String user_name = books.getUserName().substring(0,1);
-            ImageView userImage = dialogBooks.findViewById(R.id.userImageBooks);
-            TextDrawable user_drawbleSheet = TextDrawable.builder()
-                    .beginConfig()
-                    .fontSize(26) /* size in px */
-                    .bold()
-                    .toUpperCase()
-                    .endConfig()
-                    .buildRoundRect(user_name, colorGenerator.getRandomColor(),4); // radius in
-            userImage.setImageDrawable(user_drawbleSheet);
 
-            TextView userName = dialogBooks.findViewById(R.id.userNameBook);
-            TextView dateTrip = dialogBooks.findViewById(R.id.dateTrip);
-            TextView startTrip = dialogBooks.findViewById(R.id.start_of_route);
-            TextView endTrip = dialogBooks.findViewById(R.id.end_of_route);
-            Button button = dialogBooks.findViewById(R.id.callButtonUser);
+                String user_UD = documentSnapshot.getString("userUD");
+                String user_name = documentSnapshot.getString("userName");
+                String user_phone = documentSnapshot.getString("userPhone");
+                String user_car = documentSnapshot.getString("carModel");
+                String start_trip = documentSnapshot.getString("startTrip");
+                String end_trip = documentSnapshot.getString("endTrip");
+                String data_trip = documentSnapshot.getString("dataTrip");
+                String time_trip = documentSnapshot.getString("timeTrip");
+                String price_trip = documentSnapshot.getString("priceTrip");
+                String seat_trip = documentSnapshot.getString("seatTrip");
+                String comments = documentSnapshot.getString("commentTrip");
+                String is_driver_user = documentSnapshot.getString("isDriverUser");
+                String status_trip = documentSnapshot.getString("statusTrip");
+                String package_trip = documentSnapshot.getString("isPackage");
+                String post_id = documentSnapshot.getString("postId");
 
-            button.setOnClickListener(view12 -> { // Нажимаем на кнопку звонок
-                String number =  booksItems.get(position).getUserPhone();
-                if (ContextCompat.checkSelfPermission(context,
-                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions((Activity) context,
-                            new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
-                } else {
-                    String dial = "tel:" + number;
-                    context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-                }
+
+                Intent postIntent = new Intent(context, TripDetalActivity.class);
+                postIntent.putExtra("locationFrom",start_trip);
+                postIntent.putExtra("locationTo",end_trip);
+                postIntent.putExtra("date",data_trip + " в " + time_trip);
+                postIntent.putExtra("price",price_trip);
+                postIntent.putExtra("seatTrip",seat_trip);
+                postIntent.putExtra("brandCar",user_car);
+                postIntent.putExtra("driverName",user_name);
+                postIntent.putExtra("driverID",user_UD);
+                postIntent.putExtra("phone",user_phone);
+                postIntent.putExtra("isUserDriver",is_driver_user);
+                postIntent.putExtra("commentTrip",comments);
+                postIntent.putExtra("postID",post_id);
+                postIntent.putExtra("isPackBox",package_trip);
+                context.startActivity(postIntent);
             });
-            userName.setText(books.getUserName());
-            dateTrip.setText(books.getDate());
-            startTrip.setText(books.getLocationFrom());
-            endTrip.setText(books.getLocationTo());
-            dialogBooks.show();
+
         }
     }
 }

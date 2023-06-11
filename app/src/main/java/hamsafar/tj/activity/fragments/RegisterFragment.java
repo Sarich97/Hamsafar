@@ -22,7 +22,7 @@ import hamsafar.tj.activity.RegisterActivity;
 
 public class RegisterFragment extends Fragment {
 
-    private EditText editTextEmail, editTextPass;
+    private EditText editTextPhone, editTextPass;
     private Button buttonRegister;
 
     @Override
@@ -38,7 +38,7 @@ public class RegisterFragment extends Fragment {
 
     // Инициализация полей класса
     private void initViews(View view) {
-        editTextEmail = view.findViewById(R.id.user_Email);
+        editTextPhone = view.findViewById(R.id.user_Email);
         editTextPass = view.findViewById(R.id.user_Pass);
         buttonRegister = view.findViewById(R.id.registerNextBtn);
     }
@@ -46,33 +46,29 @@ public class RegisterFragment extends Fragment {
     // Назначение обработчика кликов на кнопку регистрации
     private void setListeners() {
         buttonRegister.setOnClickListener(click -> {
-            String email = editTextEmail.getText().toString();
+            String phone = editTextPhone.getText().toString();
             String password = editTextPass.getText().toString();
 
-            if (TextUtils.isEmpty(email)) {
-                editTextEmail.setError(getString(R.string.field_emailInvalid));
+            if (TextUtils.isEmpty(phone)) {
+                editTextPhone.setError(getString(R.string.field_emailInvalid));
             } else if (TextUtils.isEmpty(password)) {
                 editTextPass.setError(getString(R.string.field_passMessage));
             } else {
-                createNewUser(email, password);
+                createNewUser(phone, password);
             }
         });
     }
 
     // Создание нового пользователя и переход на другой экран
-    private void createNewUser(String email, String password) {
-        if (!isEmailValid(email)) {
-            editTextEmail.setError(getString(R.string.field_emailInvalid));
-            return;
-        }
+    private void createNewUser(String phone, String password) {
 
         Intent registerIntent = new Intent(getContext(), RegisterActivity.class);
-        registerIntent.putExtra("userEmail", email);
+        registerIntent.putExtra("userPhone", phone);
         registerIntent.putExtra("userPass", password);
         startActivity(registerIntent);
     }
 
-    private boolean isEmailValid(CharSequence email) { // проверки на валидность email-адреса:
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
+//    private boolean isEmailValid(CharSequence email) { // проверки на валидность email-адреса:
+//        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+//    }
 }
