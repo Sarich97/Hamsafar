@@ -1,6 +1,7 @@
 package hamsafar.tj.activity.fragments;
 
 import static android.content.ContentValues.TAG;
+import static hamsafar.tj.activity.utility.Utility.POSTS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.dayMonthText;
 import static hamsafar.tj.activity.utility.Utility.getMonthText;
@@ -119,7 +120,7 @@ public class CreatDFragment extends Fragment {
         buttonCreatTrip.setOnClickListener(view13 -> {
             buttonCreatTrip.setVisibility(View.INVISIBLE);
             progressBarPost.setVisibility(View.VISIBLE);
-            firebaseFirestore.collection(USERS_COLLECTION)
+            firebaseFirestore.collection(POSTS_COLLECTION)
                 .whereEqualTo("userUD", userID)
                 .whereEqualTo("statusTrip", "show") // Фильтруем только активные поездки
                 .get()

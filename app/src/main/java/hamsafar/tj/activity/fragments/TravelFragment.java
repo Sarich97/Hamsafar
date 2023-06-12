@@ -5,10 +5,14 @@ import static hamsafar.tj.activity.utility.Utility.BOOKS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.CONFIG_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.POSTS_COLLECTION;
 import static hamsafar.tj.activity.utility.Utility.USERS_COLLECTION;
+
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
@@ -43,6 +47,7 @@ import java.util.Date;
 import java.util.List;
 
 import hamsafar.tj.R;
+import hamsafar.tj.activity.NotoficationActivity;
 import hamsafar.tj.activity.adapters.CardViewAdapter;
 import hamsafar.tj.activity.adapters.PostAdapter;
 import hamsafar.tj.activity.models.CardViewModel;
@@ -54,16 +59,18 @@ public class TravelFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth; // FireBase
     private FirebaseFirestore travelPostRef, bookRef, UserRef, ConfigReg;
-    private CollectionReference notificatRef;
+    private CollectionReference notificatPostRef, notificatRef;
     private FirebaseFirestore userRef;
     ///   RecyclerView CARD VIEW ON MAIN PAGE
     private RecyclerView recyclerViewCard;
     private RecyclerView.Adapter cardViewAdapter;
     private String userKey;
     private String user_city;
-    private TextView textViewSearch;
+    private TextView textViewSearch, textViewNoteCount;
     private Dialog dialogRating, dialogInternetCon; //
     private CardView cardViewConTest;
+    private ImageView imageViewNotificatBtn;
+    private int isHaveNotificat = 0;
 
 
     private RecyclerView recyclerViewPost;
@@ -83,6 +90,7 @@ public class TravelFragment extends Fragment {
 
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,12 +99,16 @@ public class TravelFragment extends Fragment {
 
         bookRef = FirebaseFirestore.getInstance();
         UserRef = FirebaseFirestore.getInstance();
-        notificatRef = bookRef.collection(POSTS_COLLECTION);
+        notificatPostRef = bookRef.collection(POSTS_COLLECTION);
+
+        notificatRef = bookRef.collection("notificat"); // Уведомления
 
         dialogRating= new Dialog(getContext());
         dialogInternetCon = new Dialog(getContext());
 
+        textViewNoteCount = view.findViewById(R.id.textViewNot);
         textViewSearch = view.findViewById(R.id.textViewStatusSearch); // Текст поиска постов если указан мой город
+        imageViewNotificatBtn = view.findViewById(R.id.imageViewNotificat);
 
         recyclerViewCard = view.findViewById(R.id.recyclerViewCard); //CARDVIEW
         cardViewConTest = view.findViewById(R.id.cardColorConTest);
@@ -141,9 +153,32 @@ public class TravelFragment extends Fragment {
             bottomSheetDialog.show();
         });
 
+
+        imageViewNotificatBtn.setOnClickListener(v -> {
+            if(isHaveNotificat == 1) {
+                notificatRef.document(userKey).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
+                        books books = documentSnapshot.toObject(books.class);
+                        if (books.getPostCreateID().equals(userKey)) {
+                            if(books.getNotifiStatus().equals("show")) {
+                                notificatRef.document(userKey).collection(BOOKS_COLLECTION).document(books.getUserID()+books.getPostID()).update("notifiStatus", "null");
+                            } else {
+
+                            }
+
+                        } else {
+                        }
+                    }
+                });
+            }
+            Intent notifcIntent = new Intent(new Intent(getContext(), NotoficationActivity.class));
+            getContext().startActivity(notifcIntent);
+        });
+
         showPostForUsers();
         showRatingDialog();
         cardViewRecycler();
+        showNotificationForUser();
 
         return view;
     }
@@ -160,7 +195,7 @@ public class TravelFragment extends Fragment {
                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
                         Post post = doc.getDocument().toObject(Post.class);
-                        notificatRef.document(post.getPostId()).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        notificatPostRef.document(post.getPostId()).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
                             for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                                 books books = documentSnapshot.toObject(books.class);
                                 if (books.getUserID().equals(userKey) && post.getIsDriverUser().equals("Поездка завершена") && books.getRating().equals("no")) {
@@ -300,5 +335,26 @@ public class TravelFragment extends Fragment {
 
         cardViewAdapter = new CardViewAdapter(cardViewModels, getContext());
         recyclerViewCard.setAdapter(cardViewAdapter);
+    }
+
+
+    private void showNotificationForUser() { // Показ уведомления пользовтелю
+        notificatRef.document(userKey).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
+                books books = documentSnapshot.toObject(books.class);
+                if (books.getPostCreateID().equals(userKey)) {
+                    if(books.getNotifiStatus().equals("show")) {
+                        textViewNoteCount.setVisibility(View.VISIBLE);
+                        isHaveNotificat = 1;
+                    } else {
+
+                    }
+
+                } else {
+                    textViewNoteCount.setVisibility(View.INVISIBLE);
+                    isHaveNotificat = 0;
+                }
+            }
+        });
     }
 }
