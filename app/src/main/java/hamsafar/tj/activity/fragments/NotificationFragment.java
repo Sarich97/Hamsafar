@@ -1,6 +1,7 @@
 package hamsafar.tj.activity.fragments;
 
 import static hamsafar.tj.activity.utility.Utility.BOOKS_COLLECTION;
+import static hamsafar.tj.activity.utility.Utility.POSTS_COLLECTION;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 
@@ -72,7 +74,10 @@ public class NotificationFragment extends Fragment {
 
 
     private void showNotificationList() {
-       notificatRef.document(userKey).collection(BOOKS_COLLECTION).get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+       notificatRef.document(userKey).collection(BOOKS_COLLECTION)
+               .orderBy("timestamp", Query.Direction.DESCENDING) // сортировка по убыванию
+               .get().addOnSuccessListener(queryDocumentSnapshots -> {
            for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                books books = documentSnapshot.toObject(books.class);
                if (books.getPostCreateID().equals(userKey)) {
